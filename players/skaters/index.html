@@ -303,7 +303,22 @@
             },
             dom: 'lfrtiBp',
             buttons: [
-                'copy', 'csv', 'excel', 'pdf'
+                {
+                    text: 'copy',
+                    className: 'btn-sm btn-primary',
+                },
+                {
+                    text: 'csv',
+                    className: 'btn-sm btn-primary',
+                },
+                {
+                    text: 'excel',
+                    className: 'btn-sm btn-primary',
+                },
+                {
+                    text: 'pdf',
+                    className: 'btn-sm btn-primary',
+                }
             ],
             ajax: url + "pbp/playerstats/?format=json",
             sAjaxDataProp: "",
