@@ -7,7 +7,7 @@ var CreateHistorical = function createHistorical(divid, data, tableid) {
       d.date = parseDate(d.date);
     });
   }
-  console.log(tableid);
+
   var margin = {top: 20, right: 80, bottom: 30, left: 50},
       width = $(tableid).width() - margin.left - margin.right,
       height = 375 - margin.top - margin.bottom;
