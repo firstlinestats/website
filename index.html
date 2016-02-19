@@ -305,7 +305,6 @@
                         else if (result[team]["division"] == "Central")
                             data["Central"][team] = result[team]["history"];
                     }
-                    console.log(data);
                     CreateHistorical("#Ahistorical", data["Atlantic"], "#currentA");
                     CreateHistorical("#Mhistorical", data["Metropolitan"], "#currentM");
                     CreateHistorical("#Chistorical", data["Central"], "#currentC");
