@@ -8,19 +8,19 @@
     <meta name="author" content="">
     <title>First Line Stats</title>
     <!-- Bootstrap core CSS -->
-    <link rel='shortcut icon' type='image/x-icon' href="static/images/favicon.png" />
+    <link rel='shortcut icon' type='image/x-icon' href="/static/images/favicon.png" />
     <!--{% block page_css %}-->
-    <link href="static/DataTables/datatables.min.css" rel="stylesheet">
+    <link href="/static/DataTables/datatables.min.css" rel="stylesheet">
     <!--{% endblock %}-->
-    <link href="static/css/bootstrap.css" rel="stylesheet">
-    <link href="static/css/fls.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/fls.css" rel="stylesheet">
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <div class="navbar-brand" href="#">
-                    <a href="/"><img class="fls-logo" src="static/images/logo_text.png"></a>
+                    <a href="/"><img class="fls-logo" src="/static/images/logo_text.png"></a>
                 </div>
             </div>
             <div class="collapse navbar-collapse">
@@ -57,7 +57,6 @@
                             <th>Status</th>
                             <th>Start Time</th>
                             <th>End Time</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -219,13 +218,13 @@
 
 
     <!--{% endblock %}-->
-    <script src="static/js/jquery-2.2.0.min.js"></script>
-    <script src="static/js/bootstrap.js"></script>
+    <script src="/static/js/jquery-2.2.0.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
     <!--{% block page_js %}-->
-    <script src="static/DataTables/datatables.min.js"></script>
-    <script src="static/js/d3.v3.min.js"></script>
-    <script src="static/js/teamColors.js"></script>
-    <script src="static/js/graphs/historicalStandings.js"></script>
+    <script src="/static/DataTables/datatables.min.js"></script>
+    <script src="/static/js/d3.v3.min.js"></script>
+    <script src="/static/js/teamColors.js"></script>
+    <script src="/static/js/graphs/historicalStandings.js"></script>
     <script>
         $(document).ready(function() {
             var url = "http://localhost:8080/api/";
@@ -238,7 +237,7 @@
                 "columns": [
                   {"data": "date",
                    "render": function (data, type, full, meta) {
-                      return "<a href=\"/games/" + full.gamePk + "\">" + full.date + "</a>";
+                      return "<a href=\"/game/?gamePk=" + full.gamePk + "\">" + full.date + "</a>";
                    },
                   },
                   {"data": "gameType"},
