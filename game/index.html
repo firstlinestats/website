@@ -58,7 +58,7 @@
             
             <div class="row">
                 <div class="col-md-12">
-                    <h3><span id="home-score"></span> - <span id="away-score"></span></h3>
+                    <h3><span id="away-score"></span> - <span id="home-score"></span></h3>
                 </div>
             </div>
         </div>
@@ -106,15 +106,7 @@
     </div>
 </div>
 <div class="row">
-    <div id='tableLoading' class="col-md-6 col-md-offset-3">
-        <div class="progress">
-            <div class="progress-bar progress-bar-striped active" role="progressbar"
-                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                Fetching Data
-            </div>
-        </div>
-    </div>
-    <div id="gameStatsContent" class="col-md-12 table-responsive" style="display: none">
+    <div id="gameStatsContent" class="col-md-12 table-responsive">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tableView" data-toggle="tab" aria-expanded="true">Table View</a></li>
             <li class=""><a href="#graphView" data-toggle="tab" aria-expanded="false">Graph View</a></li>
@@ -280,6 +272,55 @@
             }
         };
 
+        var setSkaterTable = function setSkater(table_id, data) {
+            $(table_id).DataTable({
+                data: data,
+                paging: false,
+                info: false,
+                responsive: true,
+                fixedHeader: {
+                    header: true,
+                },
+                columns: [
+                    {"data": "name",
+                     "render": function(data, type, full, meta) {
+                        return "<a href=\"/players/skater/?id=" + full.id + "\">" + full.name + "</a>";
+                     }
+                    },
+                    {"data": "position"},
+                    {"data": "g"},
+                    {"data": "a1"},
+                    {"data": "a2"},
+                    {"data": "p"},
+                    {"data": "ihsc"},
+                    {"data": "isc"},
+                    {"data": "icf"},
+                    {"data": "cf",
+                     "render": function(data, type, full, meta) {
+                        return full.cf - full.ca;
+                     }
+                    },
+                    {"data": "ff",
+                     "render": function(data, type, full, meta) {
+                        return full.ff - full.fa;
+                     }
+                    },
+                    {"data": "g+-"},
+                    {"data": "cf"},
+                    {"data": "ff"},
+                    {"data": "zso"},
+                    {"data": "zsd"},
+                    {"data": "ab"},
+                    {"data": "fo_w"},
+                    {"data": "fo_l"},
+                    {"data": "hit+"},
+                    {"data": "hit-"},
+                    {"data": "pn+"},
+                    {"data": "pn-"},
+                ]
+            });
+        }
+
         var url = "http://localhost:8080/api/";
         var homeSkaters = $("#homePlayers"),
             awaySkaters = $("#awayPlayers"),
@@ -300,6 +341,63 @@
                     $("#away-team-logo").attr("src",
                         imgsrc + details.awayTeamAbbr + ".png");
                     $("#game-time").text(details.date);
+
+                    $("#team").DataTable( {
+                        data: data.teamData,
+                        paging: false,
+                        ordering: false,
+                        info: false,
+                        bFilter: false,
+                        columns: [
+                            {"data": "teamName",
+                             "render": function ( data, type, full, meta ) {
+                               return '<img height="17" width="17" src="/static/images/team/' + full.teamAbbr + '.png"><a href="/teams/?team=' + full.teamAbbr + '">' + full.teamName + '</a>';}
+                            },
+                            {"data": "gf"},
+                            {"data": "sf"},
+                            {"data": "msf"},
+                            {"data": "bsf"},
+                            {"data": "cf"},
+                            {"data": "scf"},
+                            {"data": "hscf"},
+                            {"data": "zso"},
+                            {"data": "hit+"},
+                            {"data": "pn"},
+                            {"data": "fo_w"},
+                            {"data": "toi"},
+                        ]
+                    });
+                    
+                    setSkaterTable("#homePlayers", data.homeSkaters);
+                    setSkaterTable("#awayPlayers", data.awaySkaters);
+
+                    $("#goalies").DataTable({
+                        data: data.goalies,
+                        paging: false,
+                        info: false,
+                        responsive: true,
+                        fixedHeader: {
+                            header: true,
+                        },
+                        bFilter: false,
+                        columns: [
+                            {"data": "name"},
+                            {"data": "team",
+                             "render": function ( data, type, full, meta ) {
+                               return '<img height="17" width="17" src="/static/images/team/' + full.teamAbbr + '.png"><a href="/teams/?team=' + full.teamAbbr + '">' + full.team + '</a>';}
+                            },
+                            {"data": "gu"},
+                            {"data": "su"},
+                            {"data": "gl"},
+                            {"data": "sl"},
+                            {"data": "gm"},
+                            {"data": "sm"},
+                            {"data": "gh"},
+                            {"data": "sh"},
+                            {"data": "toi"},
+                        ]
+                    })
+                    
                 }
             });
 
