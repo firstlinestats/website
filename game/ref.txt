@@ -1,0 +1,55 @@
+BASE
+Name 1
+Pos 1
+G 1
+A1 1
+A2 1
+P 1
+
+
+PRIME
+iHSC 1
+iSC 1
+iCF 1
+C+/- CF - CA
+F+/- FF - FA
+G+/- GF - GA
+CF 1
+FF 1
+ZSO 0
+ZSD 0
+AB 1
+FO_W 1
+FO_L 1
+HIT 1
+HIT- 1
+PN 1
+PN- 1
+
+
+RATES
+CF60 0
+CA60 0
+CP60 0
+FF60 0
+FA60 0
+FP60 0
+SF60 0
+SA60 0
+
+
+COUNTS
+BK 1
+AB 1
+MS 1
+SH 1
+SF 1
+SA 1
+GF 1
+GA 1
+FF 1
+FA 1
+CF 1
+CA 1
+SCF 1
+SCA 1
