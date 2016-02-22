@@ -44,10 +44,12 @@
         </div>
         <!--{% block content %}-->
         <div class="container">
+            <h1>Games</h1>
+            <br />
             <div class="row">
                 <div class="col-md-12">
                     <div class="well bs-component">
-                        <form id="gamesFilter" action="/games/" method="post">
+                        <form id="gamesFilter">
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="id_teams">Only Games Involving:</label>
@@ -173,6 +175,7 @@
                     </div>
                 </div>
             </div>
+            <br />
             <div class="row">
                 <div id='tableLoading' class="col-md-6 col-md-offset-3">
                     <div class="progress">
@@ -182,7 +185,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="gamesTableContainer" class="col-md-12">
+                <div id="gamesTableContainer" class="col-md-12" style="display: none">
                     <table id="gameList" class="table table-striped table-hover ">
                         <thead>
                             <tr>
@@ -221,42 +224,79 @@
             $('#id_venues').multiSelect();
             $('.datepicker').datepicker();
             getAjax();
+            $('input[type=reset]').click(function(e) {
+                $("#id_seasons").multiSelect('deselect_all');
+                $("#id_teams").multiSelect('deselect_all');
+                $("#id_venues").multiSelect('deselect_all');
+            });
+            $('#gamesFilter').submit(function(e) {
+                $('#gamesTableContainer').toggle();
+                $('#tableLoading').toggle();
+                //getAjax();
+                var formurl = url + "pbp/games/?format=json&" + $("#gamesFilter").serialize();
+                console.log(formurl);
+                gamesDT.ajax.url(formurl);
+                gamesDT.ajax.reload();
 
+                e.preventDefault();
+            });
         });
+   
+       
+
         function getAjax() {
-            $('#tableLoading').toggle();
-            $('#skatersTableContainer').toggle();
+            
             gamesDT = $('#gameList').DataTable({
+                order: [[ 0, "desc" ]],
                 iDisplayLength: 15,
                 responsive: true,
-                aLengthMenu: [[10, 15, 25, 50, -1], [10, 15, 25, 50, "All"]],
+                aLengthMenu: [
+                    [10, 15, 25, 50, -1],
+                    [10, 15, 25, 50, "All"]
+                ],
                 fixedHeader: {
                     header: true,
                 },
-                ajax: url + "pbp/recent/?format=json",
+                ajax: url + "pbp/games/?format=json",
                 sAjaxDataProp: "",
-                columns: [
-                    {"data": "date"},
-                    {"data": "gameType"},
-                    {
-                        "data": "homeTeam",
-                        "render": function ( data, type, full, meta ) {
-                            return '<img height="17" width="17" src="/static/images/team/' + data.abbreviation + '.png"><a href="/teams">' + data.shortName + '</a>';
-                        }
-                    },
-                    {"data": "score"},
-                    {
-                        "data": "awayTeam",
-                        "render": function ( data, type, full, meta ) {
-                            return '<img height="17" width="17" src="/static/images/team/' + data.abbreviation + '.png"><a href="/teams">' + data.shortName + '</a>';
-                        }
-                    },
-                    {"data": "corsi"},
-                    {"data": "gameState"},
-                    {"data": "dateTime"},
-                    {"data": "endDateTime"},
-                ]
+                "oLanguage": {
+                    "sProcessing": "loading data..."
+                },
+                columns: [{
+                    "data": "date",
+                    "render": function(data, type, full, meta) {
+                        return "<a href=\"/game/?gamePk=" + full.gamePk + "\">" + full.date + "</a>";
+                    }
+                }, {
+                    "data": "gameType"
+                }, {
+                    "data": "homeTeam",
+                    "render": function(data, type, full, meta) {
+                        return '<img height="17" width="17" src="/static/images/team/' + data.abbreviation + '.png"><a href="/teams">' + data.name + '</a>';
+                    }
+                }, {
+                    "data": "score"
+                }, {
+                    "data": "awayTeam",
+                    "render": function(data, type, full, meta) {
+                        return '<img height="17" width="17" src="/static/images/team/' + data.abbreviation + '.png"><a href="/teams">' + data.name + '</a>';
+                    }
+                }, {
+                    "data": "corsi"
+                }, {
+                    "data": "gameState"
+                }, {
+                    "data": "dateTime"
+                }, {
+                    "data": "endDateTime"
+                }, ]
             });
+            $('#gameList').on('xhr.dt', function() {
+                $('#gameList').width('100%')
+                $('#gamesTableContainer').toggle();
+                $('#tableLoading').toggle();
+            });
+
         }
         
 
