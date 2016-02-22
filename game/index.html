@@ -79,20 +79,55 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="well bs-component">
-            <h4 class="filter-options" data-toggle="collapse" data-target="#gamesFilter">
+            <h4 class="filter-options" data-toggle="collapse" data-target="#gameFilter">
             Filter Options
             <img class="filter-collapsed" height="20" width="20" style="float: right"src="/static/images/forward-arrow.svg ">
             </h4>
             <div class="row">
                 <div class="col-md-12">
-                    <form id="gamesFilter"  class="collapse" action="/games/" method="post">
+                    <form id="gameFilter" class="collapse" action="/api/pbp/game/" method="GET">
                         <div class="row">
-
+                            <div class="col-md-4">
+                                <label for="teamStrengths">Team Strengths:</label>
+                                <select class="form-control" id="teamStrengths">
+                                    <option value="all">All</option>
+                                    <option value="even">Even Strength</option>
+                                    <option value="pp">Power Play</option>
+                                    <option value="pk">Short Handed</option>
+                                    <option value="4v4">4v4</option>
+                                    <option value="og">Opposing Goalie</option>
+                                    <option value="tg">Team Goalie</option>
+                                    <option value="3v3">3v3</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="scoreSituation">Score Situation:</label>
+                                <select class="form-control" id="scoreSituation">
+                                    <option value="all">All</option>
+                                    <option value="t3+">Trailing by 3+</option>
+                                    <option value="t2">Trailing by 2</option>
+                                    <option value="t1">Trailing by 1</option>
+                                    <option value="t">Tied</option>
+                                    <option value="l1">Leading by 1</option>
+                                    <option value="l2">Leading by 2</option>
+                                    <option value="l3+">Leading by 3+</option>
+                                    <option value="w1">Within 1</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="periodOption">Period:</label>
+                                <select class="form-control" id="periodOption">
+                                    <option value="all">All</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">OT</option>
+                                </select>
+                            </div>
                         </div>
-                        <br />
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group text-right">
+                            <div class="col-md-4 col-md-offset-8">
+                                <div class="form-group text-right" style="margin-top:25%;">
                                     <input type="reset" class="btn btn-danger btn-sm"></input>
                                     <input type="submit" href="#" class="btn btn-primary btn-sm"></input>
                                 </div>
@@ -195,37 +230,52 @@
                         <table id="awayPlayers" class="table table-striped table-hover" style="width:100%;">
                             <thead>
                                 <tr>
-                                    <th title="Name">Name</th>
-                                    <th title="Position">Pos</th>
-                                    <th title="Goals Scored">G</th>
-                                    <th title="First Assists">A1</th>
-                                    <th title="Second Assists">A2</th>
-                                    <th title="Total Points">P</th>
-                                    <th title="Individual High-Danger Scoring Chances">iHSC</th>
-                                    <th title="Individual Scoring Chances">iSC</th>
-                                    <th title="Individual Shot Attempts">iCF</th>
-                                    <th title="On-Ice Corsi Differential">C+/-</th>
-                                    <th title="On-Ice Fenwick Differential">F+/-</th>
-                                    <th title="On0Ice Goal Differential">G+/-</th>
-                                    <th title="Corsi For Total">CF</th>
-                                    <th title="Fenwick For Total">FF</th>
-                                    <th title="Offensive Zone Stats">ZSO</th>
-                                    <th title="Defensive Zone Starts">ZSD</th>
-                                    <th title="Shots Attempts Blocked By Play">AB</th>
-                                    <th title="Faceoffs Won">FO_W</th>
-                                    <th title="Faceoffs Lost">FO_L</th>
-                                    <th title="Hits">HIT+</th>
-                                    <th title="Hits Taken">HIT-</th>
-                                    <th title="Penalties">PN+</th>
-                                    <th title="Penalties Drawn">PN-</th>
-                                    <th title="Corsi For, Per 60 Minutes">CF60</th>
-                                    <th title="Corsi Against, Per 60 Minutes">CA60</th>
-                                    <th title="Corsi Percent, Per 60 Minutes">CP60</th>
-                                    <th title="Fenwick For, Per 60 Minutes">FF60</th>
-                                    <th title="Fenwick Against, Per 60 Minutes">FA60</th>
-                                    <th title="Fenwick Percent, Per 60 Minutes">FP60</th>
-                                    <th title="Shots For, Per 60 Minutes">SF60</th>
-                                    <th title="Shots Against, Per 60 Minutes">SA60</th>
+                                    <th class="base" title="Name">Name</th>
+                                    <th class="base" title="Position">Pos</th>
+                                    <th class="base" title="Goals Scored">G</th>
+                                    <th class="base" title="First Assists">A1</th>
+                                    <th class="base" title="Second Assists">A2</th>
+                                    <th class="base" title="Total Points">P</th>
+                                    <th class="prime" title="Individual High-Danger Scoring Chances">iHSC</th>
+                                    <th class="prime" title="Individual Scoring Chances">iSC</th>
+                                    <th class="prime" title="Individual Shot Attempts">iCF</th>
+                                    <th class="prime" title="On-Ice Corsi Differential">C+/-</th>
+                                    <th class="prime" title="On-Ice Fenwick Differential">F+/-</th>
+                                    <th class="prime" title="On0Ice Goal Differential">G+/-</th>
+                                    <th class="prime" title="Corsi For Total">CF</th>
+                                    <th class="prime" title="Fenwick For Total">FF</th>
+                                    <th class="prime" title="Offensive Zone Stats">ZSO</th>
+                                    <th class="prime" title="Defensive Zone Starts">ZSD</th>
+                                    <th class="prime" title="Shots Attempts Blocked By Play">AB</th>
+                                    <th class="prime" title="Faceoffs Won">FO_W</th>
+                                    <th class="prime" title="Faceoffs Lost">FO_L</th>
+                                    <th class="prime" title="Hits">HIT+</th>
+                                    <th class="prime" title="Hits Taken">HIT-</th>
+                                    <th class="prime" title="Penalties">PN+</th>
+                                    <th class="prime" title="Penalties Drawn">PN-</th>
+                                    <th class="rates" title="Corsi For, Per 60 Minutes">CF60</th>
+                                    <th class="rates" title="Corsi Against, Per 60 Minutes">CA60</th>
+                                    <th class="rates" title="Corsi For and Against, Per 60 Minutes">CP60</th>
+                                    <th class="rates" title="Fenwick For, Per 60 Minutes">FF60</th>
+                                    <th class="rates" title="Fenwick Against, Per 60 Minutes">FA60</th>
+                                    <th class="rates" title="Fenwick For and Against, Per 60 Minutes">FP60</th>
+                                    <th class="rates" title="Shots For, Per 60 Minutes">SF60</th>
+                                    <th class="rates" title="Shots Against, Per 60 Minutes">SA60</th>
+                                    <th class="rates" title="Shots For and Against, Per 60 Minutes">FP60</th>
+                                    <th class="counts" title="Shot Attempts By Player, Blocked">BK</th>
+                                    <th class="counts" title="Shot Attempts Blocked By Player">AB</th>
+                                    <th class="counts" title="Missed Shots">MS</th>
+                                    <th class="counts" title="Saved Shots">SH</th>
+                                    <th class="counts" title="On-Ice Shots For Total">SF</th>
+                                    <th class="counts" title="On-Ice Shots Against Total">SA</th>
+                                    <th class="counts" title="On-Ice Goals For Total">GF</th>
+                                    <th class="counts" title="On-Ice Goals Against Total">GA</th>
+                                    <th class="counts" title="Fenwick For Total">FF</th>
+                                    <th class="counts" title="Fenwick Against Total">FA</th>
+                                    <th class="counts" title="Corsi For Total">CF</th>
+                                    <th class="counts" title="Corsi Against Total">CA</th>
+                                    <th class="counts" title="On-Ice Scoring Chances For Total">SCF</th>
+                                    <th class="counts" title="On-Ice Scoring Chances Against Total">SCA</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -266,13 +316,27 @@
                                     <th class="prime" title="Penalties Drawn">PN-</th>
                                     <th class="rates" title="Corsi For, Per 60 Minutes">CF60</th>
                                     <th class="rates" title="Corsi Against, Per 60 Minutes">CA60</th>
-                                    <th class="rates" title="Corsi For Percent, Per 60 Minutes">CP60</th>
+                                    <th class="rates" title="Corsi For and Against, Per 60 Minutes">CP60</th>
                                     <th class="rates" title="Fenwick For, Per 60 Minutes">FF60</th>
                                     <th class="rates" title="Fenwick Against, Per 60 Minutes">FA60</th>
-                                    <th class="rates" title="Fenwick For Percent, Per 60 Minutes">FP60</th>
+                                    <th class="rates" title="Fenwick For and Against, Per 60 Minutes">FP60</th>
                                     <th class="rates" title="Shots For, Per 60 Minutes">SF60</th>
                                     <th class="rates" title="Shots Against, Per 60 Minutes">SA60</th>
-                                    <th class="rates" title="Shots For Percent, Per 60 Minutes">FP60</th>
+                                    <th class="rates" title="Shots For and Against, Per 60 Minutes">FP60</th>
+                                    <th class="counts" title="Shot Attempts By Player, Blocked">BK</th>
+                                    <th class="counts" title="Shot Attempts Blocked By Player">AB</th>
+                                    <th class="counts" title="Missed Shots">MS</th>
+                                    <th class="counts" title="Saved Shots">SH</th>
+                                    <th class="counts" title="On-Ice Shots For Total">SF</th>
+                                    <th class="counts" title="On-Ice Shots Against Total">SA</th>
+                                    <th class="counts" title="On-Ice Goals For Total">GF</th>
+                                    <th class="counts" title="On-Ice Goals Against Total">GA</th>
+                                    <th class="counts" title="Fenwick For Total">FF</th>
+                                    <th class="counts" title="Fenwick Against Total">FA</th>
+                                    <th class="counts" title="Corsi For Total">CF</th>
+                                    <th class="counts" title="Corsi Against Total">CA</th>
+                                    <th class="counts" title="On-Ice Scoring Chances For Total">SCF</th>
+                                    <th class="counts" title="On-Ice Scoring Chances Against Total">SCA</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -295,6 +359,7 @@
     <script src="/static/js/bootstrap.js"></script>
     <!--{% block page_js %}-->
     <script src="/static/DataTables/datatables.min.js"></script>
+    <script src="/static/MultiSelect/js/jquery.multi-select.js"></script>
     <script>
         var getUrlParameter = function getUrlParameter(sParam) {
             var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -358,41 +423,46 @@
                     {"data": "pn+"},
                     {"data": "pn-"},
                     {"data": "cf60",
-                     "visible": false
                     },
                     {"data": "ca60",
-                     "visible": false
                     },
                     {"data": "cp60",
-                     "visible": false,
                      "render": function(data, type, full, meta) {
-                        return (full.cf60 - full.ca60).toFixed(2);
+                        return (full.cf60 + full.ca60).toFixed(2);
                      },
                     },
                     {"data": "ff60",
-                     "visible": false,
                     },
                     {"data": "fa60",
-                     "visible": false,
                     },
                     {"data": "fp60",
-                     "visible": false,
                      "render": function(data, type, full, meta) {
-                        return (full.ff60 - full.fa60).toFixed(2);
+                        return (full.ff60 + full.fa60).toFixed(2);
                      },
                     },
                     {"data": "sf60",
-                     "visible": false,
                     },
                     {"data": "sa60",
-                     "visible": false,
                     },
                     {"data": "sp60",
-                     "visible": false,
                      "render": function(data, type, full, meta) {
-                        return (full.sf60 - full.sa60).toFixed(2);
+                        return (full.sf60 + full.sa60).toFixed(2);
                      },
                     },
+                    {"data": "bk"},
+                    {"data": "ab"},
+                    {"data": "msf"},
+                    {"data": "sf"},
+                    {"data": "sf"},
+                    {"data": "sa"},
+                    {"data": "gf"},
+                    {"data": "ga"},
+                    {"data": "ff"},
+                    {"data": "fa"},
+                    {"data": "cf"},
+                    {"data": "ca"},
+                    {"data": "scf"},
+                    {"data": "sca"},
                 ]
             });
         }
