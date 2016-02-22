@@ -241,7 +241,7 @@
                                     <th class="prime" title="Individual Shot Attempts">iCF</th>
                                     <th class="prime" title="On-Ice Corsi Differential">C+/-</th>
                                     <th class="prime" title="On-Ice Fenwick Differential">F+/-</th>
-                                    <th class="prime" title="On0Ice Goal Differential">G+/-</th>
+                                    <th class="prime" title="On-Ice Goal Differential">G+/-</th>
                                     <th class="prime" title="Corsi For Total">CF</th>
                                     <th class="prime" title="Fenwick For Total">FF</th>
                                     <th class="prime" title="Offensive Zone Stats">ZSO</th>
@@ -253,6 +253,7 @@
                                     <th class="prime" title="Hits Taken">HIT-</th>
                                     <th class="prime" title="Penalties">PN+</th>
                                     <th class="prime" title="Penalties Drawn">PN-</th>
+                                    <th class="prime" title="Time On Ice">TOI</th>
                                     <th class="rates" title="Corsi For, Per 60 Minutes">CF60</th>
                                     <th class="rates" title="Corsi Against, Per 60 Minutes">CA60</th>
                                     <th class="rates" title="Corsi For and Against, Per 60 Minutes">CP60</th>
@@ -302,7 +303,7 @@
                                     <th class="prime" title="Individual Shot Attempts">iCF</th>
                                     <th class="prime" title="On-Ice Corsi Differential">C+/-</th>
                                     <th class="prime" title="On-Ice Fenwick Differential">F+/-</th>
-                                    <th class="prime" title="On0Ice Goal Differential">G+/-</th>
+                                    <th class="prime" title="On-Ice Goal Differential">G+/-</th>
                                     <th class="prime" title="Corsi For Total">CF</th>
                                     <th class="prime" title="Fenwick For Total">FF</th>
                                     <th class="prime" title="Offensive Zone Stats">ZSO</th>
@@ -314,6 +315,7 @@
                                     <th class="prime" title="Hits Taken">HIT-</th>
                                     <th class="prime" title="Penalties">PN+</th>
                                     <th class="prime" title="Penalties Drawn">PN-</th>
+                                    <th class="prime" title="Time On Ice">TOI</th>
                                     <th class="rates" title="Corsi For, Per 60 Minutes">CF60</th>
                                     <th class="rates" title="Corsi Against, Per 60 Minutes">CA60</th>
                                     <th class="rates" title="Corsi For and Against, Per 60 Minutes">CP60</th>
@@ -347,7 +349,12 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="graphView">
-                <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>Shots Chart</h3>
+                        <div id="shotChart"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -360,6 +367,8 @@
     <!--{% block page_js %}-->
     <script src="/static/DataTables/datatables.min.js"></script>
     <script src="/static/MultiSelect/js/jquery.multi-select.js"></script>
+    <script src="/static/d3/d3.min.js"></script>
+    <script src="/static/js/graphs/shotChart.js"></script>
     <script>
         var getUrlParameter = function getUrlParameter(sParam) {
             var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -422,6 +431,7 @@
                     {"data": "hit-"},
                     {"data": "pn+"},
                     {"data": "pn-"},
+                    {"data": "toi"},
                     {"data": "cf60",
                     },
                     {"data": "ca60",
@@ -451,8 +461,8 @@
                     },
                     {"data": "bk"},
                     {"data": "ab"},
-                    {"data": "msf"},
-                    {"data": "sf"},
+                    {"data": "ms"},
+                    {"data": "sh"},
                     {"data": "sf"},
                     {"data": "sa"},
                     {"data": "gf"},
@@ -550,7 +560,9 @@
                             {"data": "sh"},
                             {"data": "toi"},
                         ]
-                    })
+                    });
+
+                    shotChart(data.shotData);
                     
                 }
             });
