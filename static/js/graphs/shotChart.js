@@ -84,7 +84,14 @@ function shotChart(data) {
         .data(data["home"].concat(data["away"]))
       .enter().append("circle")
         .attr("class", "dot")
-        .attr("r", 3.5)
+        .attr("r", function(d) {
+            if (d.scoring_chance == 1)
+                return 6;
+            else if (d.scoring_chance == 2)
+                return 8;
+            else
+                return 4;
+        })
         .attr("cx", function(d) { return x(d.x); })
         .attr("cy", function(d) { return y(d.y); })
         .style("fill", function(d) {
