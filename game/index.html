@@ -89,20 +89,20 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="teamStrengths">Team Strengths:</label>
-                                <select class="form-control" id="teamStrengths">
+                                <select class="form-control input-sm" id="teamStrengths" name="teamStrengths">
                                     <option value="all">All</option>
-                                    <option value="even">Even Strength</option>
+                                    <option value="even">Even Strength 5v5</option>
                                     <option value="pp">Power Play</option>
                                     <option value="pk">Short Handed</option>
                                     <option value="4v4">4v4</option>
-                                    <option value="og">Opposing Goalie</option>
-                                    <option value="tg">Team Goalie</option>
+                                    <option value="og">Opposing Goalie Pulled</option>
+                                    <option value="tg">Team Goalie Pulled</option>
                                     <option value="3v3">3v3</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
                                 <label for="scoreSituation">Score Situation:</label>
-                                <select class="form-control" id="scoreSituation">
+                                <select class="form-control input-sm" id="scoreSituation" name="scoreSituation">
                                     <option value="all">All</option>
                                     <option value="t3+">Trailing by 3+</option>
                                     <option value="t2">Trailing by 2</option>
@@ -116,7 +116,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="periodOption">Period:</label>
-                                <select class="form-control" id="periodOption">
+                                <select class="form-control input-sm" id="periodOption" name="periodOption">
                                     <option value="all">All</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -384,6 +384,50 @@
                 }
             }
         };
+
+        $('#gameFilter').submit(function(e) {
+
+            var formurl = url + "pbp/game/?gamePk=" + getUrlParameter("gamePk") + "&" + $("#gameFilter").serialize();
+            console.log(formurl);
+            console.log($("#gameFilter").serialize());
+
+
+            $.ajax({
+                url: formurl,
+                success: function(data) {
+                    var details = data.details;
+                    var imgsrc = "/static/images/team/";
+                    $("#home-score").text(details.homeScore);
+                    $("#away-score").text(details.awayScore);
+                    $("#game-time").text(details.date);
+                    console.log(data.teamData);
+                    var team = $("#team").DataTable();
+                    team.clear();
+                    team.rows.add(data.teamData);
+                    team.draw();
+                    var home = $("#homePlayers").DataTable();
+                    home.clear();
+                    home.rows.add(data.homeSkaters);
+                    home.draw();
+                    var away = $("#awayPlayers").DataTable();
+                    away.clear();
+                    away.rows.add(data.awaySkaters);
+                    away.draw();
+                    var goalies = $("#goalies").DataTable();
+                    goalies.clear();
+                    goalies.rows.add(data.goalies);
+                    goalies.draw();
+                    $("#shotChart").html("");
+                    shotChart(data.shotData);
+                    
+                }
+            });
+
+
+
+
+            e.preventDefault();
+        });
 
         var setSkaterTable = function setSkater(table_id, data) {
             $(table_id).DataTable({
