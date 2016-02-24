@@ -327,7 +327,11 @@
             ajax: url + "pbp/playerstats/?format=json",
             sAjaxDataProp: "",
             columns: [
-                {"data": "name"}, // Player
+                {"data": "name",
+                 "render": function(data, type, full, meta) {
+                     return "<a href=\"/player/?player=" + full.id + "\">" + data + "</a>";
+                 }
+                }, // Player
                 {"data": "position"}, // Pos
                 {"data": "currentTeam",
                  "render": function ( data, type, full, meta ) {
