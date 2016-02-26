@@ -103,10 +103,16 @@
                                     <table id="playerTable" class="table table-striped table-hover" style="width:100%;">
                                         <thead>
                                             <tr>
-                                                <th>Season</th>                                         
+                                                <th>Player</th>
+                                                <th>Pos</th>
+                                                <th>Team</th>
+                                                <th>Age</th>
+                                                <th>Height</th>
+                                                <th>Weight</th>
                                                 <th>Gm</th>
                                                 <th>G</th>
                                                 <th>A</th>
+                                                <th>A2</th>
                                                 <th>P</th>
                                                 <th>G60</th>
                                                 <th>A60</th>
@@ -116,7 +122,6 @@
                                                 <th>Shots</th>
                                                 <th>FOW</th>
                                                 <th>FO%</th>
-                                                <th>PIM</th>
                                                 <th>TOI/Game</th>
                                             </tr>
                                         </thead>
@@ -205,21 +210,67 @@
                             ],
                             data: data,
                             columns: [
-                                {"data" : "season"},
+                                {"data": "name",
+                                 "render": function(data, type, full, meta) {
+                                     return "<a href=\"/player/?player=" + full.player_id + "\">" + data + "</a>";
+                                 }
+                                }, // Player
+                                {"data": "position"}, // Pos
+                                {"data": "currentTeam",
+                                 "render": function ( data, type, full, meta ) {
+                                    return '<img height="17" width="17" src="/static/images/team/' + full.currentTeamAbbr + '.png"><a href="/teams">' + full.team + '</a>';}
+                                }, // Team
+                                {"data": "age"}, // Age
+                                {"data": "player__height"}, // Height
+                                {"data": "player__weight"}, // Weight
                                 {"data": "games"}, // Gm
                                 {"data": "goals"}, // G
                                 {"data": "assists"}, // A
-                                {"data": "points"}, // P
-                                {"data": "G60"}, // G60
-                                {"data": "A60"}, // A60
-                                {"data": "P60"}, // P60
-                                {"data": "plusMinus"}, // +/-
-                                {"data": "hits"}, // Hits
-                                {"data": "shots"}, // Shots
-                                {"data": "faceOffWins"}, // FOW
-                                {"data": "facPercent"}, // FO%
-                                {"data": "penaltyMinutes"}, // PIM
-                                {"data": "TOIGm"}, // TOI/Game
+                                {"data": "assists2"}, // A
+                                {"data": "points",
+                                 "render": function( data, type, full, meta ) {
+                                    return full.goals + full.assists + full.assists2;
+                                 }
+                                }, // P
+                                {"data": "G60",
+                                 "render": function( data, type, full, meta ) {
+                                    return ((full.goals) / full.toi * full.games * 60).toFixed(2);
+                                 }
+                                }, // G60
+                                {"data": "A60",
+                                 "render": function( data, type, full, meta ) {
+                                    return ((full.assists + full.assists2) / full.toi * full.games * 60).toFixed(2);
+                                 }
+                                }, // A60
+                                {"data": "P60",
+                                 "render": function( data, type, full, meta ) {
+                                    return ((full.goals + full.assists + full.assists2) / full.toi * full.games * 60).toFixed(2);
+                                 }
+                                }, // P60
+                                {"data": "plusMinus",
+                                 "render": function( data, type, full, meta ) {
+                                    return full.gf - full.ga;
+                                 }
+                                }, // +/-
+                                {"data": "hit"}, // Hits
+                                {"data": "sf"}, // Shots
+                                {"data": "fo_w"}, // FOW
+                                {"data": "facPercent",
+                                 "render": function(data, type, full, meta) {
+                                    if (full["fo_l"] != 0)
+                                        return (full["fo_w"] / (full["fo_w"] + full["fo_l"]) * 100).toFixed(2);
+                                    else
+                                        return 0;
+                                 }
+                                }, // FO%
+                                {"data": "TOIGm",
+                                 "render": function(data, type, full, meta) {
+                                    var time = full["toi"] / full["games"];
+                                    var minutes = Math.floor(time / 60); // 7
+                                    var seconds = time % 60; // 30
+                                    return minutes + ":" + Math.round(seconds);
+                                 }
+                                }, // TOI/Game
                             ]
                         });                                         
                     }
