@@ -155,12 +155,12 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="id_toi">TOI Minimum (Minutes):</label>
+                                    <label for="id_toi">TOI Min (Minutes):</label>
                                     <input class="form-control input-sm" id="id_toi" min="0" name="toi" type="number" />
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12" style="margin-top:10%;">
+                                <div class="col-md-12">
                                     <div class="form-group session-checkbox">
                                         <label for="id_game_type_0">Game Types:</label>                             
                                         <ul id="id_game_type"><li><label for="id_game_type_0"><input checked="checked" class="game-type-checkbox" id="id_game_type_0" name="game_type" type="checkbox" value="PR" /> Pre-season</label></li>
@@ -174,12 +174,45 @@
                         <div class="col-md-4">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="id_date_start">Start Date:</label>
-                                    <input class="form-control input-sm datepicker" id="id_date_start" name="date_start" type="text" />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="id_date_start">Start Date:</label>
+                                            <input class="form-control input-sm datepicker" id="id_date_start" name="date_start" type="text" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="id_date_end">End Date:</label>
+                                            <input class="form-control input-sm datepicker" id="id_date_end" name="date_end" type="text" />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="id_date_end">End Date:</label>
-                                    <input class="form-control input-sm datepicker" id="id_date_end" name="date_end" type="text" />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="id_period">Period:</label>
+                                            <select class="form-control input-sm" id="id_period" name="period">
+                                                <option value="all" selected="selected">All</option>
+                                                <option value="1">1st</option>
+                                                <option value="2">2nd</option>
+                                                <option value="3">3rd</option>
+                                                <option value="4">OT</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="id_strength">Team Strength:</label>
+                                            <select class="form-control input-sm" id="id_strength" name="strength">
+                                                <option value="all" selected="selected">All</option>
+                                                <option value="5v5">Even Strength 5v5</option>
+                                                <option value="pp">Power Play</option>
+                                                <option value="pk">Penalty Kill</option>
+                                                <option value="4v4">4v4</option>
+                                                <option value="3v3">3v3</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -381,6 +414,10 @@
                     var time = full["toi"] / full["games"];
                     var minutes = Math.floor(time / 60); // 7
                     var seconds = time % 60; // 30
+                    if (seconds < 10)
+                        seconds = "0" + Math.round(seconds);
+                    else
+                        seconds = Math.round(seconds);
                     return minutes + ":" + Math.round(seconds);
                  }
                 }, // TOI/Game
