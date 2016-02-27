@@ -116,3 +116,179 @@ div.tooltip {
   border-radius: 8px;           
   pointer-events: none;         
 }
+
+
+.ANA {
+  background-image: url("/static/images/team/ANA.png");
+}
+
+.ARI {
+  background-image: url("/static/images/team/ARI.png");
+}
+
+.ATL {
+  background-image: url("/static/images/team/ATL.png");
+}
+
+.BOS {
+  background-image: url("/static/images/team/BOS.png");
+}
+
+.BUF {
+  background-image: url("/static/images/team/BUF.png");
+}
+
+.CAR {
+  background-image: url("/static/images/team/CAR.png");
+}
+
+.CBJ {
+  background-image: url("/static/images/team/CBJ.png");
+}
+
+.CGY {
+  background-image: url("/static/images/team/CGY.png");
+}
+
+.CHI {
+  background-image: url("/static/images/team/CHI.png");
+}
+
+.COL {
+  background-image: url("/static/images/team/COL.png");
+}
+
+.DAL {
+  background-image: url("/static/images/team/DAL.png");
+}
+
+.DET {
+  background-image: url("/static/images/team/DET.png");
+}
+
+.EDM {
+  background-image: url("/static/images/team/EDM.png");
+}
+
+.FLA {
+  background-image: url("/static/images/team/FLA.png");
+}
+
+.LAK {
+  background-image: url("/static/images/team/LAK.png");
+}
+
+.MIN {
+  background-image: url("/static/images/team/MIN.png");
+}
+
+.MTL {
+  background-image: url("/static/images/team/MTL.png");
+}
+
+.NHL {
+  background-image: url("/static/images/team/NHL.png");
+}
+
+.NJD {
+  background-image: url("/static/images/team/NJD.png");
+}
+
+.NSH {
+  background-image: url("/static/images/team/NSH.png");
+}
+
+.NYI {
+  background-image: url("/static/images/team/NYI.png");
+}
+
+.NYR {
+  background-image: url("/static/images/team/NYR.png");
+}
+
+.OTT {
+  background-image: url("/static/images/team/OTT.png");
+}
+
+.PHI {
+  background-image: url("/static/images/team/PHI.png");
+}
+
+.PHX {
+  background-image: url("/static/images/team/PHX.png");
+}
+
+.PIT {
+  background-image: url("/static/images/team/PIT.png");
+}
+
+.SJS {
+  background-image: url("/static/images/team/SJS.png");
+}
+
+.STL {
+  background-image: url("/static/images/team/STL.png");
+}
+
+.TBL {
+  background-image: url("/static/images/team/TBL.png");
+}
+
+.TOR {
+  background-image: url("/static/images/team/TOR.png");
+}
+
+.VAN {
+  background-image: url("/static/images/team/VAN.png");
+}
+
+.WPG {
+  background-image: url("/static/images/team/WPG.png");
+}
+
+.WSH {
+  background-image: url("/static/images/team/WSH.png");
+}
+
+.calTeam {
+  background-size: 67% 80%;
+  background-repeat: no-repeat;
+  opacity: 0.75;
+  background-position: center;
+  outline-style: solid !important;
+  outline-width: 5px !important;
+  outline-offset: -5px;
+}
+
+.fc-title {
+  font-size: 50px;
+  text-shadow:  2px  2px #000,
+               -2px  2px #000,
+                2px -2px #000,
+               -2px -2px #000;
+}
+
+.fc-event {
+  border: none;
+}
+
+.home {
+  outline-color: aqua !important;
+}
+
+.away {
+  outline-color: yellow !important;
+}
+
+.loss {
+  background-color: rgba(255, 50, 55, 0.5);
+}
+
+.win {
+  background-color: rgba(75, 22, 123);
+}
+
+table a:not(.btn),
+.table a:not(.btn) {
+  text-decoration: none;
+}
