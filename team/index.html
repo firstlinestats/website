@@ -14,6 +14,8 @@
     <link href="/static/MultiSelect/css/multi-select.css" rel="stylesheet">
     <link href="/static/datepicker/css/datepicker.css" rel="stylesheet">
     <!--{% endblock %}-->
+    <link href="/static/calendar/fullcalendar.min.css" rel="stylesheet">
+    <link href="/static/calendar/fullcalendar.print.css" rel="stylesheet" media="print">
     <link href="/static/css/bootstrap.css" rel="stylesheet">
     <link href="/static/css/fls.css" rel="stylesheet">
   </head>
@@ -44,26 +46,40 @@
     <!--{% block content %}-->
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
-                <table id="playerTable" class="table table-striped table-condensed table-hover">
-                    <thead>
-                        <tr>
-                            <th>Team</th>
-                            <th>Division</th>
-                            <th>Conference</th>
-                            <th>Wins</th>
-                            <th>Losses</th>
-                            <th>OT Losses</th>
-                            <th>Points</th>
-                            <th>Goals For</th>
-                            <th>Goals Against</th>
-                            <th>Current Streak</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <div class="col-md-12 table-container">
+                <h2>Recent Games</h2>
+                <!-- Nav tabs -->
+                <ul id="gamestab" class="nav nav-tabs" role="tablist">
+                    <li role="presentation"><a href="#tabular" aria-controls="tabular" role="tab" data-toggle="tab">Tabular View</a></li>
+                    <li role="presentation" class="active"><a href="#calendar" aria-controls="calendar" role="tab" data-toggle="tab">Calendar View</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane" id="tabular">
+                        <table id="recentgames" class="table table-striped table-hover ">
+                            <thead>
+                                <tr>
+                                    <th>Game Date</th>
+                                    <th>Session</th>
+                                    <th>Home</th>
+                                    <th>Score</th>
+                                    <th>Away</th>
+                                    <th>Corsi</th>
+                                    <th>Status</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane active" id="calendar">
+                        <div id="calendarTable" style="height:900px;">
 
-                    </tbody>
-                </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -72,37 +88,133 @@
     <script src="/static/js/bootstrap.js"></script>
     <!--{% block page_js %}-->
     <script type="text/javascript">
+
+        var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : sParameterName[1];
+                }
+            }
+        };
+
+
         $(document).ready(function() {
-            console.log(getUrl());
-            var url = getUrl();
-            $("#playerTable").DataTable({
-                "ajax": url + "team/stats/",
-                "sAjaxDataProp": "",
-                "bPaginate": false,
-                "order": [[6, "desc"]],
-                "dom": 'lfrtiBp',
-                "buttons": [
-                    {
-                        extend: 'copy',
-                        className: 'btn-sm btn-primary',
-                    },
-                    {
-                        extend: 'csv',
-                        className: 'btn-sm btn-primary',
-                    },
-                    {
-                        extend: 'excel',
-                        className: 'btn-sm btn-primary',
-                    }
-                ],
-                "columns": [
-                    
-                ]
+            $('#gamestab a').click(function (e) {
+              e.preventDefault()
+              $(this).tab('show')
             })
+
+            var team = getUrlParameter("team");
+            if (team == undefined || team == "")
+                window.location.replace("http://127.0.0.1/teams/")
+            var url = getUrl();
+
+            $.ajax({
+                url: url + "pbp/games?team=" + team,
+                success: function(data) {
+                    var table = $('#recentgames').DataTable({
+                        "iDisplayLength": 15,
+                        "data": data,
+                        "sAjaxDataProp": "",
+                        "responsive": true,
+                        "columns": [
+                          {"data": "date",
+                           "render": function (data, type, full, meta) {
+                              return "<a href=\"/game/?gamePk=" + full.gamePk + "\">" + full.date + "</a>";
+                           },
+                          },
+                          {"data": "gameType"},
+                          {
+                            "data": "homeTeam",
+                            "render": function(data, type, full, meta) {
+                                return '<img height="17" width="17" src="/static/images/team/' + data.abbreviation + '.png"><a href="/teams">' + data.name + '</a>';
+                            }
+                          },
+                          {"data": "score"},
+                          {
+                            "data": "awayTeam",
+                            "render": function(data, type, full, meta) {
+                                return '<img height="17" width="17" src="/static/images/team/' + data.abbreviation + '.png"><a href="/teams">' + data.name + '</a>';
+                            }
+                          },
+                          {"data": "corsi"},
+                          {"data": "gameState"},
+                          {"data": "dateTime"},
+                          {"data": "endDateTime"},
+                        ]
+                    });
+                    var d = new Date();
+
+                    var month = d.getMonth()+1;
+                    var day = d.getDate();
+
+                    var output = d.getFullYear() + '-' +
+                        (month<10 ? '0' : '') + month + '-' +
+                        (day<10 ? '0' : '') + day;
+
+                    var calendarEvents = [];
+                    for (var i=0; i<data.length; i++) {
+                        var game = data[i];
+                        var cdata = {};
+                        cdata.start = game.date;
+                        cdata.end = game.date;
+                        cdata.rendering = 'background';
+                        var teamscore = null;
+                        var opponentscore = null;
+                        var className = "calTeam ";
+                        var score = game.score.split("-");
+                        var homeScore = score[0];
+                        var awayScore = score[1];
+                        var sdata = {};
+                        sdata.title = game.score;
+                        sdata.start = game.date;
+                        sdata.backgroundColor = "transparent";
+                        sdata.allDay = true;
+                        sdata.className = "text-center";
+                        if (game.homeTeam.abbreviation == team) {
+                            teamscore = homeScore;
+                            opponentscore = awayScore;
+                            className += "home " + game.awayTeam.abbreviation + " ";
+                        } else {
+                            teamscore = awayScore;
+                            opponentscore = homeScore;
+                            className += "away " + game.homeTeam.abbreviation + " ";
+                        }
+                        if (teamscore > opponentscore) {
+                            className += "win";
+                        } else if (teamscore < opponentscore) {
+                            className += "loss";
+                        }
+                        cdata.className = className;
+                        calendarEvents.push(cdata);
+                        calendarEvents.push(sdata);
+                    }
+
+                    $("#calendarTable").fullCalendar({
+                        header: {
+                            left: 'prev,next today',
+                            center: 'title',
+                        },
+                        defaultDate: output,
+                        editable: false,
+                        events: calendarEvents
+                    });
+
+                }
+            });
         })
     </script>
     <script src="/static/js/getUrl.js"></script>
     <script src="/static/DataTables/datatables.min.js"></script>
+    <script src="/static/calendar/moment.min.js"></script>
+    <script src="/static/calendar/fullcalendar.min.js"></script>
     <!--{% endblock %}-->
   </body>
 </html>
