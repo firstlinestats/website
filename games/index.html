@@ -214,9 +214,10 @@
     <script src="/static/DataTables/datatables.min.js"></script>
     <script src="/static/MultiSelect/js/jquery.multi-select.js"></script>
     <script src="/static/datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="/static/js/getUrl.js"></script>
     <script>
         var gamesDT;
-        var url = "http://localhost:8080/api/";
+        var url = getUrl();
         $(document).ready(function() {
             $('#gamesSelect').multiSelect();
             $('#id_teams').multiSelect();
@@ -298,8 +299,6 @@
             });
 
         }
-        
-
     </script>
     <!--{% endblock %}-->
 </body>

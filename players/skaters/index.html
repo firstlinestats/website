@@ -286,9 +286,10 @@
     <script src="/static/js/bootstrap.js"></script>
     <!--{% block page_js %}-->
 
+<script src="/static/js/getUrl.js"></script>
 <script>
     var skateDT = $("#skatersTableContainer");
-    var url = "http://localhost:8080/api/";
+    var url = getUrl();
     $(document).ready(function() {
         $("#id_teams").multiSelect();
         $('#id_seasons').multiSelect();

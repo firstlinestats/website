@@ -136,13 +136,13 @@
                     </div>
                     <div class="row" style="margin-top:3%;">
                         <div class="col-md-4">
-                            <label for="id_position">Position:</label>
-                            <select multiple="multiple" id="id_position" name="position">
-                                <option value="R">Right Wing</option>
-                                <option value="C">Center</option>
-                                <option value="L">Left Wing</option>
-                                <option value="D">Defenseman</option>
-                            </select>
+                            <div class="form-group session-checkbox">
+                                <label for="id_game_type_0">Game Types:</label>                             
+                                <ul id="id_game_type"><li><label for="id_game_type_0"><input checked="checked" class="game-type-checkbox" id="id_game_type_0" name="game_type" type="checkbox" value="PR" /> Pre-season</label></li>
+<li><label for="id_game_type_1"><input checked="checked" class="game-type-checkbox" id="id_game_type_1" name="game_type" type="checkbox" value="R" /> Regular season</label></li>
+<li><label for="id_game_type_2"><input checked="checked" class="game-type-checkbox" id="id_game_type_2" name="game_type" type="checkbox" value="P" /> Playoffs</label></li>
+<li><label for="id_game_type_3"><input checked="checked" class="game-type-checkbox" id="id_game_type_3" name="game_type" type="checkbox" value="A" /> All-Star game</label></li></ul>
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <div class="row">
@@ -157,17 +157,6 @@
                                 <div class="col-md-6">
                                     <label for="id_toi">TOI Minimum (Minutes):</label>
                                     <input class="form-control input-sm" id="id_toi" min="0" name="toi" type="number" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12" style="margin-top:10%;">
-                                    <div class="form-group session-checkbox">
-                                        <label for="id_game_type_0">Game Types:</label>                             
-                                        <ul id="id_game_type"><li><label for="id_game_type_0"><input checked="checked" class="game-type-checkbox" id="id_game_type_0" name="game_type" type="checkbox" value="PR" /> Pre-season</label></li>
-<li><label for="id_game_type_1"><input checked="checked" class="game-type-checkbox" id="id_game_type_1" name="game_type" type="checkbox" value="R" /> Regular season</label></li>
-<li><label for="id_game_type_2"><input checked="checked" class="game-type-checkbox" id="id_game_type_2" name="game_type" type="checkbox" value="P" /> Playoffs</label></li>
-<li><label for="id_game_type_3"><input checked="checked" class="game-type-checkbox" id="id_game_type_3" name="game_type" type="checkbox" value="A" /> All-Star game</label></li></ul>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -250,9 +239,10 @@
     <script src="/static/js/bootstrap.js"></script>
     <!--{% block page_js %}-->
 
+<script src="/static/js/getUrl.js"></script>
 <script>
     var skateDT = $("#skatersTableContainer");
-    var url = "http://localhost:8080/api/";
+    var url = getUrl();
     $(document).ready(function() {
         $("#id_teams").multiSelect();
         $('#id_seasons').multiSelect();

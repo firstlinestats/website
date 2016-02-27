@@ -227,7 +227,7 @@
     <script src="/static/js/graphs/historicalStandings.js"></script>
     <script>
         $(document).ready(function() {
-            var url = "http://localhost:8080/api/";
+            var url = getUrl();
 
             $('#recentgames').DataTable({
                 "iDisplayLength": 15,
@@ -252,7 +252,7 @@
                   {
                     "data": "awayTeam",
                     "render": function ( data, type, full, meta ) {
-                      return '<img height="17" width="17" src="./static/images/team/' + data.abbreviation + '.png"><a href="/teams/?team=' + data.abbreviation + '">' + data.shortName + '</a>';
+                      return '<img height="17" width="17" src="/static/images/team/' + data.abbreviation + '.png"><a href="/teams/?team=' + data.abbreviation + '">' + data.shortName + '</a>';
                     }
                   },
                   {"data": "corsi"},
@@ -351,6 +351,7 @@
             }
         });
     </script>
+    <script src="/static/js/getUrl.js"></script>
     <!--{% endblock %}-->
   </body>
 </html>

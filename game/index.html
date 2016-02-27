@@ -42,7 +42,7 @@
     </div>
     <!--{% block content %}-->
 
-<div class="container">
+    <div class="container">
         <div class="row">
             <div class="col-md-4 text-center">
             <img id="away-team-logo">
@@ -369,6 +369,7 @@
     <script src="/static/MultiSelect/js/jquery.multi-select.js"></script>
     <script src="/static/d3/d3.min.js"></script>
     <script src="/static/js/graphs/shotChart.js"></script>
+    <script src="/static/js/getUrl.js"></script>
     <script>
         var getUrlParameter = function getUrlParameter(sParam) {
             var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -521,7 +522,7 @@
             });
         }
 
-        var url = "http://localhost:8080/api/";
+        var url = getUrl();
         var homeSkaters = $("#homePlayers"),
             awaySkaters = $("#awayPlayers"),
             goalies = $("#goalies"),
