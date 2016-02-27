@@ -216,7 +216,7 @@
     <script src="/static/datepicker/js/bootstrap-datepicker.js"></script>
     <script>
         var gamesDT;
-        var url = "http://localhost:8080/api/";
+        var url = getUrl();
         $(document).ready(function() {
             $('#gamesSelect').multiSelect();
             $('#id_teams').multiSelect();
@@ -298,9 +298,8 @@
             });
 
         }
-        
-
     </script>
+    <script src="/static/js/getUrl.js"></script>
     <!--{% endblock %}-->
 </body>
 </html>
