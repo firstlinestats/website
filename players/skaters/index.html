@@ -319,7 +319,7 @@
             //$('#skatersTableContainer').toggle();
             //$('#tableLoading').toggle();
             //getAjax();
-            var formurl = url + "pbp/playerstats/?format=json&" + $("#playersFilter").serialize();
+            var formurl = url + "player/playerstats/?format=json&" + $("#playersFilter").serialize();
             console.log(formurl);
             skateDT.ajax.url(formurl);
             skateDT.ajax.reload();
@@ -354,7 +354,7 @@
                     className: 'btn-sm btn-primary',
                 }
             ],
-            ajax: url + "pbp/playerstats/?format=json",
+            ajax: url + "player/playerstats/?format=json",
             sAjaxDataProp: "",
             columns: [
                 {"data": "name",
@@ -368,8 +368,8 @@
                     return '<img height="17" width="17" src="/static/images/team/' + full.currentTeamAbbr + '.png"><a href="/teams">' + full.team + '</a>';}
                 }, // Team
                 {"data": "age"}, // Age
-                {"data": "player__height"}, // Height
-                {"data": "player__weight"}, // Weight
+                {"data": "height"}, // Height
+                {"data": "weight"}, // Weight
                 {"data": "games"}, // Gm
                 {"data": "goals"}, // G
                 {"data": "assists"}, // A
