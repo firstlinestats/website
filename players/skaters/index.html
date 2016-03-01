@@ -249,7 +249,7 @@
         </div>
         
         <div id="skatersTableContainer" class="col-md-12" style="display: none;">
-            <table id="playerList" class="table table-striped table-hover" style="width:100%;">
+            <table id="playerList" class="table table-striped table-condensed table-hover rt cf" style="width:100%;">
                 <thead>
                     <tr>
                         <th>Player</th>
@@ -319,7 +319,7 @@
             //$('#skatersTableContainer').toggle();
             //$('#tableLoading').toggle();
             //getAjax();
-            var formurl = url + "pbp/playerstats/?format=json&" + $("#playersFilter").serialize();
+            var formurl = url + "player/playerstats/?format=json&" + $("#playersFilter").serialize();
             console.log(formurl);
             skateDT.ajax.url(formurl);
             skateDT.ajax.reload();
@@ -334,7 +334,7 @@
         skateDT = $('#playerList').DataTable({
             iDisplayLength: 15,
             order: [[ 9, "desc" ]],
-            responsive: true,
+            responsive: false,
             aLengthMenu: [[10, 15, 25, 50, -1], [10, 15, 25, 50, "All"]],
             fixedHeader: {
                 header: true,
@@ -354,7 +354,7 @@
                     className: 'btn-sm btn-primary',
                 }
             ],
-            ajax: url + "pbp/playerstats/?format=json",
+            ajax: url + "player/playerstats/?format=json",
             sAjaxDataProp: "",
             columns: [
                 {"data": "name",
@@ -368,8 +368,8 @@
                     return '<img height="17" width="17" src="/static/images/team/' + full.currentTeamAbbr + '.png"><a href="/teams">' + full.team + '</a>';}
                 }, // Team
                 {"data": "age"}, // Age
-                {"data": "player__height"}, // Height
-                {"data": "player__weight"}, // Weight
+                {"data": "height"}, // Height
+                {"data": "weight"}, // Weight
                 {"data": "games"}, // Gm
                 {"data": "goals"}, // G
                 {"data": "assists"}, // A
