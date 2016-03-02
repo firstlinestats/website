@@ -322,7 +322,7 @@ table a:not(.btn),
     .rt thead tr { display: block; }
     .rt th { display: block; }
     .rt tbody tr { display: inline-block; vertical-align: top; }
-    .rt td { display: block; min-height: 1.25em; height:20px; }
+    .rt td { display: block; min-height: 1.25em; height:21px; }
     .team { min-width: 0px; }
 
     /* sort out borders */

@@ -329,11 +329,13 @@
     });
 
     function getAjax() {
+        // Get initial 10 for the appearance of speeeeeed!
+
         $('#tableLoading').toggle();
         $('#skatersTableContainer').toggle();
-        skateDT = $('#playerList').DataTable({
+        var skateDT = $('#playerList').DataTable({
             iDisplayLength: 15,
-            order: [[ 9, "desc" ]],
+            order: [[ 10, "desc" ]],
             responsive: false,
             aLengthMenu: [[10, 15, 25, 50, -1], [10, 15, 25, 50, "All"]],
             fixedHeader: {
@@ -356,16 +358,17 @@
             ],
             ajax: url + "player/playerstats/?format=json",
             sAjaxDataProp: "",
+            deferLoading: 58,
             columns: [
                 {"data": "name",
                  "render": function(data, type, full, meta) {
-                     return "<a href=\"/player/?player=" + full.player_id + "\">" + data + "</a>";
+                     return "<a href=\"/player/?player=" + full.id + "\">" + data + "</a>";
                  }
                 }, // Player
                 {"data": "position"}, // Pos
                 {"data": "currentTeam",
                  "render": function ( data, type, full, meta ) {
-                    return '<img height="17" width="17" src="/static/images/team/' + full.currentTeamAbbr + '.png"><a href="/teams">' + full.team + '</a>';}
+                    return '<img height="17" width="17" src="/static/images/team/' + full.currentTeamAbbr + '.png"><a href="/teams/?team=' + full.currentTeamAbbr + '">' + full.team + '</a>';}
                 }, // Team
                 {"data": "age"}, // Age
                 {"data": "height"}, // Height
@@ -381,17 +384,23 @@
                 }, // P
                 {"data": "G60",
                  "render": function( data, type, full, meta ) {
-                    return ((full.goals) / full.toi * full.games * 60).toFixed(2);
+                    if (full.toi != 0)
+                        return ((full.goals) / full.toi * full.games * 60).toFixed(2);
+                    return "";
                  }
                 }, // G60
                 {"data": "A60",
                  "render": function( data, type, full, meta ) {
-                    return ((full.assists + full.assists2) / full.toi * full.games * 60).toFixed(2);
+                    if (full.toi != 0)
+                        return ((full.assists + full.assists2) / full.toi * full.games * 60).toFixed(2);
+                    return "";
                  }
                 }, // A60
                 {"data": "P60",
                  "render": function( data, type, full, meta ) {
-                    return ((full.goals + full.assists + full.assists2) / full.toi * full.games * 60).toFixed(2);
+                    if (full.toi != 0)
+                        return ((full.goals + full.assists + full.assists2) / full.toi * full.games * 60).toFixed(2);
+                    return "";
                  }
                 }, // P60
                 {"data": "plusMinus",
@@ -414,16 +423,17 @@
                  "render": function(data, type, full, meta) {
                     var time = full["toi"] / full["games"];
                     var minutes = Math.floor(time / 60); // 7
-                    var seconds = time % 60; // 30
+                    var seconds = Math.round(time % 60); // 30
                     if (seconds < 10)
-                        seconds = "0" + Math.round(seconds);
-                    else
-                        seconds = Math.round(seconds);
+                        seconds = "0" + seconds;
+                    if (minutes < 10)
+                        minutes = "0" + minutes
                     return minutes + ":" + Math.round(seconds);
                  }
                 }, // TOI/Game
             ]
         });
+
     }
 </script>
 <script src="/static/DataTables/datatables.min.js"></script>
