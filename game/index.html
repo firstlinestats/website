@@ -351,8 +351,10 @@
             <div class="tab-pane fade" id="graphView">
                 <div class="row">
                     <div class="col-md-12">
-                        <h3>Shots Chart</h3>
+                        <h3>Shots Attempts</h3>
                         <div id="shotChart"></div>
+                        <div id="saChart"></div>
+                        <div id="scChart"></div>
                     </div>
                 </div>
             </div>
@@ -368,7 +370,9 @@
     <script src="/static/DataTables/datatables.min.js"></script>
     <script src="/static/MultiSelect/js/jquery.multi-select.js"></script>
     <script src="/static/d3/d3.min.js"></script>
+    <script src="/static/js/teamColors.js"></script>
     <script src="/static/js/graphs/shotChart.js"></script>
+    <script src="/static/js/graphs/eventChart.js"></script>
     <script src="/static/js/getUrl.js"></script>
     <script>
         var getUrlParameter = function getUrlParameter(sParam) {
@@ -607,6 +611,8 @@
                     });
 
                     shotChart(data.shotData);
+                    create_shot_attempts(data.eventcount, "#saChart", "sa",details.homeTeamName, details.awayTeamName);
+                    create_shot_attempts(data.eventcount, "#scChart", "sc",details.homeTeamName, details.awayTeamName);
                     
                 }
             });
