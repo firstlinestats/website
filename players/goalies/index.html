@@ -366,12 +366,12 @@
                 },
                 {"data": "adj_sv_per",
                  "render" : function(data, type, full, meta) {
-                    var saveLow = ((full["savesLow"] / full["shotsLow"]) * 100);
-                    var saveMed = ((full["savesMedium"] / full["shotsMedium"]) * 100)
-                    var saveHigh = ((full["savesHigh"] / full["shotsHigh"]) * 100)
+                    var saveLow = full["savesLow"] / full["shotsLow"];
+                    var saveMed = full["savesMedium"] / full["shotsMedium"]
+                    var saveHigh = full["savesHigh"] / full["shotsHigh"]
                     
-                    return ((saveLow * full['leaugeShotsLow'] + saveMed * full['leaugeShotsMedium'] + saveHigh * 
-                    full['leaugeShotsHigh'])/(full['leaugeShotsLow'] + full['leaugeShotsMedium'] + full['leaugeShotsLow'])).toFixed(2)
+                    return ((saveLow * full['leagueShotsLow'] + saveMed * full['leagueShotsMedium'] + saveHigh * 
+                    full['leagueShotsHigh'])/(full['leagueShotsLow'] + full['leagueShotsMedium'] + full['leagueShotsLow'])).toFixed(2)
                  }
                 },
                 {"data": "sa60",
