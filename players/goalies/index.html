@@ -92,11 +92,11 @@
                         <div class="col-md-4">
                             <label for="id_seasons">Specify Seasons:</label>
                             <select multiple="multiple" class="form-control input-sm" id="id_seasons" name="seasons">
-<option value="20152016">20152016</option>
-</select>
+                                <option value="20152016">20152016</option>
+                            </select>
                         </div>
                         <div class="col-md-4">
-                            <label for="id_venues">Specify Venues:</label>                             
+                            <label for="id_venues">Specify Venues:</label>
                             <select multiple="multiple" id="id_venues" name="venues">
                                 <option value="Air Canada Centre">Air Canada Centre</option>
                                 <option value="Amalie Arena">Amalie Arena</option>
@@ -135,16 +135,7 @@
                         </div>
                     </div>
                     <div class="row" style="margin-top:3%;">
-                        <div class="col-md-4">
-                            <div class="form-group session-checkbox">
-                                <label for="id_game_type_0">Game Types:</label>                             
-                                <ul id="id_game_type"><li><label for="id_game_type_0"><input checked="checked" class="game-type-checkbox" id="id_game_type_0" name="game_type" type="checkbox" value="PR" /> Pre-season</label></li>
-<li><label for="id_game_type_1"><input checked="checked" class="game-type-checkbox" id="id_game_type_1" name="game_type" type="checkbox" value="R" /> Regular season</label></li>
-<li><label for="id_game_type_2"><input checked="checked" class="game-type-checkbox" id="id_game_type_2" name="game_type" type="checkbox" value="P" /> Playoffs</label></li>
-<li><label for="id_game_type_3"><input checked="checked" class="game-type-checkbox" id="id_game_type_3" name="game_type" type="checkbox" value="A" /> All-Star game</label></li></ul>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="id_home_or_away">Home or Away:</label>
@@ -155,35 +146,38 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="id_toi">TOI Minimum (Minutes):</label>
+                                    <label for="id_toi">TOI Min (Minutes):</label>
                                     <input class="form-control input-sm" id="id_toi" min="0" name="toi" type="number" />
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group session-checkbox">
+                                        <label for="id_game_type_0">Game Types:</label>
+                                        <ul id="id_game_type"><li><label for="id_game_type_0"><input checked="checked" class="game-type-checkbox" id="id_game_type_0" name="game_type" type="checkbox" value="PR" /> Pre-season</label></li>
+                                        <li><label for="id_game_type_1"><input checked="checked" class="game-type-checkbox" id="id_game_type_1" name="game_type" type="checkbox" value="R" /> Regular season</label></li>
+                                        <li><label for="id_game_type_2"><input checked="checked" class="game-type-checkbox" id="id_game_type_2" name="game_type" type="checkbox" value="P" /> Playoffs</label></li>
+                                        <li><label for="id_game_type_3"><input checked="checked" class="game-type-checkbox" id="id_game_type_3" name="game_type" type="checkbox" value="A" /> All-Star game</label></li></ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="id_date_start">Start Date:</label>
-                                    <input class="form-control input-sm datepicker" id="id_date_start" name="date_start" type="text" />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="id_date_start">Start Date:</label>
+                                            <input class="form-control input-sm datepicker" id="id_date_start" name="date_start" type="text" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="id_date_end">End Date:</label>
+                                            <input class="form-control input-sm datepicker" id="id_date_end" name="date_end" type="text" />
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="id_date_end">End Date:</label>
-                                    <input class="form-control input-sm datepicker" id="id_date_end" name="date_end" type="text" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6" style="margin-top:10%;">
-                                    <input class="game-type-checkbox" id="id_divide_by_season" name="divide_by_season" type="checkbox" />
-                                    <label for="id_divide_by_season">Divide By Season:</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group text-right" style="margin-top:25%;">
-                                        <input type="reset" class="btn btn-danger btn-sm"></input>
-                                        <input type="submit" href="#" class="btn btn-primary btn-sm"></input>
-                                    </div>  
-                                </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -214,6 +208,19 @@
                             </div>
                         </div>
                     </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input class="game-type-checkbox" id="id_divide_by_season" name="divide_by_season" type="checkbox" />
+                            <label for="id_divide_by_season">Divide By Season:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group text-right">
+                                <input type="reset" class="btn btn-danger btn-sm"></input>
+                                <input type="submit" href="#" class="btn btn-primary btn-sm"></input>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -231,8 +238,7 @@
                     Fetching Data
                 </div>
             </div>
-        </div>
-        
+        </div>        
         <div id="skatersTableContainer" class="col-md-12" style="display: none;">
             <table id="playerList" class="table table-striped table-hover" style="width:100%;">
                 <thead>
@@ -350,13 +356,13 @@
                 }, // Player
                 {"data": "currentTeam",
                  "render": function ( data, type, full, meta ) {
-                    return '<img height="17" width="17" src="/static/images/team/' + full.currentTeamAbbr + '.png"><a href="/teams">' + full.currentTeamAbbr + '</a>';}
+                    return '<img height="17" width="17" src="/static/images/team/' + full.currentTeam + '.png"><a href="/teams">' + full.currentTeam + '</a>';}
                 }, // Team
                 {"data": "games"}, // Gm
                 {"data": "season"},
                 {"data": "age"}, // Age
-                {"data": "player__height"}, // Height
-                {"data": "player__weight"}, // Weight
+                {"data": "height"}, // Height
+                {"data": "weight"}, // Weight
                 {"data": "sv_per",
                  "render" : function(data,type,full,meta) {
                     var a = (((full["savesLow"] + full["savesMedium"] + full["savesHigh"]) / (full["shotsLow"] + full["shotsMedium"] + full["shotsHigh"])) * 100).toFixed(2)
