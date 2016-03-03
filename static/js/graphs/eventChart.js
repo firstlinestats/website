@@ -39,8 +39,11 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var homeMax = d3.max(data["home" + valtype], yValue) + 1;
+    var awayMax = d3.max(data["away" + valtype], yValue) + 1;
+    var yScaleMax = Math.max(homeMax, awayMax);
     xScale.domain([0, d3.max([60*60, d3.max(data["home" + valtype], xValue)])]);
-    yScale.domain([0, d3.max(data["home" + valtype], yValue) + 1]);
+    yScale.domain([0, yScaleMax]);
     // x-axis
     svg.append("g")
         .attr("class", "x axis")
