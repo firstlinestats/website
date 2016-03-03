@@ -376,7 +376,7 @@
                 },
                 {"data": "sa60",
                  "render" : function(data, type, full, meta) {
-                    var a = ((full["shotsLow"] + full["shotsMedium"] + full["shotsHigh"]) / full.toi * full.games * 60).toFixed(2)
+                    var a = ((full["shotsLow"] + full["shotsMedium"] + full["shotsHigh"]) / full.toi * 3600).toFixed(2)
                     if (isNaN(a)) return '';
                     return a; 
                  }

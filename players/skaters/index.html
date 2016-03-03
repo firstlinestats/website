@@ -385,21 +385,21 @@
                 {"data": "G60",
                  "render": function( data, type, full, meta ) {
                     if (full.toi != 0)
-                        return ((full.goals) / full.toi * full.games * 60).toFixed(2);
+                        return ((full.goals) / full.toi * 3600).toFixed(2);
                     return "";
                  }
                 }, // G60
                 {"data": "A60",
                  "render": function( data, type, full, meta ) {
                     if (full.toi != 0)
-                        return ((full.assists + full.assists2) / full.toi * full.games * 60).toFixed(2);
+                        return ((full.assists + full.assists2) / full.toi * 3600).toFixed(2);
                     return "";
                  }
                 }, // A60
                 {"data": "P60",
                  "render": function( data, type, full, meta ) {
                     if (full.toi != 0)
-                        return ((full.goals + full.assists + full.assists2) / full.toi * full.games * 60).toFixed(2);
+                        return ((full.goals + full.assists + full.assists2) / full.toi *3600).toFixed(2);
                     return "";
                  }
                 }, // P60
