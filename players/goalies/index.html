@@ -183,6 +183,35 @@
                                     </div>  
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="id_period">Period:</label>
+                                            <select class="form-control input-sm" id="id_period" name="period">
+                                                <option value="all" selected="selected">All</option>
+                                                <option value="1">1st</option>
+                                                <option value="2">2nd</option>
+                                                <option value="3">3rd</option>
+                                                <option value="4">OT</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="id_strength">Team Strength:</label>
+                                            <select class="form-control input-sm" id="id_strength" name="strength">
+                                                <option value="all" selected="selected">All</option>
+                                                <option value="5v5">Even Strength 5v5</option>
+                                                <option value="pp">Power Play</option>
+                                                <option value="pk">Penalty Kill</option>
+                                                <option value="4v4">4v4</option>
+                                                <option value="3v3">3v3</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -280,7 +309,7 @@
             e.preventDefault();
         });
     });
-
+    
     function getAjax() {
         $('#tableLoading').toggle();
         $('#skatersTableContainer').toggle();
@@ -314,26 +343,93 @@
             ajax: url + "pbp/goaliestats/?format=json",
             sAjaxDataProp: "",
             columns: [
-                {"data": "name"}, // Player
+                {"data": "name",
+                 "render": function(data, type, full, meta) {
+                     return "<a href=\"/goalie/?player=" + full.player_id + "\">" + data + "</a>";
+                 }
+                }, // Player
                 {"data": "currentTeam",
                  "render": function ( data, type, full, meta ) {
-                    return '<img height="17" width="17" src="/static/images/team/' + full.currentTeamAbbr + '.png"><a href="/teams">' + full.currentTeam + '</a>';}
+                    return '<img height="17" width="17" src="/static/images/team/' + full.currentTeamAbbr + '.png"><a href="/teams">' + full.currentTeamAbbr + '</a>';}
                 }, // Team
                 {"data": "games"}, // Gm
                 {"data": "season"},
                 {"data": "age"}, // Age
-                {"data": "height"}, // Height
-                {"data": "weight"}, // Weight
-                {"data": "sv_per"},
-                {"data": "adj_sv_per"},
-                {"data": "sa60"},
-                {"data": "sv_l"},
-                {"data": "sv_m"},
-                {"data": "sv_h"},
-                {"data": "g"},
-                {"data": "s"},
-                {"data": "sh"},
-                {"data": "TOIGm"}, // TOI/Game
+                {"data": "player__height"}, // Height
+                {"data": "player__weight"}, // Weight
+                {"data": "sv_per",
+                 "render" : function(data,type,full,meta) {
+                    var a = (((full["savesLow"] + full["savesMedium"] + full["savesHigh"]) / (full["shotsLow"] + full["shotsMedium"] + full["shotsHigh"])) * 100).toFixed(2)
+                    if (isNaN(a)) return '';
+                    return a;
+                 }
+                },
+                {"data": "adj_sv_per",
+                 "render" : function(data, type, full, meta) {
+                    var saveLow = ((full["savesLow"] / full["shotsLow"]) * 100);
+                    var saveMed = ((full["savesMedium"] / full["shotsMedium"]) * 100)
+                    var saveHigh = ((full["savesHigh"] / full["shotsHigh"]) * 100)
+                    
+                    return ((saveLow * full['leaugeShotsLow'] + saveMed * full['leaugeShotsMedium'] + saveHigh * 
+                    full['leaugeShotsHigh'])/(full['leaugeShotsLow'] + full['leaugeShotsMedium'] + full['leaugeShotsLow'])).toFixed(2)
+                 }
+                },
+                {"data": "sa60",
+                 "render" : function(data, type, full, meta) {
+                    var a = ((full["shotsLow"] + full["shotsMedium"] + full["shotsHigh"]) / full.toi * full.games * 60).toFixed(2)
+                    if (isNaN(a)) return '';
+                    return a; 
+                 }
+                },
+                {"data": "shotsLow",
+                 "render" : function(data,type,full,meta) {
+                    var a = ((full["savesLow"] / full["shotsLow"]) * 100).toFixed(2);
+                    if (isNaN(a)) return '';
+                    return a;
+                 }
+                },
+                {"data": "shotsMedium",
+                 "render" : function(data,type,full,meta) {
+                    var a = ((full["savesMedium"] / full["shotsMedium"]) * 100).toFixed(2);
+                    if (isNaN(a)) return '';
+                    return a;
+                 }
+                },
+                {"data": "shotsHigh",
+                 "render" : function(data,type,full,meta) {
+                    var a = ((full["savesHigh"] / full["shotsHigh"]) * 100).toFixed(2);
+                    if (isNaN(a)) return '';
+                    return a;
+                 }
+                },
+                {"data": "g",
+                 "render" : function(data,type,full,meta) {
+                    return (full["shotsLow"] + full["shotsMedium"] + full["shotsHigh"]) - (full["savesLow"] + full["savesMedium"] + full["savesHigh"]);
+
+                 }   
+                },
+                {"data": "s",
+                 "render" : function(data, type, full, meta) {
+                    return full["savesLow"] + full["savesMedium"] + full["savesHigh"];
+                 }
+                },
+                {"data": "sh",
+                 "render" : function(data, type, full, meta) {
+                    return full["shotsLow"] + full["shotsMedium"] + full["shotsHigh"];
+                 }
+                },
+                {"data": "TOIGm",
+                 "render": function(data, type, full, meta) {
+                    var time = full["toi"] / full["games"];
+                    var minutes = Math.floor(time / 60); // 7
+                    var seconds = time % 60; // 30
+                    if (seconds < 10)
+                        seconds = "0" + Math.round(seconds);
+                    else
+                        seconds = Math.round(seconds);
+                    return minutes + ":" + Math.round(seconds);
+                 }
+                }, // TOI/Game
             ]
         });
     }
