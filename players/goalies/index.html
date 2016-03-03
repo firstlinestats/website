@@ -52,7 +52,7 @@
                     Filter Options
                     <img class="filter-collapsed" height="20" width="20" style="float: right"src="/static/images/forward-arrow.svg ">
                 </h4>
-                <form id="playersFilter" class="collapse" action="/api/pbp/goaliestats/" method="GET">
+                <form id="playersFilter" class="collapse" action="/api/player/goaliestats/" method="GET">
                     <div class="row">
                         <div class="col-md-4">
                             <label for="id_teams">Only Games Involving:</label>
@@ -307,7 +307,7 @@
             //$('#skatersTableContainer').toggle();
             //$('#tableLoading').toggle();
             //getAjax();
-            var formurl = url + "pbp/goaliestats/?format=json&" + $("#playersFilter").serialize();
+            var formurl = url + "player/goaliestats/?format=json&" + $("#playersFilter").serialize();
             console.log(formurl);
             skateDT.ajax.url(formurl);
             skateDT.ajax.reload();
@@ -346,7 +346,7 @@
                     className: 'btn-sm btn-primary',
                 }
             ],
-            ajax: url + "pbp/goaliestats/?format=json",
+            ajax: url + "player/goaliestats/?format=json",
             sAjaxDataProp: "",
             columns: [
                 {"data": "name",
