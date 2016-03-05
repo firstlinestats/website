@@ -315,16 +315,13 @@
             $("#id_position").multiSelect('deselect_all');
         });
         $('#playersFilter').submit(function(e) {
-
-            //$('#skatersTableContainer').toggle();
-            //$('#tableLoading').toggle();
-            //getAjax();
+            var skateDT = $("#playerList").DataTable();
+            e.preventDefault();
             var formurl = url + "player/playerstats/?format=json&" + $("#playersFilter").serialize();
             console.log(formurl);
             skateDT.ajax.url(formurl);
             skateDT.ajax.reload();
 
-            e.preventDefault();
         });
     });
 
