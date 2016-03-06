@@ -42,7 +42,6 @@ function create_corsi_events(alldata, divid, teamname) {
       data.push(prev);
     }
   }
-  console.log(data);
 
   /* 
    * value accessor - returns the value to encode for a given data object.
@@ -64,14 +63,18 @@ function create_corsi_events(alldata, divid, teamname) {
   var cValue = function(d) { return "black";},
       color = d3.scale.category10();
   // add the tooltip area to the webpage
-  var tooltip = d3.select("body")
-      .append("div")
-      .style("position", "absolute")
-      .style("z-index", "10")
-      .style("visibility", "hidden")
-      .style("border-radius", 3)
-      .attr("class", "tooltip-inner")
-      .text("a simple tooltip");
+  for (var i=0; i<data.length; i++) {
+    d3.select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style("visibility", "hidden")
+        .style("border-radius", 3)
+        .attr("active", false)
+        .attr("class", "tooltip-inner")
+        .attr("id", teamname + "-" + data[i].cf + "-" + data[i].ca + "-tooltip")
+        .text("a simple tooltip");
+  }
 
   // add the graph canvas to the body of the webpage
   var svg = d3.select(divid).append("svg")
@@ -113,8 +116,9 @@ function create_corsi_events(alldata, divid, teamname) {
         .attr("x", margin.left)
         .attr("y", height - margin.bottom)
         .attr("text-anchor", "left")
-        .style("font-size", "12px")
-        .text("war-on-ice.com")
+        .style("font-size", "20px")
+        .style("fill", "grey")
+        .text("firstlinestats.com")
     svg.append("text")
         .attr("x", (width / 2))             
         .attr("y", 0 - (margin.top / 4))
@@ -132,12 +136,22 @@ function create_corsi_events(alldata, divid, teamname) {
       .attr("cy", yMap)
       .style("fill", function(d) { return get_color(teamname, true); })
       .style("stroke", function(d) { return get_color(teamname, false); })
-      .on("mouseover", mouseover)
-      .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-      .on("mouseout", mouseout);
+      .on("click", mouseover)
+      //.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+      //.on("mouseout", mouseout);
     function mouseover(p) {
+        var tooltip = d3.select("#" + teamname + "-" + p.cf + "-" + p.ca + "-tooltip");
+        var active = tooltip.attr("active"),
+          newOpacity = active ? 0 : 1;
         tooltip.html(p["name"] + "<br />SF:" + p.cf + "<br />SA:" + p.ca + "<br />TOI:" + p.toi);
-        tooltip.style("visibility", "visible")
+        tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");
+        if (active == "false") {
+          tooltip.style("visibility", "visible")
+          tooltip.attr("active", "true")
+        } else {
+          tooltip.style("visibility", "hidden")
+          tooltip.attr("active", "false")
+        }
     }
     function mouseout() {
         d3.selectAll("text").classed("active", false);
