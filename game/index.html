@@ -179,7 +179,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h3>Goalie Statistics</h3>
-                        <table id="goalies" class="table table-striped table-hover ">
+                        <table id="goalies" class="table table-striped table-hover table-condensed">
                             <thead>
                                 <tr>
                                     <th title="Name">Name</th>
@@ -202,32 +202,10 @@
                     </div>
                 </div>
                 <hr/>
-                <!--<div class="row">
-                    <div class="col-md-12">
-                        <div class="well">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h2>Skater Information</h2>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4 offset-4">
-                                    <label for="id_columns">Columns to Display</label>
-                                    <select id="id_columns" class="form-control">
-                                        <option value="prime">Prime</option>
-                                        <option value="rates">Rates</option>
-                                        <option value="counts">Counts</option>
-                                        <option value="all">All</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
                 <div class="row">
                     <div class="col-md-12 table-responsive">
                         <h3><img height="45" id="away-players-logo" />Away Players</h3>
-                        <table id="awayPlayers" class="table table-striped table-hover" style="width:100%;">
+                        <table id="awayPlayers" class="table table-striped table-hover table-condensed" style="width:100%;">
                             <thead>
                                 <tr>
                                     <th class="base" title="Name">Name</th>
@@ -289,7 +267,7 @@
                 <div class="row">
                     <div class="col-md-12 table-responsive">
                         <h3><img height="45" id="home-players-logo" />Home Players</h3>
-                        <table id="homePlayers" class="table table-striped table-hover" style="width:100%;">
+                        <table id="homePlayers" class="table table-striped table-hover table-condensed" style="width:100%;">
                             <thead>
                                 <tr>
                                     <th class="base" title="Name">Name</th>
@@ -442,7 +420,7 @@
                     goalies.rows.add(data.goalies);
                     goalies.draw();
                     $("#shotChart").html("");
-                    shotChart(data.shotData);
+                    shotChart(data.shotData, data.details.homeTeamAbbr, data.details.awayTeamAbbr);
                     
                 }
             });
@@ -458,7 +436,6 @@
                 data: data,
                 paging: false,
                 info: false,
-                responsive: true,
                 columns: [
                     {"data": "name",
                      "render": function(data, type, full, meta) {
@@ -602,7 +579,6 @@
                         data: data.goalies,
                         paging: false,
                         info: false,
-                        responsive: true,
                         fixedHeader: {
                             header: true,
                         },
@@ -629,7 +605,7 @@
                         ]
                     });
 
-                    shotChart(data.shotData);
+                    shotChart(data.shotData, details.homeTeamAbbr, details.awayTeamAbbr);
                     create_shot_attempts(data.eventcount, "#saChart", "sa", details.homeTeamName, details.awayTeamName);
                     create_shot_attempts(data.eventcount, "#scChart", "sc", details.homeTeamName, details.awayTeamName);
                     create_corsi_events(data.homeSkaters, "#home-corsi", details.homeTeamName);

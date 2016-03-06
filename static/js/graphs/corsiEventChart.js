@@ -1,6 +1,6 @@
 function create_corsi_events(alldata, divid, teamname) {
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = ($("#tableView").width() - margin.left) / 2,
+    width = ($("#tableView").width() - margin.left) / 2 - margin.left - margin.right,
     height = width;
 
   var data = [];

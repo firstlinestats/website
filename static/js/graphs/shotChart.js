@@ -1,4 +1,4 @@
-function shotChart(data) {
+function shotChart(data, homeabbr, awayabbr) {
     var margin = {top: 0, right: 0, bottom: 0, left: 0},
         width = $("#tableView").width() - margin.left - margin.right,
         height = width * 0.425 + margin.left;
@@ -39,6 +39,20 @@ function shotChart(data) {
         .attr("xlink:href", "/static/svg/rink.png")
         .attr("width", width - margin.left)
         .attr("height", height - margin.top);
+
+    // Add team logos
+    svg.append("svg:image")
+        .attr("xlink:href", "/static/images/team/" + homeabbr + ".png")
+        .attr("width", (width / 3) - margin.left)
+        .attr("height", (height / 3) - margin.top)
+        .attr("opacity", 0.5)
+        .attr("transform", "translate(" + (width - margin.left - width / 2.75) + "," + ((height - margin.top) / 3) + ")");
+    svg.append("svg:image")
+        .attr("xlink:href", "/static/images/team/" + awayabbr + ".png")
+        .attr("width", (width / 3) - margin.left)
+        .attr("height", (height / 3) - margin.top)
+        .attr("opacity", 0.5)
+        .attr("transform", "translate(" + (width / 20) + "," + ((height - margin.top) / 3) + ")");
 
     var dangerZoneHome = [{x: 89, y: -9},
         {x: 69, y: -22}, {x: 54, y: -22},
@@ -117,5 +131,52 @@ function shotChart(data) {
             d3.selectAll("text").classed("active", false);
             tooltip.style("visibility", "hidden");
         });
+    function createLegend() {
+        var legendRectSize = 18;
+        var legendSpacing = 4;
+        var data = [];
+        data.push({name: ""})
+        svg.append('rect')
+            .attr('x', legendRectSize + margin.left - 10)
+            .attr('y', margin.top + legendRectSize + 10)
+            .attr('width', legendRectSize * 8)
+            .attr('height', legendRectSize * 6)
+            .style('fill', 'white')
+            .style('stroke', 'black')
+        var legend = svg.selectAll('.legend')
+            .data(data)
+          .enter()
+            .append('g')
+            .attr('class', 'legend')
+            .attr('transform', function(d, i) {
+                var height = legendRectSize + legendSpacing;
+                var offset =  height;
+                var horz = -2 * legendRectSize;
+                var vert = i * height + offset;
+                return 'translate(' + horz + ',' + vert + ')';
+            });
+        legend.append('rect')
+            .attr('x', legendRectSize + margin.left + margin.right + 15)
+            .attr('y', legendRectSize + margin.top)
+            .attr('width', legendRectSize)
+            .attr('height', legendRectSize)
+            .style('fill', function(d) { return get_color(d.name, true); })
+            .style('stroke', color)
+            .style('opacity', function(d) { return d.opacity; })
+            .style("stroke", function(d) { if (d.opacity == 0.5) return "none"; else return "black";});
+        legend.append('rect')
+            .attr('x', legendRectSize + margin.left + margin.right + 15)
+            .attr('y', legendRectSize + margin.top)
+            .attr('width', legendRectSize)
+            .attr('height', legendRectSize)
+            .style('fill', "none")
+            .style('stroke', color)
+            .style("stroke", function(d) { if (d.opacity == 0.5) return "none"; else return "black";});
+        legend.append('text')
+            .attr('x', legendRectSize * 2 + margin.left + margin.right + 20)
+            .attr('y', legendRectSize + margin.top + legendRectSize / 1.5)
+            .style("text-anchor", "start")
+            .text(function(d) { return d.title; });
+    }
 
 }
