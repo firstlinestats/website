@@ -1,7 +1,48 @@
-function create_corsi_events(data, divid, teamname) {
+function create_corsi_events(alldata, divid, teamname) {
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = ($("#tableView").width() - margin.left) / 2,
     height = width;
+
+  var data = [];
+  var existing = {};
+  for (var i=0; i<alldata.length; i++) {
+    var cf = alldata[i]["cf"];
+    var ca = alldata[i]["ca"];
+    var name = alldata[i].name;
+    var sf = alldata[i].sf;
+    var sa = alldata[i].sa;
+    var toi = alldata[i].toi;
+    var dupe = false;
+    var newindex = data.length;
+    if (cf in existing) {
+      if (ca in existing[cf]) {
+        dupe = true;
+      } else {
+        existing[cf][ca] = newindex;
+      }
+    } else {
+      existing[cf] = {};
+      existing[cf][ca] = newindex;
+    }
+    console.log(dupe);
+    if (dupe == true) {
+      var prev = data[existing[cf][ca]];
+      prev.sf += ", " + alldata[i]["sf"];
+      prev.sa += ", " + alldata[i]["sa"];
+      prev.toi += ", " + alldata[i]["toi"];
+      prev.name += ", " + alldata[i]["name"];
+    } else {
+      var prev = {};
+      prev.cf = alldata[i]["cf"];
+      prev.ca = alldata[i]["ca"];
+      prev.sf = alldata[i]["sf"];
+      prev.sa = alldata[i]["sa"];
+      prev.toi = alldata[i]["toi"];
+      prev.name = alldata[i]["name"];
+      data.push(prev);
+    }
+  }
+  console.log(data);
 
   /* 
    * value accessor - returns the value to encode for a given data object.
@@ -86,7 +127,7 @@ function create_corsi_events(data, divid, teamname) {
       .data(data)
     .enter().append("circle")
       .attr("class", "dot")
-      .attr("r", 3.5)
+      .attr("r", 5)
       .attr("cx", xMap)
       .attr("cy", yMap)
       .style("fill", function(d) { return get_color(teamname, true); })
@@ -95,7 +136,7 @@ function create_corsi_events(data, divid, teamname) {
       .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
       .on("mouseout", mouseout);
     function mouseover(p) {
-        tooltip.html(p["name"] + "<br />SF:" + p.sf + "<br />SA:" + p.sa + "<br />TOI:" + p.toi);
+        tooltip.html(p["name"] + "<br />SF:" + p.cf + "<br />SA:" + p.ca + "<br />TOI:" + p.toi);
         tooltip.style("visibility", "visible")
     }
     function mouseout() {

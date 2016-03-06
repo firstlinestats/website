@@ -369,10 +369,10 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div id="home-corsi"></div>
+                                <div id="away-corsi"></div>
                             </div>
                             <div class="col-md-6">
-                                <div id="away-corsi"></div>
+                                <div id="home-corsi"></div>
                             </div>
                         </div>
                     </div>
@@ -414,9 +414,6 @@
         $('#gameFilter').submit(function(e) {
 
             var formurl = url + "pbp/game/?gamePk=" + getUrlParameter("gamePk") + "&" + $("#gameFilter").serialize();
-            console.log(formurl);
-            console.log($("#gameFilter").serialize());
-
 
             $.ajax({
                 url: formurl,
@@ -426,7 +423,6 @@
                     $("#home-score").text(details.homeScore);
                     $("#away-score").text(details.awayScore);
                     $("#game-time").text(details.date);
-                    console.log(data.teamData);
                     var team = $("#team").DataTable();
                     team.clear();
                     team.rows.add(data.teamData);
