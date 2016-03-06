@@ -24,7 +24,6 @@ function create_corsi_events(alldata, divid, teamname) {
       existing[cf] = {};
       existing[cf][ca] = newindex;
     }
-    console.log(dupe);
     if (dupe == true) {
       var prev = data[existing[cf][ca]];
       prev.sf += ", " + alldata[i]["sf"];

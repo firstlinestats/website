@@ -185,15 +185,16 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
         var legendRectSize = 18;
         var legendSpacing = 4;
         var data = [];
-        data.push({name: hometeam, title: hometeam + " PP", opacity: 0.5},
-            {name: awayteam, title: awayteam + " PP", opacity: 0.5},
-            {name: hometeam, title: hometeam + " Goal", opacity: 1},
-            {name: awayteam, title: awayteam + " Goal", opacity: 1})
+        data.push({color: get_color(hometeam, true), title: hometeam + " PP", opacity: 0.5},
+            {color: get_color(awayteam, true), title: awayteam + " PP", opacity: 0.5},
+            {color: hexAverage(get_color(hometeam, true), get_color(awayteam, true)), title: "4v4", opacity: 0.75},
+            {color: get_color(hometeam, true), title: hometeam + " Goal", opacity: 1},
+            {color: get_color(awayteam, true), title: awayteam + " Goal", opacity: 1})
         svg.append('rect')
             .attr('x', legendRectSize + margin.left - 10)
             .attr('y', margin.top + legendRectSize + 10)
             .attr('width', legendRectSize * 8)
-            .attr('height', legendRectSize * 6)
+            .attr('height', legendRectSize * 7)
             .style('fill', 'white')
             .style('stroke', 'black')
         var legend = svg.selectAll('.legend')
@@ -213,10 +214,10 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
             .attr('y', legendRectSize + margin.top)
             .attr('width', legendRectSize)
             .attr('height', legendRectSize)
-            .style('fill', function(d) { return get_color(d.name, true); })
+            .style('fill', function(d) { return d.color; })
             .style('stroke', color)
             .style('opacity', function(d) { return d.opacity; })
-            .style("stroke", function(d) { if (d.opacity == 0.5) return "none"; else return "black";});
+            .style("stroke", function(d) { if (d.opacity == 0.5 || d.opacity == 0.75) return "none"; else return "black";});
         legend.append('rect')
             .attr('x', legendRectSize + margin.left + margin.right + 15)
             .attr('y', legendRectSize + margin.top)
@@ -224,11 +225,32 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
             .attr('height', legendRectSize)
             .style('fill', "none")
             .style('stroke', color)
-            .style("stroke", function(d) { if (d.opacity == 0.5) return "none"; else return "black";});
+            .style("stroke", function(d) { if (d.opacity == 0.5 || d.opacity == 0.75) return "none"; else return "black";});
         legend.append('text')
             .attr('x', legendRectSize * 2 + margin.left + margin.right + 20)
             .attr('y', legendRectSize + margin.top + legendRectSize / 1.5)
             .style("text-anchor", "start")
             .text(function(d) { return d.title; });
+    }
+    function padToTwo(numberString) {
+        if (numberString.length < 2) {
+            numberString = '0' + numberString;
+        }
+        return numberString;
+    }
+
+    function hexAverage() {
+        var args = Array.prototype.slice.call(arguments);
+        return args.reduce(function (previousValue, currentValue) {
+            return currentValue
+                .replace(/^#/, '')
+                .match(/.{2}/g)
+                .map(function (value, index) {
+                    return previousValue[index] + parseInt(value, 16);
+                });
+        }, [0, 0, 0])
+        .reduce(function (previousValue, currentValue) {
+            return previousValue + padToTwo(Math.floor(currentValue / args.length).toString(16));
+        }, '#');
     }
 }

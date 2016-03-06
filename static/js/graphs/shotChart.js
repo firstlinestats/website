@@ -131,14 +131,20 @@ function shotChart(data, homeabbr, awayabbr) {
             d3.selectAll("text").classed("active", false);
             tooltip.style("visibility", "hidden");
         });
+
+    createLegend();
+
     function createLegend() {
         var legendRectSize = 18;
         var legendSpacing = 4;
-        var data = [];
-        data.push({name: ""})
+        
+        var data = [{name: "Shot on Goal", color: "#0000FF"},
+            {"name": "Missed Shot", color: "#000000"},
+            {"name": "Blocked Shot", color: "#00FF00"},
+            {"name": "Goal", "color": "#FF0000"}]
         svg.append('rect')
-            .attr('x', legendRectSize + margin.left - 10)
-            .attr('y', margin.top + legendRectSize + 10)
+            .attr('x', width / 2 - (legendRectSize * 4))
+            .attr('y', margin.top + legendRectSize)
             .attr('width', legendRectSize * 8)
             .attr('height', legendRectSize * 6)
             .style('fill', 'white')
@@ -155,28 +161,20 @@ function shotChart(data, homeabbr, awayabbr) {
                 var vert = i * height + offset;
                 return 'translate(' + horz + ',' + vert + ')';
             });
-        legend.append('rect')
-            .attr('x', legendRectSize + margin.left + margin.right + 15)
-            .attr('y', legendRectSize + margin.top)
-            .attr('width', legendRectSize)
-            .attr('height', legendRectSize)
-            .style('fill', function(d) { return get_color(d.name, true); })
+        legend.append('circle')
+            .attr("class", "dot")
+            .attr('cx', width / 2 - legendRectSize * 1)
+            .attr('cy', legendRectSize - 3)
+            .attr('r', legendRectSize / 2)
+            .style('fill', function(d) { return d.color; })
             .style('stroke', color)
             .style('opacity', function(d) { return d.opacity; })
-            .style("stroke", function(d) { if (d.opacity == 0.5) return "none"; else return "black";});
-        legend.append('rect')
-            .attr('x', legendRectSize + margin.left + margin.right + 15)
-            .attr('y', legendRectSize + margin.top)
-            .attr('width', legendRectSize)
-            .attr('height', legendRectSize)
-            .style('fill', "none")
-            .style('stroke', color)
-            .style("stroke", function(d) { if (d.opacity == 0.5) return "none"; else return "black";});
+            .style("stroke", function(d) { return "black";});
         legend.append('text')
-            .attr('x', legendRectSize * 2 + margin.left + margin.right + 20)
-            .attr('y', legendRectSize + margin.top + legendRectSize / 1.5)
+            .attr('x', width / 2)
+            .attr('y', legendRectSize + 5)
             .style("text-anchor", "start")
-            .text(function(d) { return d.title; });
+            .text(function(d) { return d.name; });
     }
 
 }
