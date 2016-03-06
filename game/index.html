@@ -348,11 +348,24 @@
                         <div class="row">
                             <h3 class="text-center">Player Corsi Events</h3>
                             <p class="text-center">*Click points to toggle information</p>
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-sm-12">
                                 <div id="away-corsi"></div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-sm-12">
                                 <div id="home-corsi"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h3 class="text-center">Head-To-Head Matchups</h3>
+                            <div class="col-md-12">
+                                Order: <select id="order">
+                                  <option value="name">by Name</option>
+                                  <option value="count">by TOI</option>
+                                  <option value="group">by Team</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <div id="co"></div>
                             </div>
                         </div>
                     </div>
@@ -374,6 +387,7 @@
     <script src="/static/js/graphs/shotChart.js"></script>
     <script src="/static/js/graphs/eventChart.js"></script>
     <script src="/static/js/graphs/corsiEventChart.js"></script>
+    <script src="/static/js/graphs/headToHeadChart.js"></script>
     <script src="/static/js/getUrl.js"></script>
     <script>
         var getUrlParameter = function getUrlParameter(sParam) {
@@ -610,6 +624,8 @@
                     create_shot_attempts(data.eventcount, "#scChart", "sc", details.homeTeamName, details.awayTeamName);
                     create_corsi_events(data.homeSkaters, "#home-corsi", details.homeTeamName);
                     create_corsi_events(data.awaySkaters, "#away-corsi", details.awayTeamName);
+                    var pvp = data.pvp;
+                    create_co("#co", pvp);
                     
                 }
             });

@@ -10,7 +10,6 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
     var y = d3.scale.linear()
         .range([height, 0]);
 
-    console.log(data);
     // setup x 
     var xValue = function(d) { return d.seconds; }, // data -> value
         xScale = d3.scale.linear().range([0, width]), // value -> display
