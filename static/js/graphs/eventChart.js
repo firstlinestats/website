@@ -166,7 +166,7 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
                 .attr("x2", xMap(seconds))
                 .attr("y2", height)
                 .style("fill", "none")
-                .style("stroke", "black")
+                .style("stroke", get_color(teamname, false))
                 .style("stroke-width", 6)
                 .style("opacity", 1);
             svg.append("line")
@@ -184,11 +184,11 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
         var legendRectSize = 18;
         var legendSpacing = 4;
         var data = [];
-        data.push({color: get_color(hometeam, true), title: hometeam + " PP", opacity: 0.5},
-            {color: get_color(awayteam, true), title: awayteam + " PP", opacity: 0.5},
-            {color: hexAverage(get_color(hometeam, true), get_color(awayteam, true)), title: "4v4", opacity: 0.75},
-            {color: get_color(hometeam, true), title: hometeam + " Goal", opacity: 1},
-            {color: get_color(awayteam, true), title: awayteam + " Goal", opacity: 1})
+        data.push({color: get_color(hometeam, true), title: hometeam + " PP", opacity: 0.5, teamname: hometeam},
+            {color: get_color(awayteam, true), title: awayteam + " PP", opacity: 0.5, teamname: awayteam},
+            {color: hexAverage(get_color(hometeam, true), get_color(awayteam, true)), title: "4v4", opacity: 0.75, teamname: hometeam},
+            {color: get_color(hometeam, true), title: hometeam + " Goal", opacity: 1, teamname: hometeam},
+            {color: get_color(awayteam, true), title: awayteam + " Goal", opacity: 1, teamname: awayteam})
         svg.append('rect')
             .attr('x', legendRectSize + margin.left - 10)
             .attr('y', margin.top + legendRectSize + 10)
@@ -216,7 +216,7 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
             .style('fill', function(d) { return d.color; })
             .style('stroke', color)
             .style('opacity', function(d) { return d.opacity; })
-            .style("stroke", function(d) { if (d.opacity == 0.5 || d.opacity == 0.75) return "none"; else return "black";});
+            .style("stroke", function(d) { if (d.opacity == 0.5 || d.opacity == 0.75) return "none"; else return get_color(d.teamname);});
         legend.append('rect')
             .attr('x', legendRectSize + margin.left + margin.right + 15)
             .attr('y', legendRectSize + margin.top)
@@ -224,7 +224,7 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
             .attr('height', legendRectSize)
             .style('fill', "none")
             .style('stroke', color)
-            .style("stroke", function(d) { if (d.opacity == 0.5 || d.opacity == 0.75) return "none"; else return "black";});
+            .style("stroke", function(d) { if (d.opacity == 0.5 || d.opacity == 0.75) return "none"; else return get_color(d.teamname);});
         legend.append('text')
             .attr('x', legendRectSize * 2 + margin.left + margin.right + 20)
             .attr('y', legendRectSize + margin.top + legendRectSize / 1.5)
