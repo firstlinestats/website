@@ -1,7 +1,7 @@
 function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
     // add the graph canvas to the body of the webpage
     var margin = {top: 20, right: 20, bottom: 20, left: 40},
-        width = $("#tableView").width() - margin.left - margin.right,
+        width = $("#gameStatsContent").width() - margin.left - margin.right,
         height = width * 0.425 + margin.left;
 
     var x = d3.scale.linear()
@@ -41,7 +41,7 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
     var homeMax = d3.max(data["home" + valtype], yValue) + 1;
     var awayMax = d3.max(data["away" + valtype], yValue) + 1;
     var yScaleMax = Math.max(homeMax, awayMax);
-    xScale.domain([0, d3.max([60*60, d3.max(data["home" + valtype], xValue)])]);
+    xScale.domain([0, d3.max(data["home" + valtype], xValue)]);
     yScale.domain([0, yScaleMax]);
     // x-axis
     svg.append("g")

@@ -437,7 +437,18 @@
                     goalies.rows.add(data.goalies);
                     goalies.draw();
                     $("#shotChart").html("");
-                    shotChart(data.shotData, data.details.homeTeamAbbr, data.details.awayTeamAbbr);
+                    shotChart(data.shotData, details.homeTeamAbbr, details.awayTeamAbbr);
+                    $("#saChart").html("");
+                    $("#scChart").html("");
+                    $("#home-corsi").html("");
+                    $("#away-corsi").html("");
+                    $("#co").html("");
+                    create_shot_attempts(data.eventcount, "#saChart", "sa", data.details.homeTeamName, data.details.awayTeamName);
+                    create_shot_attempts(data.eventcount, "#scChart", "sc", data.details.homeTeamName, data.details.awayTeamName);
+                    create_corsi_events(data.homeSkaters, "#home-corsi", details.homeTeamName);
+                    create_corsi_events(data.awaySkaters, "#away-corsi", details.awayTeamName);
+                    var pvp = data.pvp;
+                    create_co("#co", pvp);
                     
                 }
             });

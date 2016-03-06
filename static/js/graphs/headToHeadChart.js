@@ -8,9 +8,12 @@ function create_co(divid, data) {
         .style("border-radius", 3)
         .attr("class", "tooltip-inner")
         .text("a simple tooltip");
+    var maxwidth = 600;
     var margin = {top: 150, right: 0, bottom: 10, left: 150},
         width = $("#gameStatsContent").width() - 100 - margin.left + margin.right,
         height = $("#gameStatsContent").width() - 100 - margin.top - margin.bottom;
+    if (width > maxwidth)
+      width = height = maxwidth;
     var x = d3.scale.ordinal().rangeBands([0, width]),
         z = d3.scale.linear().domain([0, 4]).clamp(true),
         c = d3.scale.category10().domain(d3.range(10));
@@ -99,7 +102,7 @@ function create_co(divid, data) {
           .enter().append("rect")
             .attr("class", "cell")
             .attr("x", function(d) { return x(d.x); })
-            .attr("width", x.rangeBand()) //function(d) { return boxScale(d.z); })
+            .attr("width", function(d) { return x.rangeBand(); }) //function(d) { return boxScale(d.z); })
             .attr("height", function(d) { return boxScale(d.z); })
             .style("fill", function(d) { return ramp(d.percent); }) //return nodes[d.x].group == nodes[d.y].group ? c(nodes[d.x].group) : null; })
             .on("mouseover", mouseover)
