@@ -36,7 +36,7 @@ var get_color = function get_team_color(team, primary) {
     ]
     for (var i=0; i<coloroptions.length; i++) {
         var color = coloroptions[i];
-        if (color[4].indexOf(team) != -1) {
+        if (color[4].indexOf(team) != -1 || color[1].indexOf(team) != -1) {
             if (primary == true) {
                 return color[2];
             } else {

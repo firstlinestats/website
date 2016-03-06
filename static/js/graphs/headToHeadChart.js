@@ -42,7 +42,6 @@ function create_co(divid, data) {
       nodes.forEach(function(node, i) {
         node.index = i;
         node.count = node.toi;
-        console.log(node, i);
         matrix[i] = d3.range(n).map(function(j) { return {x: j, y: i, z: 0}; });
       });
       // Convert links to matrix; count character occurrences.
@@ -148,7 +147,7 @@ function create_co(divid, data) {
       }
       var timeout = setTimeout(function() {
         order("group");
-        d3.select("#order").property("selectedIndex", 2).node().focus();
+        //d3.select("#order").property("selectedIndex", 2).node().focus();
       }, 5000);
 svg.append("text")
     .attr("x", -100)

@@ -119,11 +119,25 @@ function shotChart(data, homeabbr, awayabbr) {
                 return "#0000FF";
             }
         })
-        .style("stroke", function() {
-            return "#000000";
+        .style("stroke", function(d) {
+            if (d.xcoord > 0)
+                return get_color(homeabbr, true);
+            else
+                return get_color(awayabbr, true);
         })
+        .style("stroke-width", "2px")
         .on("mouseover", function(d) {
-            tooltip.html(d.danger);
+            var shotType = "Unknown";
+            if (d.type == "MISSED_SHOT")
+                shotType = "Missed Shot";
+            else if (d.type == "BLOCKED_SHOT")
+                shotType = "Blocked Shot";
+            else if (d.type == "GOAL")
+                shotType = "Goal";
+            else if (d.type == "SHOT")
+                shotType = "Shot";
+            var html = d.description + "<br /><b>Shot Type:</b>" + shotType + "<br /><b>Period: </b>" + d.period + " | " + d.time + "<br />" + d.danger;
+            tooltip.html(html);
             tooltip.style("visibility", "visible");
         })
         .on("mousemove", function(d){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
