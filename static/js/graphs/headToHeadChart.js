@@ -133,7 +133,6 @@ function create_co(divid, data) {
       }
       function order(value) {
         x.domain(orders[value]);
-        console.log(value, orders[value])
         var t = svg.transition().duration(2500);
         t.selectAll(".row")
             .delay(function(d, i) { return x(i) * 4; })

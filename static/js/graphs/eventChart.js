@@ -38,6 +38,11 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    svg.append("rect")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("transform", "translate(-" + margin.left + ",-" + margin.top + ")")
+        .attr("fill", "white");
     var homeMax = d3.max(data["home" + valtype], yValue) + 1;
     var awayMax = d3.max(data["away" + valtype], yValue) + 1;
     var yScaleMax = Math.max(homeMax, awayMax);
@@ -108,14 +113,14 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
     createGoals(svg, data["homegoal"], hometeam);
     createGoals(svg, data["awaygoal"], awayteam);
     svg.append("rect")
-        .attr("x", 90)
+        .attr("x", 115)
         .attr("y", 4)
         .attr("width", 150)
         .attr("height", 20)
         .style("fill", "white")
         .style("stroke", "none")
     svg.append("text")
-        .attr("x", margin.left + 50)
+        .attr("x", margin.left + 75)
         .attr("y", margin.top)
         .attr("text-anchor", "left")
         .style("font-size", "20px")
@@ -190,7 +195,7 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
             {color: get_color(hometeam, true), title: hometeam + " Goal", opacity: 1, teamname: hometeam},
             {color: get_color(awayteam, true), title: awayteam + " Goal", opacity: 1, teamname: awayteam})
         svg.append('rect')
-            .attr('x', legendRectSize + margin.left - 10)
+            .attr('x', legendRectSize + margin.left + margin.right - legendRectSize - 10)
             .attr('y', margin.top + legendRectSize + 10)
             .attr('width', legendRectSize * 8)
             .attr('height', legendRectSize * 7)

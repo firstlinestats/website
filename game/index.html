@@ -12,6 +12,9 @@
     <!--{% block page_css %}-->
     <link href="/static/DataTables/datatables.min.css" rel="stylesheet">
     <link href="/static/MultiSelect/css/multi-select.css" rel="stylesheet">
+    <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
+    <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/StackBlur.js"></script>
+    <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script>
     <!--{% endblock %}-->
     <link href="/static/css/bootstrap.css" rel="stylesheet">
     <link href="/static/css/fls.css" rel="stylesheet">
@@ -79,304 +82,309 @@
 </div>
 </div>
 <div class="container game-content">
-<div class="row">
-    <div class="col-sm-12">
-        <div class="well bs-component">
-            <h4 class="filter-options" data-toggle="collapse" data-target="#gameFilter">
-            Filter Options
-            <img class="filter-collapsed" height="20" width="20" style="float: right"src="/static/images/forward-arrow.svg ">
-            </h4>
-            <div class="row">
-                <div class="col-md-12">
-                    <form id="gameFilter" class="collapse" action="/api/pbp/game/" method="GET">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label for="teamStrengths">Team Strengths:</label>
-                                <select class="form-control input-sm" id="teamStrengths" name="teamStrengths">
-                                    <option value="all">All</option>
-                                    <option value="even">Even Strength 5v5</option>
-                                    <option value="pp">Power Play</option>
-                                    <option value="pk">Short Handed</option>
-                                    <option value="4v4">4v4</option>
-                                    <option value="og">Opposing Goalie Pulled</option>
-                                    <option value="tg">Team Goalie Pulled</option>
-                                    <option value="3v3">3v3</option>
-                                </select>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="well bs-component">
+                <h4 class="filter-options" data-toggle="collapse" data-target="#gameFilter">
+                Filter Options
+                <img class="filter-collapsed" height="20" width="20" style="float: right"src="/static/images/forward-arrow.svg ">
+                </h4>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="gameFilter" class="collapse" action="/api/pbp/game/" method="GET">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="teamStrengths">Team Strengths:</label>
+                                    <select class="form-control input-sm" id="teamStrengths" name="teamStrengths">
+                                        <option value="all">All</option>
+                                        <option value="even">Even Strength 5v5</option>
+                                        <option value="pp">Power Play</option>
+                                        <option value="pk">Short Handed</option>
+                                        <option value="4v4">4v4</option>
+                                        <option value="og">Opposing Goalie Pulled</option>
+                                        <option value="tg">Team Goalie Pulled</option>
+                                        <option value="3v3">3v3</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="scoreSituation">Score Situation:</label>
+                                    <select class="form-control input-sm" id="scoreSituation" name="scoreSituation">
+                                        <option value="all">All</option>
+                                        <option value="t3+">Trailing by 3+</option>
+                                        <option value="t2">Trailing by 2</option>
+                                        <option value="t1">Trailing by 1</option>
+                                        <option value="t">Tied</option>
+                                        <option value="l1">Leading by 1</option>
+                                        <option value="l2">Leading by 2</option>
+                                        <option value="l3+">Leading by 3+</option>
+                                        <option value="w1">Within 1</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="periodOption">Period:</label>
+                                    <select class="form-control input-sm" id="periodOption" name="periodOption">
+                                        <option value="all">All</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">OT</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <label for="scoreSituation">Score Situation:</label>
-                                <select class="form-control input-sm" id="scoreSituation" name="scoreSituation">
-                                    <option value="all">All</option>
-                                    <option value="t3+">Trailing by 3+</option>
-                                    <option value="t2">Trailing by 2</option>
-                                    <option value="t1">Trailing by 1</option>
-                                    <option value="t">Tied</option>
-                                    <option value="l1">Leading by 1</option>
-                                    <option value="l2">Leading by 2</option>
-                                    <option value="l3+">Leading by 3+</option>
-                                    <option value="w1">Within 1</option>
-                                </select>
+                            <div class="row">
+                                <div class="col-md-4 col-md-offset-8">
+                                    <div class="form-group text-right" style="margin-top:25%;">
+                                        <input type="reset" class="btn btn-danger btn-sm"></input>
+                                        <input type="submit" href="#" class="btn btn-primary btn-sm"></input>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <label for="periodOption">Period:</label>
-                                <select class="form-control input-sm" id="periodOption" name="periodOption">
-                                    <option value="all">All</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">OT</option>
-                                </select>
-                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="gameStatsContent" class="col-md-12 table-responsive">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tableView" data-toggle="tab" aria-expanded="true">Table View</a></li>
+                <li class=""><a href="#graphView" data-toggle="tab" aria-expanded="false">Graph View</a></li>
+            </ul>
+            <div id="gameTabContent" class="tab-content">
+                <div class="tab-pane fade active in" id="tableView">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>Team Statistics</h3>
+                            <table id="team" class="table table-striped table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th title="Team">Team</th>
+                                        <th title="On-Ice Goals For Total">GF</th>
+                                        <th title="On-Ice Shots-On-Goal For Total">SF</th>
+                                        <th title="Missed Shots For">MSF</th>
+                                        <th title="Blocked Shots">BSF</th>
+                                        <th title="Corsi For Total">CF</th>
+                                        <th title="On-Ice Scoring Chances For Total">SCF</th>
+                                        <th title="On-Ice High-Danger Scoring Chances For Total">HSCF</th>
+                                        <th title="Offensive Zone Starts">ZSO</th>
+                                        <th title="Hits">HIT</th>
+                                        <th title="Penalties">PN</th>
+                                        <th title="Faceoffs Won">FO_W</th>
+                                        <th title="Time On Ice">TOI</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="row">
-                            <div class="col-md-4 col-md-offset-8">
-                                <div class="form-group text-right" style="margin-top:25%;">
-                                    <input type="reset" class="btn btn-danger btn-sm"></input>
-                                    <input type="submit" href="#" class="btn btn-primary btn-sm"></input>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>Goalie Statistics</h3>
+                            <table id="goalies" class="table table-striped table-hover table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th title="Name">Name</th>
+                                        <th title="Team">Team</th>
+                                        <th title="Unknown-Danger Goals">GU</th>
+                                        <th title="Unknown-Danger Saves">SU</th>
+                                        <th title="Low-Danger Goals">G.L</th>
+                                        <th title="Low-Danger Saves">S.L</th>
+                                        <th title="Medium-Danger Goals">G.M</th>
+                                        <th title="Medium-Danger Saves">S.M</th>
+                                        <th title="High-Danger Goals">G.H</th>
+                                        <th title="High-Danger Saves">S.H</th>
+                                        <th title="Time On Ice (Minutes)">TOI</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-md-12 table-responsive">
+                            <h3><img height="45" id="away-players-logo" />Away Players</h3>
+                            <table id="awayPlayers" class="table table-striped table-hover table-condensed" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th class="base" title="Name">Name</th>
+                                        <th class="base" title="Position">Pos</th>
+                                        <th class="base" title="Goals Scored">G</th>
+                                        <th class="base" title="First Assists">A1</th>
+                                        <th class="base" title="Second Assists">A2</th>
+                                        <th class="base" title="Total Points">P</th>
+                                        <th class="prime" title="Individual High-Danger Scoring Chances">iHSC</th>
+                                        <th class="prime" title="Individual Scoring Chances">iSC</th>
+                                        <th class="prime" title="Individual Shot Attempts">iCF</th>
+                                        <th class="prime" title="On-Ice Corsi Differential">C+/-</th>
+                                        <th class="prime" title="On-Ice Fenwick Differential">F+/-</th>
+                                        <th class="prime" title="On-Ice Goal Differential">G+/-</th>
+                                        <th class="prime" title="Corsi For Total">CF</th>
+                                        <th class="prime" title="Fenwick For Total">FF</th>
+                                        <th class="prime" title="Offensive Zone Stats">ZSO</th>
+                                        <th class="prime" title="Defensive Zone Starts">ZSD</th>
+                                        <th class="prime" title="Shots Attempts Blocked By Play">AB</th>
+                                        <th class="prime" title="Faceoffs Won">FO_W</th>
+                                        <th class="prime" title="Faceoffs Lost">FO_L</th>
+                                        <th class="prime" title="Hits">HIT+</th>
+                                        <th class="prime" title="Hits Taken">HIT-</th>
+                                        <th class="prime" title="Penalties">PN+</th>
+                                        <th class="prime" title="Penalties Drawn">PN-</th>
+                                        <th class="prime" title="Time On Ice">TOI</th>
+                                        <th class="rates" title="Corsi For, Per 60 Minutes">CF60</th>
+                                        <th class="rates" title="Corsi Against, Per 60 Minutes">CA60</th>
+                                        <th class="rates" title="Corsi For and Against, Per 60 Minutes">CP60</th>
+                                        <th class="rates" title="Fenwick For, Per 60 Minutes">FF60</th>
+                                        <th class="rates" title="Fenwick Against, Per 60 Minutes">FA60</th>
+                                        <th class="rates" title="Fenwick For and Against, Per 60 Minutes">FP60</th>
+                                        <th class="rates" title="Shots For, Per 60 Minutes">SF60</th>
+                                        <th class="rates" title="Shots Against, Per 60 Minutes">SA60</th>
+                                        <th class="rates" title="Shots For and Against, Per 60 Minutes">FP60</th>
+                                        <th class="counts" title="Shot Attempts By Player, Blocked">BK</th>
+                                        <th class="counts" title="Shot Attempts Blocked By Player">AB</th>
+                                        <th class="counts" title="Missed Shots">MS</th>
+                                        <th class="counts" title="Saved Shots">SH</th>
+                                        <th class="counts" title="On-Ice Shots For Total">SF</th>
+                                        <th class="counts" title="On-Ice Shots Against Total">SA</th>
+                                        <th class="counts" title="On-Ice Goals For Total">GF</th>
+                                        <th class="counts" title="On-Ice Goals Against Total">GA</th>
+                                        <th class="counts" title="Fenwick For Total">FF</th>
+                                        <th class="counts" title="Fenwick Against Total">FA</th>
+                                        <th class="counts" title="Corsi For Total">CF</th>
+                                        <th class="counts" title="Corsi Against Total">CA</th>
+                                        <th class="counts" title="On-Ice Scoring Chances For Total">SCF</th>
+                                        <th class="counts" title="On-Ice Scoring Chances Against Total">SCA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-md-12 table-responsive">
+                            <h3><img height="45" id="home-players-logo" />Home Players</h3>
+                            <table id="homePlayers" class="table table-striped table-hover table-condensed" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th class="base" title="Name">Name</th>
+                                        <th class="base" title="Position">Pos</th>
+                                        <th class="base" title="Goals Scored">G</th>
+                                        <th class="base" title="First Assists">A1</th>
+                                        <th class="base" title="Second Assists">A2</th>
+                                        <th class="base" title="Total Points">P</th>
+                                        <th class="prime" title="Individual High-Danger Scoring Chances">iHSC</th>
+                                        <th class="prime" title="Individual Scoring Chances">iSC</th>
+                                        <th class="prime" title="Individual Shot Attempts">iCF</th>
+                                        <th class="prime" title="On-Ice Corsi Differential">C+/-</th>
+                                        <th class="prime" title="On-Ice Fenwick Differential">F+/-</th>
+                                        <th class="prime" title="On-Ice Goal Differential">G+/-</th>
+                                        <th class="prime" title="Corsi For Total">CF</th>
+                                        <th class="prime" title="Fenwick For Total">FF</th>
+                                        <th class="prime" title="Offensive Zone Stats">ZSO</th>
+                                        <th class="prime" title="Defensive Zone Starts">ZSD</th>
+                                        <th class="prime" title="Shots Attempts Blocked By Play">AB</th>
+                                        <th class="prime" title="Faceoffs Won">FO_W</th>
+                                        <th class="prime" title="Faceoffs Lost">FO_L</th>
+                                        <th class="prime" title="Hits">HIT+</th>
+                                        <th class="prime" title="Hits Taken">HIT-</th>
+                                        <th class="prime" title="Penalties">PN+</th>
+                                        <th class="prime" title="Penalties Drawn">PN-</th>
+                                        <th class="prime" title="Time On Ice">TOI</th>
+                                        <th class="rates" title="Corsi For, Per 60 Minutes">CF60</th>
+                                        <th class="rates" title="Corsi Against, Per 60 Minutes">CA60</th>
+                                        <th class="rates" title="Corsi For and Against, Per 60 Minutes">CP60</th>
+                                        <th class="rates" title="Fenwick For, Per 60 Minutes">FF60</th>
+                                        <th class="rates" title="Fenwick Against, Per 60 Minutes">FA60</th>
+                                        <th class="rates" title="Fenwick For and Against, Per 60 Minutes">FP60</th>
+                                        <th class="rates" title="Shots For, Per 60 Minutes">SF60</th>
+                                        <th class="rates" title="Shots Against, Per 60 Minutes">SA60</th>
+                                        <th class="rates" title="Shots For and Against, Per 60 Minutes">FP60</th>
+                                        <th class="counts" title="Shot Attempts By Player, Blocked">BK</th>
+                                        <th class="counts" title="Shot Attempts Blocked By Player">AB</th>
+                                        <th class="counts" title="Missed Shots">MS</th>
+                                        <th class="counts" title="Saved Shots">SH</th>
+                                        <th class="counts" title="On-Ice Shots For Total">SF</th>
+                                        <th class="counts" title="On-Ice Shots Against Total">SA</th>
+                                        <th class="counts" title="On-Ice Goals For Total">GF</th>
+                                        <th class="counts" title="On-Ice Goals Against Total">GA</th>
+                                        <th class="counts" title="Fenwick For Total">FF</th>
+                                        <th class="counts" title="Fenwick Against Total">FA</th>
+                                        <th class="counts" title="Corsi For Total">CF</th>
+                                        <th class="counts" title="Corsi Against Total">CA</th>
+                                        <th class="counts" title="On-Ice Scoring Chances For Total">SCF</th>
+                                        <th class="counts" title="On-Ice Scoring Chances Against Total">SCA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="graphView">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3 class="text-center">Shots Attempts</h3>
+                                    <div id="shotChart"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-primary" id="saChartButton">Create PNG from Current Chart</button>
+                                    <div id="saChart"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="scChart"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h3 class="text-center">Player Corsi Events</h3>
+                                <p class="text-center">*Click points to toggle information</p>
+                                <div class="col-md-6 col-sm-12">
+                                    <div id="away-corsi"></div>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <div id="home-corsi"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h3 class="text-center">Head-To-Head Matchups</h3>
+                                <div class="col-md-12">
+                                    Order: <select id="order">
+                                      <option value="name">by Name</option>
+                                      <option value="count">by TOI</option>
+                                      <option value="group">by Team</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12">
+                                    <div id="co"></div>
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div id="gameStatsContent" class="col-md-12 table-responsive">
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#tableView" data-toggle="tab" aria-expanded="true">Table View</a></li>
-            <li class=""><a href="#graphView" data-toggle="tab" aria-expanded="false">Graph View</a></li>
-        </ul>
-        <div id="gameTabContent" class="tab-content">
-            <div class="tab-pane fade active in" id="tableView">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3>Team Statistics</h3>
-                        <table id="team" class="table table-striped table-hover ">
-                            <thead>
-                                <tr>
-                                    <th title="Team">Team</th>
-                                    <th title="On-Ice Goals For Total">GF</th>
-                                    <th title="On-Ice Shots-On-Goal For Total">SF</th>
-                                    <th title="Missed Shots For">MSF</th>
-                                    <th title="Blocked Shots">BSF</th>
-                                    <th title="Corsi For Total">CF</th>
-                                    <th title="On-Ice Scoring Chances For Total">SCF</th>
-                                    <th title="On-Ice High-Danger Scoring Chances For Total">HSCF</th>
-                                    <th title="Offensive Zone Starts">ZSO</th>
-                                    <th title="Hits">HIT</th>
-                                    <th title="Penalties">PN</th>
-                                    <th title="Faceoffs Won">FO_W</th>
-                                    <th title="Time On Ice">TOI</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <hr/>
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3>Goalie Statistics</h3>
-                        <table id="goalies" class="table table-striped table-hover table-condensed">
-                            <thead>
-                                <tr>
-                                    <th title="Name">Name</th>
-                                    <th title="Team">Team</th>
-                                    <th title="Unknown-Danger Goals">GU</th>
-                                    <th title="Unknown-Danger Saves">SU</th>
-                                    <th title="Low-Danger Goals">G.L</th>
-                                    <th title="Low-Danger Saves">S.L</th>
-                                    <th title="Medium-Danger Goals">G.M</th>
-                                    <th title="Medium-Danger Saves">S.M</th>
-                                    <th title="High-Danger Goals">G.H</th>
-                                    <th title="High-Danger Saves">S.H</th>
-                                    <th title="Time On Ice (Minutes)">TOI</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <hr/>
-                <div class="row">
-                    <div class="col-md-12 table-responsive">
-                        <h3><img height="45" id="away-players-logo" />Away Players</h3>
-                        <table id="awayPlayers" class="table table-striped table-hover table-condensed" style="width:100%;">
-                            <thead>
-                                <tr>
-                                    <th class="base" title="Name">Name</th>
-                                    <th class="base" title="Position">Pos</th>
-                                    <th class="base" title="Goals Scored">G</th>
-                                    <th class="base" title="First Assists">A1</th>
-                                    <th class="base" title="Second Assists">A2</th>
-                                    <th class="base" title="Total Points">P</th>
-                                    <th class="prime" title="Individual High-Danger Scoring Chances">iHSC</th>
-                                    <th class="prime" title="Individual Scoring Chances">iSC</th>
-                                    <th class="prime" title="Individual Shot Attempts">iCF</th>
-                                    <th class="prime" title="On-Ice Corsi Differential">C+/-</th>
-                                    <th class="prime" title="On-Ice Fenwick Differential">F+/-</th>
-                                    <th class="prime" title="On-Ice Goal Differential">G+/-</th>
-                                    <th class="prime" title="Corsi For Total">CF</th>
-                                    <th class="prime" title="Fenwick For Total">FF</th>
-                                    <th class="prime" title="Offensive Zone Stats">ZSO</th>
-                                    <th class="prime" title="Defensive Zone Starts">ZSD</th>
-                                    <th class="prime" title="Shots Attempts Blocked By Play">AB</th>
-                                    <th class="prime" title="Faceoffs Won">FO_W</th>
-                                    <th class="prime" title="Faceoffs Lost">FO_L</th>
-                                    <th class="prime" title="Hits">HIT+</th>
-                                    <th class="prime" title="Hits Taken">HIT-</th>
-                                    <th class="prime" title="Penalties">PN+</th>
-                                    <th class="prime" title="Penalties Drawn">PN-</th>
-                                    <th class="prime" title="Time On Ice">TOI</th>
-                                    <th class="rates" title="Corsi For, Per 60 Minutes">CF60</th>
-                                    <th class="rates" title="Corsi Against, Per 60 Minutes">CA60</th>
-                                    <th class="rates" title="Corsi For and Against, Per 60 Minutes">CP60</th>
-                                    <th class="rates" title="Fenwick For, Per 60 Minutes">FF60</th>
-                                    <th class="rates" title="Fenwick Against, Per 60 Minutes">FA60</th>
-                                    <th class="rates" title="Fenwick For and Against, Per 60 Minutes">FP60</th>
-                                    <th class="rates" title="Shots For, Per 60 Minutes">SF60</th>
-                                    <th class="rates" title="Shots Against, Per 60 Minutes">SA60</th>
-                                    <th class="rates" title="Shots For and Against, Per 60 Minutes">FP60</th>
-                                    <th class="counts" title="Shot Attempts By Player, Blocked">BK</th>
-                                    <th class="counts" title="Shot Attempts Blocked By Player">AB</th>
-                                    <th class="counts" title="Missed Shots">MS</th>
-                                    <th class="counts" title="Saved Shots">SH</th>
-                                    <th class="counts" title="On-Ice Shots For Total">SF</th>
-                                    <th class="counts" title="On-Ice Shots Against Total">SA</th>
-                                    <th class="counts" title="On-Ice Goals For Total">GF</th>
-                                    <th class="counts" title="On-Ice Goals Against Total">GA</th>
-                                    <th class="counts" title="Fenwick For Total">FF</th>
-                                    <th class="counts" title="Fenwick Against Total">FA</th>
-                                    <th class="counts" title="Corsi For Total">CF</th>
-                                    <th class="counts" title="Corsi Against Total">CA</th>
-                                    <th class="counts" title="On-Ice Scoring Chances For Total">SCF</th>
-                                    <th class="counts" title="On-Ice Scoring Chances Against Total">SCA</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <hr/>
-                <div class="row">
-                    <div class="col-md-12 table-responsive">
-                        <h3><img height="45" id="home-players-logo" />Home Players</h3>
-                        <table id="homePlayers" class="table table-striped table-hover table-condensed" style="width:100%;">
-                            <thead>
-                                <tr>
-                                    <th class="base" title="Name">Name</th>
-                                    <th class="base" title="Position">Pos</th>
-                                    <th class="base" title="Goals Scored">G</th>
-                                    <th class="base" title="First Assists">A1</th>
-                                    <th class="base" title="Second Assists">A2</th>
-                                    <th class="base" title="Total Points">P</th>
-                                    <th class="prime" title="Individual High-Danger Scoring Chances">iHSC</th>
-                                    <th class="prime" title="Individual Scoring Chances">iSC</th>
-                                    <th class="prime" title="Individual Shot Attempts">iCF</th>
-                                    <th class="prime" title="On-Ice Corsi Differential">C+/-</th>
-                                    <th class="prime" title="On-Ice Fenwick Differential">F+/-</th>
-                                    <th class="prime" title="On-Ice Goal Differential">G+/-</th>
-                                    <th class="prime" title="Corsi For Total">CF</th>
-                                    <th class="prime" title="Fenwick For Total">FF</th>
-                                    <th class="prime" title="Offensive Zone Stats">ZSO</th>
-                                    <th class="prime" title="Defensive Zone Starts">ZSD</th>
-                                    <th class="prime" title="Shots Attempts Blocked By Play">AB</th>
-                                    <th class="prime" title="Faceoffs Won">FO_W</th>
-                                    <th class="prime" title="Faceoffs Lost">FO_L</th>
-                                    <th class="prime" title="Hits">HIT+</th>
-                                    <th class="prime" title="Hits Taken">HIT-</th>
-                                    <th class="prime" title="Penalties">PN+</th>
-                                    <th class="prime" title="Penalties Drawn">PN-</th>
-                                    <th class="prime" title="Time On Ice">TOI</th>
-                                    <th class="rates" title="Corsi For, Per 60 Minutes">CF60</th>
-                                    <th class="rates" title="Corsi Against, Per 60 Minutes">CA60</th>
-                                    <th class="rates" title="Corsi For and Against, Per 60 Minutes">CP60</th>
-                                    <th class="rates" title="Fenwick For, Per 60 Minutes">FF60</th>
-                                    <th class="rates" title="Fenwick Against, Per 60 Minutes">FA60</th>
-                                    <th class="rates" title="Fenwick For and Against, Per 60 Minutes">FP60</th>
-                                    <th class="rates" title="Shots For, Per 60 Minutes">SF60</th>
-                                    <th class="rates" title="Shots Against, Per 60 Minutes">SA60</th>
-                                    <th class="rates" title="Shots For and Against, Per 60 Minutes">FP60</th>
-                                    <th class="counts" title="Shot Attempts By Player, Blocked">BK</th>
-                                    <th class="counts" title="Shot Attempts Blocked By Player">AB</th>
-                                    <th class="counts" title="Missed Shots">MS</th>
-                                    <th class="counts" title="Saved Shots">SH</th>
-                                    <th class="counts" title="On-Ice Shots For Total">SF</th>
-                                    <th class="counts" title="On-Ice Shots Against Total">SA</th>
-                                    <th class="counts" title="On-Ice Goals For Total">GF</th>
-                                    <th class="counts" title="On-Ice Goals Against Total">GA</th>
-                                    <th class="counts" title="Fenwick For Total">FF</th>
-                                    <th class="counts" title="Fenwick Against Total">FA</th>
-                                    <th class="counts" title="Corsi For Total">CF</th>
-                                    <th class="counts" title="Corsi Against Total">CA</th>
-                                    <th class="counts" title="On-Ice Scoring Chances For Total">SCF</th>
-                                    <th class="counts" title="On-Ice Scoring Chances Against Total">SCA</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="graphView">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3 class="text-center">Shots Attempts</h3>
-                                <div id="shotChart"></div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div id="saChart"></div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div id="scChart"></div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <h3 class="text-center">Player Corsi Events</h3>
-                            <p class="text-center">*Click points to toggle information</p>
-                            <div class="col-md-6 col-sm-12">
-                                <div id="away-corsi"></div>
-                            </div>
-                            <div class="col-md-6 col-sm-12">
-                                <div id="home-corsi"></div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <h3 class="text-center">Head-To-Head Matchups</h3>
-                            <div class="col-md-12">
-                                Order: <select id="order">
-                                  <option value="name">by Name</option>
-                                  <option value="count">by TOI</option>
-                                  <option value="group">by Team</option>
-                                </select>
-                            </div>
-                            <div class="col-md-12">
-                                <div id="co"></div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div id="pngdataurl" style="display:none"></div>
+<div id="canvasArea">
+    <canvas style="display:none;" id="canvas" width="1000px" height="700px"></canvas>
 </div>
 
     <!--{% endblock %}-->
@@ -391,6 +399,7 @@
     <script src="/static/js/graphs/eventChart.js"></script>
     <script src="/static/js/graphs/corsiEventChart.js"></script>
     <script src="/static/js/graphs/headToHeadChart.js"></script>
+    <script src="/static/js/graphs/svgPNG.js"></script>
     <script src="/static/js/getUrl.js"></script>
     <script>
         var getUrlParameter = function getUrlParameter(sParam) {
@@ -632,9 +641,9 @@
                             {"data": "toi"},
                         ]
                     });
-
                     shotChart(data.shotData, details.homeTeamAbbr, details.awayTeamAbbr);
                     create_shot_attempts(data.eventcount, "#saChart", "sa", details.homeTeamName, details.awayTeamName);
+                    savePNG("#saChartButton", "#saChart");
                     create_shot_attempts(data.eventcount, "#scChart", "sc", details.homeTeamName, details.awayTeamName);
                     create_corsi_events(data.homeSkaters, "#home-corsi", details.homeTeamName);
                     create_corsi_events(data.awaySkaters, "#away-corsi", details.awayTeamName);
