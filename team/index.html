@@ -122,11 +122,13 @@
             $.ajax({
                 url: url + "pbp/games?team=" + team,
                 success: function(data) {
+                    var fdata = data.finished
                     var table = $('#recentgames').DataTable({
                         "iDisplayLength": 15,
-                        "data": data,
+                        "data": fdata,
                         "sAjaxDataProp": "",
                         "responsive": true,
+                        "order": [[0, "desc"]],
                         "columns": [
                           {"data": "date",
                            "render": function (data, type, full, meta) {
@@ -161,10 +163,11 @@
                     var output = d.getFullYear() + '-' +
                         (month<10 ? '0' : '') + month + '-' +
                         (day<10 ? '0' : '') + day;
-
+                    var fdata = data.remaining.concat(data.finished);
                     var calendarEvents = [];
-                    for (var i=0; i<data.length; i++) {
-                        var game = data[i];
+                    console.log(fdata.length);
+                    for (var i=0; i<fdata.length; i++) {
+                        var game = fdata[i];
                         var cdata = {};
                         cdata.start = game.date;
                         cdata.end = game.date;
@@ -176,7 +179,9 @@
                         var homeScore = score[0];
                         var awayScore = score[1];
                         var sdata = {};
-                        sdata.title = game.score;
+                        if (game.endDateTime != "")
+                            sdata.title = game.score;
+                        sdata.description = game.dateTime;
                         sdata.start = game.date;
                         sdata.backgroundColor = "transparent";
                         sdata.allDay = true;
@@ -194,12 +199,13 @@
                             className += "win";
                         } else if (teamscore < opponentscore) {
                             className += "loss";
+                        } else {
+                            className += "tie";
                         }
                         cdata.className = className;
                         calendarEvents.push(cdata);
                         calendarEvents.push(sdata);
                     }
-
                     $("#calendarTable").fullCalendar({
                         header: {
                             left: 'prev,next today',
@@ -208,7 +214,13 @@
                         timezone: "America/Chicago",
                         defaultDate: output,
                         editable: false,
-                        events: calendarEvents
+                        events: calendarEvents,
+                        eventRender: function(event, el) {
+                            // render the timez below the event title
+                            el.find('.fc-title').after(
+                                $('<div class="time"/>').text(event.description)
+                            );
+                        },
                     });
 
                 }

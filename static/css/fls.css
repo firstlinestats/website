@@ -261,11 +261,11 @@ div.tooltip {
 }
 
 .fc-title {
-  font-size: 50px;
-  text-shadow:  2px  2px #000,
-               -2px  2px #000,
-                2px -2px #000,
-               -2px -2px #000;
+  font-size: 40px;
+  text-shadow:  1px  1px #000,
+               -1px  1px #000,
+                1px -1px #000,
+               -1px -1px #000;
 }
 
 .fc-event {
@@ -286,6 +286,18 @@ div.tooltip {
 
 .win {
   background-color: rgba(75, 22, 123);
+}
+
+.tie {
+  background-color: #706E75;
+}
+
+.time {
+  font-size: 20px;
+  text-shadow:  1px  1px #000,
+               -1px  1px #000,
+                1px -1px #000,
+               -1px -1px #000;
 }
 
 table a:not(.btn),
