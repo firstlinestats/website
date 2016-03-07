@@ -222,7 +222,6 @@
 
             $('#recentgames').DataTable({
                 "iDisplayLength": 15,
-                "bSort": false,
                 "ajax": url + "pbp/recent/?format=json",
                 "sAjaxDataProp": "",
                 "responsive": true,
@@ -236,14 +235,14 @@
                   {
                     "data": "homeTeam",
                     "render": function ( data, type, full, meta ) {
-                      return '<img height="17" width="17" src="./static/images/team/' + data.abbreviation + '.png"><a href="/teams"?team=' + data.abbreviation + '">' + data.shortName + '</a>';
+                      return '<img height="17" width="17" src="./static/images/team/' + data.abbreviation + '.png"><a href="/team/?team=' + data.abbreviation + '">' + data.shortName + '</a>';
                     }
                   },
                   {"data": "score"},
                   {
                     "data": "awayTeam",
                     "render": function ( data, type, full, meta ) {
-                      return '<img height="17" width="17" src="/static/images/team/' + data.abbreviation + '.png"><a href="/teams/?team=' + data.abbreviation + '">' + data.shortName + '</a>';
+                      return '<img height="17" width="17" src="/static/images/team/' + data.abbreviation + '.png"><a href="/team/?team=' + data.abbreviation + '">' + data.shortName + '</a>';
                     }
                   },
                   {"data": "corsi"},
@@ -315,7 +314,7 @@
                 "columns": [
                   {"data": "team.shortName",
                    "render": function( data, type, full, meta ) {
-                      return '<img height="17" width="17" src="./static/images/team/' + full.team.abbreviation + '.png"><a href="/teams/"?team=' + full.team.abbreviation + '">' + full.team.shortName + '</a>';
+                      return '<img height="17" width="17" src="./static/images/team/' + full.team.abbreviation + '.png"><a href="/team/?team=' + full.team.abbreviation + '">' + full.team.shortName + '</a>';
                    }
                   },
                   {"data": "points"},

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>First Line Stats</title>
+    <!-- Bootstrap core CSS -->
+    <link rel='shortcut icon' type='image/x-icon' href="/static/images/favicon.png" />
+    <!--{% block page_css %}-->
+    <link href="/static/DataTables/datatables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!--{% endblock %}-->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/fls.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <div class="navbar-brand" href="#">
+                    <a href="/"><img class="fls-logo" src="/static/images/logo_text.png"></a>
+                </div>
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="/" style="font-size:25px;">First Line Stats</a></li>
+                </ul>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Players <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/players/skaters">Skaters</a></li>
+                            <li><a href="/players/goalies">Goalies</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/teams">Teams</a></li>
+                    <li><a href="/games">Games</a></li>
+                    <li><a href="/about" class="active">About Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--{% block content %}-->
+    <div class="container">
+      <div class="jumbotron">
+        <h2>All the hockey stats you want, and then some.</h2>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h4><b>Who are we?</h4></b>
+          <blockquote>We're a group of guys passionate about hockey and programming. Built on the shoulders of giants like <a target="_blank" href="http://war-on-ice.com">WAR-On-Ice</a>, we aim to provide the public with advanced hockey statistics they can't get elsewhere. This is a passion project and a programming challenge for us.</blockquote>
+
+          <h4><b>What's our purpose?</b></h4>
+          <blockquote>The world of professional hockey reporting has changed greatly the past few years as players are scrutinized by more and more data. Our aim is to present those numbers to you in a way that is, hopefully, easier to understand. We are a group of data scientists who love analyzing data and finding insight in new places and we want to enable others to do the same. Our primary purpose is for research; feel free to extract any data you see for your articles, tweets, etc. Much like other sites, all we ask is that you cite our work and link back to us so that your viewers can obtain the same data you did.</blockquote>
+
+          <h4><b>Where did all this start?</b></h4>
+          <blockquote><i class="fa fa-twitter"></i><a target="_blank" href="http://twitter.com/MattDaye">@MattDaye</a> reached out to <a target="_blank" href="http://war-on-ice.com">WAR-On-Ice</a> when they sent a call out for volunteers to help with site functionality. After the announcement that the site would be closing, Matt reached out to his friends (<i class="fa fa-twitter"></i><a target="_blank" href="http://twitter.com/SpencerVanCise">@SpencerVanCise</a> and Mr. Pog) to put together a new site to provide the information the hockey community loves about <a target="_blank" href="http://war-on-ice.com">WAR-On-Ice</a> stayed around. While this is a great start, we still have a lot of work to do, and this is only the beginning.</blockquote>
+
+          <h4><b>What can I, the reader, do with this data?</b></h4>
+          <blockquote>This data comes from the league and their partners so it is not our place to sell or make a profit from it. In fact, if any money is ever raised from this site, it will go entirely toward server costs and charity. We provide what we can so that others can learn something new. Feel free to share or transform our data, but don't do anything stupid.</blockquote>
+
+          <h4><b>Can I scrape your data?</b></h4>
+          <blockquote>This is an open-source and readily available resource. That said, we try to make it not worth scraping our site for data by trying to make the data as accessible as we can. We offer download buttons and export functionality for all our data and charts. (See something we missed? Yell at <i class="fa fa-twitter"></i><a target="_blank" href="http://twitter.com/MattDaye">@MattDaye</a>.) If you don't see what you're looking for, feel free to <i class="fa fa-paper-plane"></i><a href="mailto:firstlinestats@gmail.com">email (firstlinestats@gmail.com)</a> or <i class="fa fa-twitter"></i><a target="_blank" href="http://twitter.com/firstlinestats">tweet at us</a> and we'll try and make that happen. Please don't hammer our site with bots trying to copy our data; we would rather work with you.</blockquote>
+
+          <h4><b>What about what I do with the data?</b></h4>
+          <blockquote>The use of this site comes with no warranty. We also are not responsible for anything you do with this data. If you trade Sidney Crosby because of something you saw on this site, well, that's on you.</blockquote>
+
+          <h4><b>What if I see something wrong with your stats or site?</b></h4>
+          <blockquote>Report it! Part of our mission is to provide accurate data to you. Feel free to <i class="fa fa-paper-plane"></i><a href="mailto:firstlinestats@gmail.com">email (firstlinestats@gmail.com)</a> or <i class="fa fa-twitter"></i><a target="_blank" href="http://twitter.com/firstlinestats">tweet at us</a> with any issues you find and we'll get back to you as soon as we can.</blockquote>
+
+          <h4><b>Can I suggest new content for your site?</b></h4><blockquote>Absolutely! We want to provide a place for innovation and creative thinking and will gladly consider new ideas.</blockquote>
+
+          <h4><b>Can I donate to your site?</b></h4><blockquote>It depends. If we find that server costs are too high or decide to provide the site completely advertisement-free, we may add a donate button. Again, we're not looking to make a name for ourselves or make money; all donations would go toward server costs and charity.</blockquote>
+        </div>
+      </div>
+    </div>
+
+    <!--{% endblock %}-->
+    <script src="/static/js/jquery-2.2.0.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <!--{% block page_js %}-->
+
+    <!--{% endblock %}-->
+  </body>
+</html>
+    

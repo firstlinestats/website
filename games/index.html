@@ -279,14 +279,14 @@
                 }, {
                     "data": "homeTeam",
                     "render": function(data, type, full, meta) {
-                        return '<img height="17" width="17" src="/static/images/team/' + data.abbreviation + '.png"><a href="/teams">' + data.name + '</a>';
+                        return '<img height="17" width="17" src="/static/images/team/' + data.abbreviation + '.png"><a href="/team/?team=' + data.abbreviation + '">' + data.name + '</a>';
                     }
                 }, {
                     "data": "score"
                 }, {
                     "data": "awayTeam",
                     "render": function(data, type, full, meta) {
-                        return '<img height="17" width="17" src="/static/images/team/' + data.abbreviation + '.png"><a href="/teams">' + data.name + '</a>';
+                        return '<img height="17" width="17" src="/static/images/team/' + data.abbreviation + '.png"><a href="/team/?team=' + data.abbreviation + '">' + data.name + '</a>';
                     }
                 }, {
                     "data": "corsi"
