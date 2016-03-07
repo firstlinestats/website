@@ -1,6 +1,6 @@
 function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
     // add the graph canvas to the body of the webpage
-    var margin = {top: 20, right: 20, bottom: 20, left: 40},
+    var margin = {top: 20, right: 50, bottom: 20, left: 40},
         width = $("#gameStatsContent").width() - margin.left - margin.right,
         height = width * 0.425 + margin.left;
 

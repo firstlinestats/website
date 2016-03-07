@@ -86,16 +86,13 @@
               <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="currentA">
                   <div class="well bs-component">
-                    <table id="atlanticTable" class="table table-striped table-hover ">
+                    <table id="atlanticTable" class="table table-striped table-hover">
                       <thead>
                         <tr>
-                          <th>Team Name</th>
-                          <th>Games Played</th>
-                          <th>Wins</th>
-                          <th>Losses</th>
+                          <th>Team</th>
                           <th>Points</th>
-                          <th>Goals For</th>
-                          <th>Goals Against</th>
+                          <th>Record</th>
+                          <th>Goals</th>
                           <th>Streak</th>
                         </tr>
                       </thead>
@@ -119,16 +116,13 @@
               <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="currentM">
                   <div class="well bs-component">
-                    <table id="metroTable" class="table table-striped table-hover ">
+                    <table id="metroTable" class="table table-striped table-hover">
                       <thead>
                         <tr>
-                          <th>Team Name</th>
-                          <th>Games Played</th>
-                          <th>Wins</th>
-                          <th>Losses</th>
+                          <th>Team</th>
                           <th>Points</th>
-                          <th>Goals For</th>
-                          <th>Goals Against</th>
+                          <th>Record</th>
+                          <th>Goals</th>
                           <th>Streak</th>
                         </tr>
                       </thead>
@@ -159,16 +153,13 @@
               <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="currentC">
                   <div class="well bs-component">
-                    <table id="centralTable" class="table table-striped table-hover ">
+                    <table id="centralTable" class="table table-striped table-hover">
                       <thead>
                         <tr>
-                          <th>Team Name</th>
-                          <th>Games Played</th>
-                          <th>Wins</th>
-                          <th>Losses</th>
+                          <th>Team</th>
                           <th>Points</th>
-                          <th>Goals For</th>
-                          <th>Goals Against</th>
+                          <th>Record</th>
+                          <th>Goals</th>
                           <th>Streak</th>
                         </tr>
                       </thead>
@@ -192,16 +183,13 @@
               <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="currentP">
                   <div class="well bs-component">
-                    <table id="pacificTable" class="table table-striped table-hover ">
+                    <table id="pacificTable" class="table table-striped table-hover">
                       <thead>
                         <tr>
-                          <th>Team Name</th>
-                          <th>Games Played</th>
-                          <th>Wins</th>
-                          <th>Losses</th>
+                          <th>Team</th>
                           <th>Points</th>
-                          <th>Goals For</th>
-                          <th>Goals Against</th>
+                          <th>Record</th>
+                          <th>Goals</th>
                           <th>Streak</th>
                         </tr>
                       </thead>
@@ -274,38 +262,26 @@
                         central = [];
                     for (var i=0; i<result.length; i++) {
                         var row = result[i],
-                            team = '<img height="17" width="17" src="./static/images/team/' + row.team.abbreviation + '.png"><a href="/teams">' + row.team.shortName + '</a>',
-                            gp = row.gamesPlayed,
-                            wins = row.wins,
-                            losses = row.losses,
-                            points = row.points,
-                            gf = row.goalsScored,
-                            ga = row.goalsAgainst,
-                            streak = row.streakCode,
-                            division = row.team.division,
-                            date = row.date,
-                            points = row.points;
-                        var rowdata = [team, gp, wins, losses, points, gf, ga, streak];
-                        divisions[division].push(team);
+                            division = row.team.division;
                         switch (division) {
                             case "Atlantic":
-                                atlantic.push(rowdata);
+                                atlantic.push(row);
                                 break;
                             case "Pacific":
-                                pacific.push(rowdata);
+                                pacific.push(row);
                                 break;
                             case "Metropolitan":
-                                metro.push(rowdata);
+                                metro.push(row);
                                 break;
                             case "Central":
-                                central.push(rowdata);
+                                central.push(row);
                                 break;
                         }
                     }
-                    loadTable(atlantic, "#atlanticTable");
-                    loadTable(metro, "#metroTable");
-                    loadTable(pacific, "#pacificTable");
-                    loadTable(central, "#centralTable");
+                    createRecord(atlantic, "#atlanticTable");
+                    createRecord(metro, "#metroTable");
+                    createRecord(pacific, "#pacificTable");
+                    createRecord(central, "#centralTable");
                 },
             });
             $.ajax({url: url + "team/dailystats/?format=json",
@@ -329,6 +305,57 @@
                     CreateHistorical("#Phistorical", data["Pacific"], "#currentP");
                 }
             })
+
+            function createRecord(data, table_id) {
+              $(table_id).DataTable({
+                "sAjaxDataProp": "",
+                "data": data,
+                "sDom": "t",
+                "order": [[ 1, "desc" ]],
+                "columns": [
+                  {"data": "team.shortName",
+                   "render": function( data, type, full, meta ) {
+                      return '<img height="17" width="17" src="./static/images/team/' + full.team.abbreviation + '.png"><a href="/teams/"?team=' + full.team.abbreviation + '">' + full.team.shortName + '</a>';
+                   }
+                  },
+                  {"data": "points"},
+                  {"data": "record",
+                   "render": function( data, type, full, meta ) {
+                      var wins = full.wins.toString(),
+                          losses = full.losses.toString(),
+                          ot = full.ot.toString();
+                      wins = checkLength(wins);
+                      losses = checkLength(losses);
+                      ot = checkLength(ot);
+                      return wins + "-" + losses + "-" + ot;
+                   }
+                  },
+                  {"data": "goalsScored",
+                   "render": function(data, type, full, meta) {
+                    return data + "/" + full.goalsAgainst;
+                   }
+                  },
+                  {"data": "streakCode"}
+                ],
+                "createdRow": function(row, data, index) {
+                  var row_color = "info",
+                      v = data.streakCode;
+                  if (v.indexOf("L") != -1)
+                      row_color = "danger";
+                  else if (v.indexOf("W") != -1)
+                      row_color = "success";
+                  else if (v.indexOf("O") != -1)
+                      row_color = "warning";
+                  $('td', row).eq(4).addClass(row_color);
+                }
+              })
+            }
+
+            function checkLength(number) {
+              if (number.length == 1)
+                return "0" + number;
+              return number;
+            }
 
             function loadTable(data, table_id) {
                 var tbl_body = "";
