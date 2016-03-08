@@ -34,6 +34,11 @@ function shotChart(data, homeabbr, awayabbr) {
         .attr("height", height)
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    svg.append("rect")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("transform", "translate(-" + margin.left + ",-" + margin.top + ")")
+        .attr("fill", "white");
 
     svg.append("svg:image")
         .attr("xlink:href", "/static/svg/rink.png")

@@ -1,35 +1,9 @@
 function savePNG(button_id, svg_id) {
   d3.select(button_id).on("click", function(){
-    /*var html = d3.select(svg_id)
-          .attr("version", 1.1)
-          .attr("xmlns", "http://www.w3.org/2000/svg")
-          .node().innerHTML.trim();
-    var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
-    var img = '<img src="'+imgsrc+'">'; 
-    var canvas = document.querySelector("canvas"),
-        context = canvas.getContext("2d");
-    canvas.width = $(svg_id).width();
-    canvas.height = $(svg_id).height();
-    var image = new Image;
-    image.src = imgsrc;
-    image.onload = function() {
-        context.drawImage(image, 0, 0);
-        var canvasdata = canvas.toDataURL("image/png");
-        var pngimg = '<img src="'+canvasdata+'">'; 
-        d3.select("#pngdataurl").html(pngimg);
-        var a = document.createElement("a");
-        a.download = "sample.png";
-        a.href = canvasdata;
-            document.body.appendChild(a);
-        a.click();
-    };*/
     var svgText = $(svg_id).html();
-    canvg('canvas', svgText);
-    var a = document.createElement("a");
-    a.download = "firstlinestats.png";
-    var canvasdata = document.querySelector("canvas").toDataURL("image/png");
-    a.href = canvasdata;
-        document.body.appendChild(a);
-    a.click();
+    canvg('canvas', svgText, { renderCallback: function () {
+      var img = canvas.toDataURL("image/png");
+      window.open(img);
+      }});
   });
 }

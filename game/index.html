@@ -355,23 +355,28 @@
                                 <h3 class="text-center">Player Corsi Events</h3>
                                 <p class="text-center">*Click points to toggle information</p>
                                 <div class="col-md-6 col-sm-12">
+                                    <h4 class="text-center">Away Corsi&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-xs btn-primary" id="away-corsiButton"><i class="fa fa-floppy-o"></i> Save</button></h4>
                                     <div id="away-corsi"></div>
                                 </div>
                                 <div class="col-md-6 col-sm-12">
+                                    <h4 class="text-center">Home Corsi&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-xs btn-primary" id="home-corsiButton"><i class="fa fa-floppy-o"></i> Save</button></h4>
                                     <div id="home-corsi"></div>
                                 </div>
                             </div>
                             <div class="row">
-                                <h3 class="text-center">Head-To-Head Matchups</h3>
+                                <h4 class="text-center">Head-To-Head Matchups&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-xs btn-primary" id="coButton"><i class="fa fa-floppy-o"></i> Save</button></h3>
                                 <div class="col-md-12">
-                                    Order: <select id="order">
-                                      <option value="name">by Name</option>
-                                      <option value="count">by TOI</option>
-                                      <option value="group">by Team</option>
-                                    </select>
+                                    <div class="form-group form-group-sm" style="max-width:500px;margin: 0 auto;">
+                                        <label class="control-label">Order:</label>
+                                        <select class="form-control input-sm" id="order">
+                                          <option value="name">by Name</option>
+                                          <option value="count">by TOI</option>
+                                          <option value="group">by Team</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div id="co"></div>
+                                    <div id="co" class="text-center"></div>
                                 </div>
                             </div>
                         </div>
@@ -650,10 +655,12 @@
                     create_shot_attempts(data.eventcount, "#scChart", "sc", details.homeTeamName, details.awayTeamName);
                     savePNG("#scChartButton", "#scChart");
                     create_corsi_events(data.homeSkaters, "#home-corsi", details.homeTeamName);
+                    savePNG("#home-corsiButton", "#home-corsi");
                     create_corsi_events(data.awaySkaters, "#away-corsi", details.awayTeamName);
+                    savePNG("#away-corsiButton", "#away-corsi");
                     var pvp = data.pvp;
                     create_co("#co", pvp);
-                    
+                    savePNG("#coButton", "#co");
                 }
             });
 

@@ -84,6 +84,11 @@ function create_corsi_events(alldata, divid, teamname) {
   // don't want dots overlapping axis, so add in buffer to data domain
   xScale.domain([d3.min([0, d3.min(data, xValue)-1]), d3.max(data, xValue)+1]);
   yScale.domain([-d3.max(data, function(d) { return Math.abs(d.cf - d.ca) + 1; }), d3.max(data,  function(d) { return Math.abs(d.cf - d.ca); }) + 1]);
+  svg.append("rect")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .attr("transform", "translate(-" + margin.left + ",-" + margin.top + ")")
+      .attr("fill", "white");
   // x-axis
   svg.append("g")
       .attr("class", "x axis")
