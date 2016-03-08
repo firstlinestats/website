@@ -46,7 +46,18 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
     var homeMax = d3.max(data["home" + valtype], yValue) + 1;
     var awayMax = d3.max(data["away" + valtype], yValue) + 1;
     var yScaleMax = Math.max(homeMax, awayMax);
-    xScale.domain([0, d3.max(data["home" + valtype], xValue)]);
+    var xSecondsMax = d3.max(data["home" + valtype], xValue);
+    var secondsMax = 0;
+    if (xSecondsMax < 60*20) {
+        secondsMax = 60*20;
+    } else if (xSecondsMax < 60*40) {
+        secondsMax = 60*40;
+    } else if (xSecondsMax < 60*60) {
+        secondsMax = 60*60;
+    } else {
+        secondsMax = secondsMax + 5;
+    }
+    xScale.domain([0, secondsMax]);
     yScale.domain([0, yScaleMax]);
     // x-axis
     svg.append("g")
