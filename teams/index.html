@@ -54,9 +54,7 @@
                             <th>Team</th>
                             <th>Division</th>
                             <th>Conference</th>
-                            <th>Wins</th>
-                            <th>Losses</th>
-                            <th>OT Losses</th>
+                            <th>Record</th>
                             <th>Points</th>
                             <th>Goals For</th>
                             <th>Goals Against</th>
@@ -105,14 +103,27 @@
                     },
                     {"data": "team.division"},
                     {"data": "team.conference"},
-                    {"data": "wins"},
-                    {"data": "losses"},
-                    {"data": "ot"},
+                    {"data": "record",
+                     "render": function(data, type, full, meta) {
+                        return full.wins + "-" + full.losses + "-" + full.ot;
+                     }
+                    },
                     {"data": "points"},
                     {"data": "goalsScored"},
                     {"data": "goalsAgainst"},
                     {"data": "streakCode"},
-                ]
+                ],
+                "createdRow": function(row, data, index) {
+                  var row_color = "info",
+                      v = data.streakCode;
+                  if (v.indexOf("L") != -1)
+                      row_color = "danger";
+                  else if (v.indexOf("W") != -1)
+                      row_color = "success";
+                  else if (v.indexOf("O") != -1)
+                      row_color = "warning";
+                  $('td', row).eq(7).addClass(row_color);
+                }
             })
         })
     </script>
