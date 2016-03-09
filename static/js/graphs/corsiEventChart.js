@@ -117,9 +117,9 @@ function create_corsi_events(alldata, divid, teamname) {
     return minutes + ":" + seconds
   }
     svg.append("text")
-        .attr("x", margin.left)
+        .attr("x", margin.left + 50)
         .attr("y", height - margin.bottom)
-        .attr("text-anchor", "left")
+        .attr("text-anchor", "middle")
         .style("font-size", "20px")
         .style("fill", "grey")
         .text("firstlinestats.com")
@@ -141,8 +141,7 @@ function create_corsi_events(alldata, divid, teamname) {
       .style("fill", function(d) { return get_color(teamname, true); })
       .style("stroke", function(d) { return get_color(teamname, false); })
       .on("click", mouseover)
-      //.on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-      //.on("mouseout", mouseout);
+
     function mouseover(p) {
         var tooltip = d3.select("#" + teamname + "-" + p.cf + "-" + p.ca + "-tooltip");
         var active = tooltip.attr("active"),
@@ -152,7 +151,40 @@ function create_corsi_events(alldata, divid, teamname) {
         if (active == "false") {
           tooltip.style("visibility", "visible")
           tooltip.attr("active", "true")
+          if ($("#" + teamname + "-" + p.cf + "-" + p.ca + "-name").length == 0) {
+            svg.append("text")
+              .attr("id", teamname + "-" + p.cf + "-" + p.ca + "-name")
+              .attr("x", xMap(p))
+              .attr("y", yMap(p) - 5)
+              .attr("text-anchor", "middle")  
+              .style("font-size", "16px")
+              .text(p.name);
+          }
         } else {
+          tooltip.style("visibility", "hidden")
+          tooltip.attr("active", "false")
+        }
+    }
+    function mouseoverName(p) {
+        console.log(p);
+        var tooltip = d3.select("#" + teamname + "-" + p.cf + "-" + p.ca + "-tooltip");
+        var active = tooltip.attr("active"),
+          newOpacity = active ? 0 : 1;
+        tooltip.html(p["name"] + "<br />SF:" + p.cf + "<br />SA:" + p.ca + "<br />TOI:" + p.toi);
+        tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");
+        if (active == "false") {
+          tooltip.style("visibility", "visible")
+          tooltip.attr("active", "true")
+          svg.append("text")
+            .attr("id", "#" + teamname + "-" + p.cf + "-" + p.ca + "-name")
+            .attr("x", xMap(p))
+            .attr("y", yMap(p) - 5)
+            .attr("text-anchor", "middle")  
+            .style("font-size", "16px")
+            .on("click", mouseoverName)
+            .text(p.name);
+        } else {
+          $("#" + teamname + "-" + p.cf + "-" + p.ca + "-name").remove();
           tooltip.style("visibility", "hidden")
           tooltip.attr("active", "false")
         }
