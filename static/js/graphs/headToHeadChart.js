@@ -147,7 +147,7 @@ function create_co(divid, data) {
       var timeout = setTimeout(function() {
         order("group");
         //d3.select("#order").property("selectedIndex", 2).node().focus();
-      }, 5000);
+      }, 2500);
 svg.append("text")
     .attr("x", -100)
     .attr("y", -25)
