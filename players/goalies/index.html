@@ -248,7 +248,7 @@
             </div>
         </div>        
         <div id="skatersTableContainer" class="col-md-12" style="display: none;">
-            <table id="playerList" class="table table-striped table-hover" style="width:100%;">
+            <table id="playerList" class="table table-striped table-condensed table-hover rt cf" style="width:100%;">
                 <thead>
                     <tr>
                         <th>Player</th>
@@ -330,7 +330,6 @@
         skateDT = $('#playerList').DataTable({
             iDisplayLength: 15,
             order: [[ 9, "desc" ]],
-            responsive: true,
             aLengthMenu: [[10, 15, 25, 50, -1], [10, 15, 25, 50, "All"]],
             fixedHeader: {
                 header: true,
