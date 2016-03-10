@@ -31,8 +31,6 @@ function shotChart(data, homeabbr, awayabbr) {
         .text("a simple tooltip");
 
     var svg = d3.select("#shotChart").append("svg")
-        //.attr("width", width)
-        //.attr("height", height)
         .attr("width", $("#shotChart").width())
         .attr("height", $("#shotChart").height())
         .attr("viewBox", "0 0 " + width + " " + height)
