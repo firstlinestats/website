@@ -3,6 +3,7 @@ function shotChart(data, homeabbr, awayabbr) {
         width = 900 - margin.left - margin.right,
         height = width * 0.425 + margin.left;
 
+    $("#shotChart").width($("#gameTabContent").width()).height($("#gameTabContent").width() * 0.425);
     var x = d3.scale.linear()
         .range([0, width]);
 
@@ -32,8 +33,8 @@ function shotChart(data, homeabbr, awayabbr) {
     var svg = d3.select("#shotChart").append("svg")
         //.attr("width", width)
         //.attr("height", height)
-        .attr("width", "100%")
-        .attr("height", "100%")
+        .attr("width", $("#shotChart").width())
+        .attr("height", $("#shotChart").height())
         .attr("viewBox", "0 0 " + width + " " + height)
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
