@@ -4,6 +4,12 @@ function create_corsi_events(alldata, divid, teamname) {
     height = width;
 
   $(divid).width(($("#gameTabContent").width()) / 2).height(($("#gameTabContent").width()) / 2);
+  console.log($(divid).width());
+  if ($(divid).width() < 768 / 2) {
+    width = (900 - margin.left) - margin.left - margin.right;
+    height = width;
+    $(divid).width($("#gameTabContent").width()).height($("#gameTabContent").width());
+  }
   var data = [];
   var existing = {};
   for (var i=0; i<alldata.length; i++) {
