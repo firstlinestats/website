@@ -38,9 +38,6 @@ function shotChart(data, homeabbr, awayabbr) {
         .attr("viewBox", "0 0 " + width + " " + height)
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        .attr("width", "100%")
-        .attr("height", "100%")
-        .attr("viewbox", "0 0 " + width + " " + height);
     svg.append("rect")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
