@@ -1,7 +1,7 @@
 function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
     // add the graph canvas to the body of the webpage
     var margin = {top: 20, right: 50, bottom: 20, left: 40},
-        width = $("#gameStatsContent").width() - margin.left - margin.right,
+        width = 900 - margin.left - margin.right,
         height = width * 0.425 + margin.left;
 
     var x = d3.scale.linear()
@@ -10,6 +10,7 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
     var y = d3.scale.linear()
         .range([height, 0]);
 
+    $(divid).width(($("#gameTabContent").width())).height(Math.round($("#gameTabContent").width() * 0.425));
     // setup x 
     var xValue = function(d) { return d.seconds; }, // data -> value
         xScale = d3.scale.linear().range([0, width]), // value -> display
@@ -34,8 +35,9 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
         .text("a simple tooltip");
 
     var svg = d3.select(divid).append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+      .attr("width", $(divid).width())
+      .attr("height", $(divid).height())
+      .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom))
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     svg.append("rect")

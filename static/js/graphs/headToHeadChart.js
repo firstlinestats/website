@@ -10,23 +10,27 @@ function create_co(divid, data) {
         .text("a simple tooltip");
     var maxwidth = 600;
     var margin = {top: 150, right: 0, bottom: 10, left: 150},
-        width = $("#gameStatsContent").width() - 100 - margin.left + margin.right,
-        height = $("#gameStatsContent").width() - 100 - margin.top - margin.bottom;
-    if (width > maxwidth)
-      width = height = maxwidth;
+        width = 600 - margin.left + margin.right,
+        height = 600 - margin.top - margin.bottom;
     var x = d3.scale.ordinal().rangeBands([0, width]),
         z = d3.scale.linear().domain([0, 4]).clamp(true),
         c = d3.scale.category10().domain(d3.range(10));
     var ramp = d3.scale.linear().domain([0, 50, 100]).range(["red", "gray", "blue"]);
+    var divwidth = $("#gameTabContent").width();
+    var divheight = $("#gameTabContent").width();
+    if (divwidth > 600) {
+      divwidth = 600;
+      divheight = 600;
+    }
     var boxScale = d3.scale.linear()
         .domain([
             d3.min(data["links"], function(d) { return d.TOI; }),
             d3.max(data["links"], function(d) { return d.TOI; })])
         .range([3, width / data["nodes"].length]);
     var svg = d3.select(divid).append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        //.style("margin-left", - margin.left + "px")
+      .attr("width", divwidth)
+      .attr("height", divheight)
+      .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom))
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     svg.append("rect")

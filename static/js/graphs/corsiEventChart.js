@@ -1,8 +1,9 @@
 function create_corsi_events(alldata, divid, teamname) {
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    width = ($("#gameStatsContent").width() - margin.left) / 2 - margin.left - margin.right,
+    width = (900 - margin.left) / 2 - margin.left - margin.right,
     height = width;
 
+  $(divid).width(($("#gameTabContent").width()) / 2).height(($("#gameTabContent").width()) / 2);
   var data = [];
   var existing = {};
   for (var i=0; i<alldata.length; i++) {
@@ -77,8 +78,9 @@ function create_corsi_events(alldata, divid, teamname) {
 
   // add the graph canvas to the body of the webpage
   var svg = d3.select(divid).append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
+      .attr("width", $(divid).width())
+      .attr("height", $(divid).width())
+      .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom))
     .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   // don't want dots overlapping axis, so add in buffer to data domain
