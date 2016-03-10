@@ -1,6 +1,6 @@
 function shotChart(data, homeabbr, awayabbr) {
     var margin = {top: 0, right: 0, bottom: 0, left: 0},
-        width = $("#gameStatsContent").width() - margin.left - margin.right,
+        width = 900 - margin.left - margin.right,
         height = width * 0.425 + margin.left;
 
     var x = d3.scale.linear()
@@ -30,10 +30,16 @@ function shotChart(data, homeabbr, awayabbr) {
         .text("a simple tooltip");
 
     var svg = d3.select("#shotChart").append("svg")
-        .attr("width", width)
-        .attr("height", height)
+        //.attr("width", width)
+        //.attr("height", height)
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("viewBox", "0 0 " + width + " " + height)
       .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("viewbox", "0 0 " + width + " " + height);
     svg.append("rect")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
