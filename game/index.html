@@ -337,6 +337,7 @@
                                 <div class="col-md-12">
                                     <h4 class="text-center">Shots Attempts&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-xs btn-primary" id="shotChartButton"><i class="fa fa-floppy-o"></i> Save</button></h4>
                                     <div id="shotChart"></div>
+                                    <img class="img-responsive" id="shotChartImg" />
                                 </div>
                             </div>
                             <div class="row">
@@ -453,7 +454,13 @@
                     goalies.rows.add(data.goalies);
                     goalies.draw();
                     $("#shotChart").html("");
+                    $("#shotChart").width($("#gameTabContent").width()).height($("#gameTabContent").width() * 0.425);
                     shotChart(data.shotData, details.homeTeamAbbr, details.awayTeamAbbr);
+                    /*var svgText = $("#shotChart").html();
+                    canvg('canvas', svgText, { renderCallback: function () {
+                        var img = canvas.toDataURL("image/png");
+                        $("#shotChartImg").attr('src', img);
+                    }});*/
                     $("#saChart").html("");
                     $("#scChart").html("");
                     $("#home-corsi").html("");
@@ -648,7 +655,13 @@
                             {"data": "toi"},
                         ]
                     });
+                    $("#shotChart").width($("#gameTabContent").width()).height($("#gameTabContent").width() * 0.425);
                     shotChart(data.shotData, details.homeTeamAbbr, details.awayTeamAbbr);
+                    /*var svgText = $("#shotChart").html();
+                    canvg('canvas', svgText, { renderCallback: function () {
+                        var img = canvas.toDataURL("image/png");
+                        $("#shotChartImg").attr('src', img);
+                    }});*/
                     savePNG("#shotChartButton", "#shotChart");
                     create_shot_attempts(data.eventcount, "#saChart", "sa", details.homeTeamName, details.awayTeamName);
                     savePNG("#saChartButton", "#saChart");
