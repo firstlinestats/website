@@ -3,7 +3,7 @@ function shotChart(data, homeabbr, awayabbr) {
         width = 900 - margin.left - margin.right,
         height = width * 0.425 + margin.left;
 
-    $("#shotChart").width($("#gameTabContent").width()).height($("#gameTabContent").width() * 0.425);
+    $("#shotChart").width($("#gameTabContent").width()).height(Math.round($("#gameTabContent").width() * 0.425));
     var x = d3.scale.linear()
         .range([0, width]);
 
