@@ -10,7 +10,6 @@ function savePNG(button_id, svg_id) {
         console.log(newwidth, newheight);
         svgText = svgText.replace("width=\"" + width + "\" height=\"" + height + "\"", "width=\"" + newwidth + "\" height=\"" + newheight + "\"")
     }
-    console.log(svgText);
     canvg('canvas', svgText, { renderCallback: function () {
       var img = canvas.toDataURL("image/png");
       window.open(img);
