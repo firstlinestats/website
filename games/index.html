@@ -197,7 +197,7 @@
                     </div>
                 </div>
                 <div id="gamesTableContainer" class="col-md-12" style="display: none">
-                    <table id="gameList" class="table table-striped table-hover ">
+                    <table id="gameList" class="table table-striped table-condensed table-hover rt cf">
                         <thead>
                             <tr>
                                 <th>Game Date</th>
@@ -261,7 +261,6 @@
             gamesDT = $('#gameList').DataTable({
                 order: [[ 0, "desc" ]],
                 iDisplayLength: 15,
-                responsive: true,
                 aLengthMenu: [
                     [10, 15, 25, 50, -1],
                     [10, 15, 25, 50, "All"]
