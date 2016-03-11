@@ -80,6 +80,8 @@ var CreateHistorical = function createHistorical(divid, data, tableid) {
         .attr("class", "line")
         .attr("d", line)
         .attr("id", d.replace(" ", "") + "line")
+        .style("fill", "none")
+        .style("stroke-width", "3px")
         .style("stroke", function(v) {
           return get_color(d, false);
         });
@@ -87,6 +89,8 @@ var CreateHistorical = function createHistorical(divid, data, tableid) {
         .datum(data[d])
         .attr("class", "innerline")
         .attr("d", line)
+        .style("fill", "none")
+        .style("stroke-width", "2px")
         .attr("id", d.replace(" ", "") + "innerline")
         .style("stroke", function(v) {
           return get_color(d, true);
