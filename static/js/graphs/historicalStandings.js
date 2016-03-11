@@ -73,6 +73,27 @@ var CreateHistorical = function createHistorical(divid, data, tableid) {
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Points");
+  var today = new Date(),
+      dd = today.getDate(),
+      mm = today.getMonth() + 1,
+      yy = today.getFullYear();
+  var division = "";
+  console.log(divid);
+  if (divid == "#Phistorical")
+    division = "Pacific";
+  else if (divid == "#Chistorical")
+    division = "Central";
+  else if (divid == "#Mhistorical")
+    division = "Metropolitan";
+  else if (divid == "#Ahistorical")
+    division = "Atlantic";
+  svg.append("text")
+    .attr("x", (width / 2))             
+    .attr("y", 0 - (margin.top / 4))
+    .attr("text-anchor", "middle")  
+    .style("font-size", "16px") 
+    .style("text-decoration", "underline")  
+    .text(division + " Historical Standings as of " + yy + "-" + mm + "-" + dd);
 
   for (d in data) {
     svg.append("path")
