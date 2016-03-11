@@ -49,6 +49,7 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
     var awayMax = d3.max(data["away" + valtype], yValue) + 1;
     var yScaleMax = Math.max(homeMax, awayMax);
     var xSecondsMax = d3.max(data["home" + valtype], xValue);
+    console.log(xSecondsMax);
     var secondsMax = 0;
     if (xSecondsMax < 60*20) {
         secondsMax = 60*20;
@@ -57,8 +58,9 @@ function create_shot_attempts(data, divid, valtype, hometeam, awayteam) {
     } else if (xSecondsMax < 60*60) {
         secondsMax = 60*60;
     } else {
-        secondsMax = secondsMax + 5;
+        secondsMax = xSecondsMax + 5;
     }
+    console.log(secondsMax);
     xScale.domain([0, secondsMax]);
     yScale.domain([0, yScaleMax]);
     // x-axis
