@@ -505,6 +505,7 @@
                     {"data": "icf"},
                     {"data": "cf",
                      "render": function(data, type, full, meta) {
+                        console.log(full.name, full.cf, full.ca);
                         return full.cf - full.ca;
                      },
                     },
