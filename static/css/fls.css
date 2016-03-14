@@ -311,6 +311,7 @@ table a:not(.btn),
  * Mobile Table Changes
  *
  */
+ 
 .cf:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
 * html .cf { zoom: 1; }
 *:first-child+html .cf { zoom: 1; }
