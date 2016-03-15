@@ -4,7 +4,6 @@ function create_corsi_events(alldata, divid, teamname) {
     height = width;
 
   $(divid).width(($("#gameTabContent").width()) / 2).height(($("#gameTabContent").width()) / 2);
-  console.log($(divid).width());
   if ($(divid).width() < 768 / 2) {
     width = (900 - margin.left) - margin.left - margin.right;
     height = width;
@@ -174,7 +173,6 @@ function create_corsi_events(alldata, divid, teamname) {
         }
     }
     function mouseoverName(p) {
-        console.log(p);
         var tooltip = d3.select("#" + teamname + "-" + p.cf + "-" + p.ca + "-tooltip");
         var active = tooltip.attr("active"),
           newOpacity = active ? 0 : 1;

@@ -70,6 +70,12 @@
                     <h3><span id="away-score"></span> - <span id="home-score"></span></h3>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4><span id="period"></span><span id="periodTime"></span></h4>
+                    <p><span id="liveUpdate"></span></p>
+                </div>
+            </div>
         </div>
         <div class="col-md-4 text-center">
             <img id="home-team-logo">
@@ -429,8 +435,7 @@
             }
         };
 
-        $('#gameFilter').submit(function(e) {
-
+        function update_info() {
             var formurl = url + "pbp/game/?gamePk=" + getUrlParameter("gamePk") + "&" + $("#gameFilter").serialize();
 
             $.ajax({
@@ -464,6 +469,11 @@
                     $("#home-corsi").html("");
                     $("#away-corsi").html("");
                     $("#co").html("");
+                    if ('period' in details) {
+                        $("#period").text("Period: " + details.period + ", ");
+                        $("#periodTime").text("Time Elapsed: " + details.periodTime);
+                        $("#liveUpdate").text("Live games will automatically update every two minutes");
+                    }
                     create_shot_attempts(data.eventcount, "#saChart", "sa", data.details.homeTeamName, data.details.awayTeamName);
                     create_shot_attempts(data.eventcount, "#scChart", "sc", data.details.homeTeamName, data.details.awayTeamName);
                     create_corsi_events(data.homeSkaters, "#home-corsi", details.homeTeamName);
@@ -473,10 +483,10 @@
                     
                 }
             });
+        }
 
-
-
-
+        $('#gameFilter').submit(function(e) {
+            update_info();
             e.preventDefault();
         });
 
@@ -505,7 +515,6 @@
                     {"data": "icf"},
                     {"data": "cf",
                      "render": function(data, type, full, meta) {
-                        console.log(full.name, full.cf, full.ca);
                         return full.cf - full.ca;
                      },
                     },
@@ -596,7 +605,12 @@
                     $("#home-players-logo").attr("src",
                         imgsrc + details.homeTeamAbbr + ".png");
                     $("#game-time").text(details.date);
-
+                    if ('period' in details) {
+                        $("#period").text("Period: " + details.period + ", ");
+                        $("#periodTime").text("Time Elapsed: " + details.periodTime);
+                        $("#liveUpdate").text("Live games will update every two minutes");
+                        setInterval(update_info, 120000);
+                    }
                     $("#team").DataTable( {
                         data: data.teamData,
                         paging: false,
