@@ -15,7 +15,7 @@ var get_color = function get_team_color(team, primary) {
         ["12","FLA","#D59C05","#C8213F","Florida Panthers","Florida"],
         ["13","L.A","#000000","#AFB7BA","Los Angeles Kings","Los Angeles"],
         ["14","MIN","#025736","#BF2B37","Minnesota Wild","Minnesota"],
-        ["15","MTL","#BF2F38","#213770","Montreal Canadiens","Montreal"],
+        ["15","MTL","#BF2F38","#213770","Montréal Canadiens","Montréal"],
         ["16","N.J","#E03A3E","#000000","New Jersey Devils","New Jersey"],
         ["17","NSH","#FDBB2F","#002E62","Nashville Predators","Nashville"],
         ["18","NYI","#00529B","#F57D31","New York Islanders","NY Islanders"],
