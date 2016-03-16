@@ -242,6 +242,10 @@
             savePNG("#ChistoricalButton", "#Chistorical");
             $('#recentgames').DataTable({
                 "iDisplayLength": 15,
+                aLengthMenu: [
+                    [10, 15, 25, 50, -1],
+                    [10, 15, 25, 50, "All"]
+                ],
                 "ajax": url + "pbp/recent/?format=json",
                 "sAjaxDataProp": "",
                 "order": [[0, "desc"]],

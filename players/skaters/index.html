@@ -1,521 +1,548 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>First Line Stats</title>
-    <!-- Bootstrap core CSS -->
-    <link rel='shortcut icon' type='image/x-icon' href="/static/images/favicon.png" />
-    <!--{% block page_css %}-->
-    <link href="/static/DataTables/datatables.min.css" rel="stylesheet">
-    <link href="/static/MultiSelect/css/multi-select.css" rel="stylesheet">
-    <link href="/static/datepicker/css/datepicker.css" rel="stylesheet">
-    <!--{% endblock %}-->
-    <link href="/static/css/bootstrap.css" rel="stylesheet">
-    <link href="/static/css/fls.css" rel="stylesheet">
-  </head>
-  <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <div class="navbar-brand" href="#">
-                    <a href="/"><img class="fls-logo" src="/static/images/logo_text.png"></a>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>First Line Stats</title>
+        <!-- Bootstrap core CSS -->
+        <link rel='shortcut icon' type='image/x-icon' href="/static/images/favicon.png" />
+        <!--{% block page_css %}-->
+        <link href="/static/DataTables/datatables.min.css" rel="stylesheet">
+        <link href="/static/MultiSelect/css/multi-select.css" rel="stylesheet">
+        <link href="/static/datepicker/css/datepicker.css" rel="stylesheet">
+        <!--{% endblock %}-->
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/css/fls.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <div class="navbar-brand" href="#">
+                        <a href="/"><img class="fls-logo" src="/static/images/logo_text.png"></a>
+                    </div>
+                    <ul class="nav navbar-nav pull-left">
+                        <li><a href="/" style="font-size:25px;">First Line Stats</a></li>
+                    </ul>
+                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    </button>
                 </div>
-                <ul class="nav navbar-nav pull-left">
-                    <li><a href="/" style="font-size:25px;">First Line Stats</a></li>
-                </ul>
-                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="navbar-collapse collapse" id="navbar-main">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Players <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="/players/skaters">Skaters</a></li>
-                            <li><a href="/players/goalies">Goalies</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/teams">Teams</a></li>
-                    <li><a href="/games">Games</a></li>
-                    <li><a href="/about">About Us</a></li>
-                </ul>
+                <div class="navbar-collapse collapse" id="navbar-main">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown active">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Players <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/players/skaters">Skaters</a></li>
+                                <li><a href="/players/goalies">Goalies</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/teams">Teams</a></li>
+                        <li><a href="/games">Games</a></li>
+                        <li><a href="/about">About Us</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-    <!--{% block content %}-->
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="well bs-component">                     
-                
-                <h4 class="filter-options" data-toggle="collapse" data-target="#playersFilter">
-                    Filter Options
-                    <img class="filter-collapsed" height="20" width="20" style="float: right"src="/static/images/forward-arrow.svg ">
-                </h4>
-                <form id="playersFilter" class="collapse" action="/api/pbp/playerstats/" method="GET">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="id_teams">Only Games Involving:</label>
-                            <select multiple="multiple" id="id_teams" name="teams">
-                                <option value="21">Avalanche</option>
-                                <option value="16">Blackhawks</option>
-                                <option value="29">Blue Jackets</option>
-                                <option value="19">Blues</option>
-                                <option value="6">Bruins</option>
-                                <option value="8">Canadiens</option>
-                                <option value="23">Canucks</option>
-                                <option value="15">Capitals</option>
-                                <option value="53">Coyotes</option>
-                                <option value="1">Devils</option>
-                                <option value="24">Ducks</option>
-                                <option value="20">Flames</option>
-                                <option value="4">Flyers</option>
-                                <option value="12">Hurricanes</option>
-                                <option value="2">Islanders</option>
-                                <option value="52">Jets</option>
-                                <option value="26">Kings</option>
-                                <option value="14">Lightning</option>
-                                <option value="10">Maple Leafs</option>
-                                <option value="22">Oilers</option>
-                                <option value="13">Panthers</option>
-                                <option value="5">Penguins</option>
-                                <option value="18">Predators</option>
-                                <option value="3">Rangers</option>
-                                <option value="17">Red Wings</option>
-                                <option value="7">Sabres</option>
-                                <option value="9">Senators</option>
-                                <option value="28">Sharks</option>
-                                <option value="25">Stars</option>
-                                <option value="30">Wild</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="id_seasons">Specify Seasons:</label>
-                            <select multiple="multiple" class="form-control input-sm" id="id_seasons" name="seasons">
-<option value="20152016">20152016</option>
-</select>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="id_venues">Specify Venues:</label>                             
-                            <select multiple="multiple" id="id_venues" name="venues">
-                                <option value="Air Canada Centre">Air Canada Centre</option>
-                                <option value="Amalie Arena">Amalie Arena</option>
-                                <option value="American Airlines Center">American Airlines Center</option>
-                                <option value="Barclays Center">Barclays Center</option>
-                                <option value="BB&amp;T Center">BB&amp;T Center</option>
-                                <option value="Bridgestone Arena">Bridgestone Arena</option>
-                                <option value="Canadian Tire Centre">Canadian Tire Centre</option>
-                                <option value="Centre Bell">Centre Bell</option>
-                                <option value="CONSOL Energy Center">CONSOL Energy Center</option>
-                                <option value="Coors Field">Coors Field</option>
-                                <option value="First Niagara Center">First Niagara Center</option>
-                                <option value="Gila River Arena">Gila River Arena</option>
-                                <option value="Gillette Stadium">Gillette Stadium</option>
-                                <option value="Honda Center">Honda Center</option>
-                                <option value="Joe Louis Arena">Joe Louis Arena</option>
-                                <option value="Madison Square Garden">Madison Square Garden</option>
-                                <option value="MTS Centre">MTS Centre</option>
-                                <option value="Nationwide Arena">Nationwide Arena</option>
-                                <option value="Pepsi Center">Pepsi Center</option>
-                                <option value="PNC Arena">PNC Arena</option>
-                                <option value="Prudential Center">Prudential Center</option>
-                                <option value="Rexall Place">Rexall Place</option>
-                                <option value="Rogers Arena">Rogers Arena</option>
-                                <option value="SAP Center at San Jose">SAP Center at San Jose</option>
-                                <option value="Scotiabank Saddledome">Scotiabank Saddledome</option>
-                                <option value="Scottrade Center">Scottrade Center</option>
-                                <option value="STAPLES Center">STAPLES Center</option>
-                                <option value="TCF Bank Stadium">TCF Bank Stadium</option>
-                                <option value="TD Garden">TD Garden</option>
-                                <option value="United Center">United Center</option>
-                                <option value="Verizon Center">Verizon Center</option>
-                                <option value="Wells Fargo Center">Wells Fargo Center</option>
-                                <option value="Xcel Energy Center">Xcel Energy Center</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top:3%;">
-                        <div class="col-md-4">
-                            <label for="id_position">Position:</label>
-                            <select multiple="multiple" id="id_position" name="position">
-                                <option value="R">Right Wing</option>
-                                <option value="C">Center</option>
-                                <option value="L">Left Wing</option>
-                                <option value="D">Defenseman</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
+        <!--{% block content %}-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Players</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="well bs-component">
+                        <form id="playersFilter" action="/api/pbp/playerstats/" method="GET">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label for="id_home_or_away">Home or Away:</label>
-                                    <select class="form-control input-sm" id="id_home_or_away" name="home_or_away">
-                                        <option value="0">Home</option>
-                                        <option value="1">Away</option>
-                                        <option value="2" selected="selected">All</option>
+                                <div class="col-md-4">
+                                    <label for="id_teams">Only Games Involving:</label>
+                                    <select multiple="multiple" id="id_teams" name="teams">
+                                        <option value="21">Avalanche</option>
+                                        <option value="16">Blackhawks</option>
+                                        <option value="29">Blue Jackets</option>
+                                        <option value="19">Blues</option>
+                                        <option value="6">Bruins</option>
+                                        <option value="8">Canadiens</option>
+                                        <option value="23">Canucks</option>
+                                        <option value="15">Capitals</option>
+                                        <option value="53">Coyotes</option>
+                                        <option value="1">Devils</option>
+                                        <option value="24">Ducks</option>
+                                        <option value="20">Flames</option>
+                                        <option value="4">Flyers</option>
+                                        <option value="12">Hurricanes</option>
+                                        <option value="2">Islanders</option>
+                                        <option value="52">Jets</option>
+                                        <option value="26">Kings</option>
+                                        <option value="14">Lightning</option>
+                                        <option value="10">Maple Leafs</option>
+                                        <option value="22">Oilers</option>
+                                        <option value="13">Panthers</option>
+                                        <option value="5">Penguins</option>
+                                        <option value="18">Predators</option>
+                                        <option value="3">Rangers</option>
+                                        <option value="17">Red Wings</option>
+                                        <option value="7">Sabres</option>
+                                        <option value="9">Senators</option>
+                                        <option value="28">Sharks</option>
+                                        <option value="25">Stars</option>
+                                        <option value="30">Wild</option>
                                     </select>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="id_toi">TOI Min (Minutes):</label>
-                                    <input class="form-control input-sm" id="id_toi" min="0" name="toi" type="number" />
+                                <div class="col-md-4">
+                                    <label for="id_seasons">Specify Seasons:</label>
+                                    <select multiple="multiple" class="form-control input-sm" id="id_seasons" name="seasons">
+                                        <option value="20152016">20152016</option>
+                                    </select>
                                 </div>
+                                <div class="col-md-4">
+                                    <label for="id_venues">Specify Venues:</label>
+                                    <select multiple="multiple" id="id_venues" name="venues">
+                                        <option value="Air Canada Centre">Air Canada Centre</option>
+                                        <option value="Amalie Arena">Amalie Arena</option>
+                                        <option value="American Airlines Center">American Airlines Center</option>
+                                        <option value="Barclays Center">Barclays Center</option>
+                                        <option value="BB&amp;T Center">BB&amp;T Center</option>
+                                        <option value="Bridgestone Arena">Bridgestone Arena</option>
+                                        <option value="Canadian Tire Centre">Canadian Tire Centre</option>
+                                        <option value="Centre Bell">Centre Bell</option>
+                                        <option value="CONSOL Energy Center">CONSOL Energy Center</option>
+                                        <option value="Coors Field">Coors Field</option>
+                                        <option value="First Niagara Center">First Niagara Center</option>
+                                        <option value="Gila River Arena">Gila River Arena</option>
+                                        <option value="Gillette Stadium">Gillette Stadium</option>
+                                        <option value="Honda Center">Honda Center</option>
+                                        <option value="Joe Louis Arena">Joe Louis Arena</option>
+                                        <option value="Madison Square Garden">Madison Square Garden</option>
+                                        <option value="MTS Centre">MTS Centre</option>
+                                        <option value="Nationwide Arena">Nationwide Arena</option>
+                                        <option value="Pepsi Center">Pepsi Center</option>
+                                        <option value="PNC Arena">PNC Arena</option>
+                                        <option value="Prudential Center">Prudential Center</option>
+                                        <option value="Rexall Place">Rexall Place</option>
+                                        <option value="Rogers Arena">Rogers Arena</option>
+                                        <option value="SAP Center at San Jose">SAP Center at San Jose</option>
+                                        <option value="Scotiabank Saddledome">Scotiabank Saddledome</option>
+                                        <option value="Scottrade Center">Scottrade Center</option>
+                                        <option value="STAPLES Center">STAPLES Center</option>
+                                        <option value="TCF Bank Stadium">TCF Bank Stadium</option>
+                                        <option value="TD Garden">TD Garden</option>
+                                        <option value="United Center">United Center</option>
+                                        <option value="Verizon Center">Verizon Center</option>
+                                        <option value="Wells Fargo Center">Wells Fargo Center</option>
+                                        <option value="Xcel Energy Center">Xcel Energy Center</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top:3%;">
+                                <div class="col-md-4">
+                                    <label for="id_position">Position:</label>
+                                    <select multiple="multiple" id="id_position" name="position">
+                                        <option value="R">Right Wing</option>
+                                        <option value="C">Center</option>
+                                        <option value="L">Left Wing</option>
+                                        <option value="D">Defenseman</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="id_player">Players:</label>
+                                    <select multiple="multiple" id="id_player" name="position">
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label for="id_date_start">Start Date:</label>
+                                                    <input class="form-control input-sm datepicker" id="id_date_start" name="date_start" type="text" />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label for="id_date_end">End Date:</label>
+                                                    <input class="form-control input-sm datepicker" id="id_date_end" name="date_end" type="text" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label for="id_period">Period:</label>
+                                                    <select class="form-control input-sm" id="id_period" name="period">
+                                                        <option value="all" selected="selected">All</option>
+                                                        <option value="1">1st</option>
+                                                        <option value="2">2nd</option>
+                                                        <option value="3">3rd</option>
+                                                        <option value="4">OT</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label for="id_strength">Team Strength:</label>
+                                                    <select class="form-control input-sm" id="id_strength" name="strength">
+                                                        <option value="all" selected="selected">All</option>
+                                                        <option value="5v5">Even Strength 5v5</option>
+                                                        <option value="pp">Power Play</option>
+                                                        <option value="pk">Penalty Kill</option>
+                                                        <option value="4v4">4v4</option>
+                                                        <option value="3v3">3v3</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="id_home_or_away">Home or Away:</label>
+                                            <select class="form-control input-sm" id="id_home_or_away" name="home_or_away">
+                                                <option value="0">Home</option>
+                                                <option value="1">Away</option>
+                                                <option value="2" selected="selected">All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label for="id_toi">TOI Min (Minutes):</label>
+                                            <input class="form-control input-sm" id="id_toi" min="0" name="toi" type="number" />
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group session-checkbox">
+                                                <label for="id_game_type_0">Game Types:</label>
+                                                <ul id="id_game_type"><li><label for="id_game_type_0"><input checked="checked" class="game-type-checkbox" id="id_game_type_0" name="game_type" type="checkbox" value="PR" /> Pre-season</label></li>
+                                                <li><label for="id_game_type_1"><input checked="checked" class="game-type-checkbox" id="id_game_type_1" name="game_type" type="checkbox" value="R" /> Regular season</label></li>
+                                                <li><label for="id_game_type_2"><input checked="checked" class="game-type-checkbox" id="id_game_type_2" name="game_type" type="checkbox" value="P" /> Playoffs</label></li>
+                                                <li><label for="id_game_type_3"><input checked="checked" class="game-type-checkbox" id="id_game_type_3" name="game_type" type="checkbox" value="A" /> All-Star game</label></li></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12" >
+                                            <label for="id_divide_by_season">Divide By Season:</label>
+                                            <input class="game-type-checkbox" id="id_divide_by_season" name="divide_by_season" type="checkbox" />
+                                        </div>
+                                    </div>                                    
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group text-right" style="margin-top:10%;">
+                                        <input type="reset" class="btn btn-danger btn-sm" />
+                                        <input type="submit" href="#" class="btn btn-primary btn-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tableView" data-toggle="tab" aria-expanded="true">Table View</a></li>
+                        <li class=""><a href="#graphView" data-toggle="tab" aria-expanded="false">Graph View</a></li>
+                    </ul>
+                    <div id="skatersTabContent" class="tab-content">
+                        <div class="tab-pane fade active in" id="tableView">
+                            <div class="row">
+                                <div id="skatersTableContainer" class="col-md-12" style="display: none;">
+                                    <table id="playerList" class="table table-striped table-condensed table-hover rt cf table-full" style="width:100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>Player</th>
+                                                <th>Pos</th>
+                                                <th>Team</th>
+                                                <th>Age</th>
+                                                <th>Height</th>
+                                                <th>Weight</th>
+                                                <th>Gm</th>
+                                                <th>G</th>
+                                                <th>A</th>
+                                                <th>A2</th>
+                                                <th>P</th>
+                                                <th>G60</th>
+                                                <th>A60</th>
+                                                <th>P60</th>
+                                                <th>+/-</th>
+                                                <th>Hits</th>
+                                                <th>Shots</th>
+                                                <th>FOW</th>
+                                                <th>FO%</th>
+                                                <th>TOI/Game</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="graphView">
+                            <div class="row">
+                                
+                                <form id="comparisonGraphFilter" class="col-md-12" action="/api/pbp/playerstats/" method="GET">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="xAxis">X Axis Variable:</label>
+                                            <select id="xAxis" class="form-control input-sm">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="yAxis">Y Axis Variable:</label>
+                                            <select id="yAxis" class="form-control input-sm">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="colorVar">Color Variable:</label>
+                                            <select id="colorVar" class="form-control input-sm">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="sizeVar">Size Variable:</label>
+                                            <select id="sizeVar" class="form-control input-sm">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                                
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="form-group session-checkbox">
-                                        <label for="id_game_type_0">Game Types:</label>                             
-                                        <ul id="id_game_type"><li><label for="id_game_type_0"><input checked="checked" class="game-type-checkbox" id="id_game_type_0" name="game_type" type="checkbox" value="PR" /> Pre-season</label></li>
-<li><label for="id_game_type_1"><input checked="checked" class="game-type-checkbox" id="id_game_type_1" name="game_type" type="checkbox" value="R" /> Regular season</label></li>
-<li><label for="id_game_type_2"><input checked="checked" class="game-type-checkbox" id="id_game_type_2" name="game_type" type="checkbox" value="P" /> Playoffs</label></li>
-<li><label for="id_game_type_3"><input checked="checked" class="game-type-checkbox" id="id_game_type_3" name="game_type" type="checkbox" value="A" /> All-Star game</label></li></ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label for="id_date_start">Start Date:</label>
-                                            <input class="form-control input-sm datepicker" id="id_date_start" name="date_start" type="text" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label for="id_date_end">End Date:</label>
-                                            <input class="form-control input-sm datepicker" id="id_date_end" name="date_end" type="text" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label for="id_period">Period:</label>
-                                            <select class="form-control input-sm" id="id_period" name="period">
-                                                <option value="all" selected="selected">All</option>
-                                                <option value="1">1st</option>
-                                                <option value="2">2nd</option>
-                                                <option value="3">3rd</option>
-                                                <option value="4">OT</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label for="id_strength">Team Strength:</label>
-                                            <select class="form-control input-sm" id="id_strength" name="strength">
-                                                <option value="all" selected="selected">All</option>
-                                                <option value="5v5">Even Strength 5v5</option>
-                                                <option value="pp">Power Play</option>
-                                                <option value="pk">Penalty Kill</option>
-                                                <option value="4v4">4v4</option>
-                                                <option value="3v3">3v3</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6" style="margin-top:10%;">
-                                    <input class="game-type-checkbox" id="id_divide_by_season" name="divide_by_season" type="checkbox" />
-                                    <label for="id_divide_by_season">Divide By Season:</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group text-right" style="margin-top:25%;">
-                                        <input type="reset" class="btn btn-danger btn-sm"></input>
-                                        <input type="submit" href="#" class="btn btn-primary btn-sm"></input>
-                                    </div>  
+                                    <div id="comparison-graph"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
+                
+                
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Players</h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#tableView" data-toggle="tab" aria-expanded="true">Table View</a></li>
-                <li class=""><a href="#graphView" data-toggle="tab" aria-expanded="false">Graph View</a></li>
-            </ul>
-             <div id="skatersTabContent" class="tab-content">
-                <div class="tab-pane fade active in" id="tableView">
-                    <div class="row">
-                        <div id="skatersTableContainer" class="col-md-12" style="display: none;">
-                            <table id="playerList" class="table table-striped table-condensed table-hover rt cf table-full" style="width:100%;">
-                                <thead>
-                                    <tr>
-                                        <th>Player</th>
-                                        <th>Pos</th>
-                                        <th>Team</th>
-                                        <th>Age</th>
-                                        <th>Height</th>
-                                        <th>Weight</th>
-                                        <th>Gm</th>
-                                        <th>G</th>
-                                        <th>A</th>
-                                        <th>A2</th>
-                                        <th>P</th>
-                                        <th>G60</th>
-                                        <th>A60</th>
-                                        <th>P60</th>
-                                        <th>+/-</th>
-                                        <th>Hits</th>
-                                        <th>Shots</th>
-                                        <th>FOW</th>
-                                        <th>FO%</th>
-                                        <th>TOI/Game</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="graphView">
-                    <div class="row">
-                        
-                        <form id="comparisonGraphFilter" class="col-md-12" action="/api/pbp/playerstats/" method="GET">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label for="xAxis">X Axis Variable:</label>
-                                    <select id="xAxis" class="form-control input-sm">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="yAxis">Y Axis Variable:</label>
-                                    <select id="yAxis" class="form-control input-sm">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="colorVar">Color Variable:</label>
-                                    <select id="colorVar" class="form-control input-sm">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="sizeVar">Size Variable:</label>
-                                    <select id="sizeVar" class="form-control input-sm">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </form>
-                        
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div id="comparisonGraph"></div>
-                        </div>
-                    </div>
-                </div>
-             </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-    <!--{% endblock %}-->
-    <script src="/static/js/jquery-2.2.0.min.js"></script>
-    <script src="/static/js/bootstrap.js"></script>
-    <!--{% block page_js %}-->
-
-<script src="/static/js/getUrl.js"></script>
- <script src="/static/d3/d3.min.js"></script>
-<script>
-    var skateDT = $("#skatersTableContainer");
-    var url = getUrl();
-    $(document).ready(function() {
-        $("#id_teams").multiSelect();
-        $('#id_seasons').multiSelect();
-        $("#id_venues").multiSelect();
-        $("#id_position").multiSelect();
-        $('.datepicker').datepicker();
-        getAjax();
-        $('.filter-options img').click(function(e) {
-            var icon = $(e.target);
-            if (icon.hasClass('filter-collapsed')) {
-                $(e.target).removeClass('filter-collapsed');
-                $(e.target).addClass('filter-expanded');
-            } else {
-                $(e.target).removeClass('filter-expanded');
-                $(e.target).addClass('filter-collapsed');
-            }
-        })
-
-        $('input[type=reset]').click(function(e) {
-            $("#id_seasons").multiSelect('deselect_all');
-            $("#id_teams").multiSelect('deselect_all');
-            $("#id_venues").multiSelect('deselect_all');
-            $("#id_position").multiSelect('deselect_all');
+        <!--{% endblock %}-->
+        <script src="/static/js/jquery-2.2.0.min.js"></script>
+        <script src="/static/js/bootstrap.js"></script>
+        <!--{% block page_js %}-->
+        <script src="/static/js/getUrl.js"></script>
+        <script src="/static/d3/d3.min.js"></script>
+        <script>
+        var skateDT = $("#skatersTableContainer");
+        var url = getUrl();
+        $(document).ready(function() {
+            $("#id_teams").multiSelect();
+            $('#id_seasons').multiSelect();
+            $("#id_venues").multiSelect();
+            $("#id_position").multiSelect();
+            $("#id_player").multiSelect();
+            $('.datepicker').datepicker();
+            getAjax();
+            $('.filter-options img').click(function(e) {
+                var icon = $(e.target);
+                if (icon.hasClass('filter-collapsed')) {
+                    $(e.target).removeClass('filter-collapsed');
+                    $(e.target).addClass('filter-expanded');
+                } else {
+                    $(e.target).removeClass('filter-expanded');
+                    $(e.target).addClass('filter-collapsed');
+                }
+            })
+            $('input[type=reset]').click(function(e) {
+                $("#id_seasons").multiSelect('deselect_all');
+                $("#id_teams").multiSelect('deselect_all');
+                $("#id_venues").multiSelect('deselect_all');
+                $("#id_position").multiSelect('deselect_all');
+                $("#id_player").multiSelect('deselect_all');
+            });
+            $('#playersFilter').submit(function(e) {
+                var skateDT = $("#playerList").DataTable();
+                e.preventDefault();
+                var formurl = url + "player/playerstats/?format=json&" + $("#playersFilter").serialize();
+                console.log(formurl);
+                skateDT.ajax.url(formurl);
+                skateDT.ajax.reload();
+            });
         });
-        $('#playersFilter').submit(function(e) {
-            var skateDT = $("#playerList").DataTable();
-            e.preventDefault();
-            var formurl = url + "player/playerstats/?format=json&" + $("#playersFilter").serialize();
-            console.log(formurl);
-            skateDT.ajax.url(formurl);
-            skateDT.ajax.reload();
 
-        });
-    });
-
-    function getAjax() {
-        // Get initial 10 for the appearance of speeeeeed!
-
-        $('#tableLoading').toggle();
-        $('#skatersTableContainer').toggle();
-        $.ajax({
-            url: url + "player/playerstats/?format=json",
-            success: function(data) {
-                var skateDT = $('#playerList').DataTable({
-                    iDisplayLength: 15,
-                    order: [[ 10, "desc" ]],
-                    responsive: false,
-                    aLengthMenu: [[10, 15, 25, 50, -1], [10, 15, 25, 50, "All"]],
-                    buttons: [
-                        {
+        function getAjax() {
+            // Get initial 10 for the appearance of speeeeeed!
+            $('#tableLoading').toggle();
+            $('#skatersTableContainer').toggle();
+            $.ajax({
+                url: url + "player/playerstats/?format=json",
+                success: function(data) {
+                    var dataset = $.map(data, function(obj, index) {
+                        $("#id_player").append('<option value="' + obj.id + '">' + obj.name + '</option>')
+                        obj.points = obj.goals + obj.assists + obj.assists2;
+                        if (obj.toi != 0) {
+                            obj['G60'] = parseFloat(((obj.goals) / obj.toi * 3600).toFixed(2));
+                            obj['A60'] = parseFloat(((obj.assists + obj.assists2) / obj.toi * 3600).toFixed(2));
+                            obj['P60'] = parseFloat(((obj.goals + obj.assists + obj.assists2) / obj.toi * 3600).toFixed(2));
+                        } else {
+                            obj['G60'] = 0;
+                            obj['A60'] = 0;
+                            obj['P60'] = 0;
+                        }
+                        obj.plusMinus = obj.gf - obj.ga;
+                        if (obj["fo_l"] != 0)
+                            obj.facPercent = (obj["fo_w"] / (obj["fo_w"] + obj["fo_l"]) * 100).toFixed(2);
+                        else
+                            obj.facPercent = 0;
+                        var time = obj["toi"] / obj["games"];
+                        var minutes = Math.floor(time / 60); // 7
+                        var seconds = Math.round(time % 60); // 30
+                        if (seconds < 10)
+                            seconds = "0" + seconds;
+                        if (minutes < 10)
+                            minutes = "0" + minutes
+                        obj['TOIGm'] = minutes + ":" + Math.round(seconds);
+                        console.log(obj)
+                        return obj;
+                    })
+                    var skateDT = $('#playerList').DataTable({
+                        iDisplayLength: 15,
+                        order: [
+                            [10, "desc"]
+                        ],
+                        responsive: false,
+                        aLengthMenu: [
+                            [10, 15, 25, 50, -1],
+                            [10, 15, 25, 50, "All"]
+                        ],
+                        buttons: [{
                             extend: 'copy',
                             className: 'btn-sm btn-primary',
-                        },
-                        {
+                        }, {
                             extend: 'csv',
                             className: 'btn-sm btn-primary',
-                        },
-                        {
+                        }, {
                             extend: 'excel',
                             className: 'btn-sm btn-primary',
-                        }
-                    ],
-                    data: data,
-                    sAjaxDataProp: "",
-                    deferLoading: 58,
-                    columns: [
-                        {"data": "name",
-                         "render": function(data, type, full, meta) {
-                             return "<a href=\"/player/?player=" + full.id + "\">" + data + "</a>";
-                         }
-                        }, // Player
-                        {"data": "position"}, // Pos
-                        {"data": "currentTeam",
-                         "render": function ( data, type, full, meta ) {
-                            return '<img height="17" width="17" src="/static/images/team/' + full.currentTeamAbbr + '.png"><a href="/teams/?team=' + full.currentTeamAbbr + '">' + full.team + '</a>';}
-                        }, // Team
-                        {"data": "age"}, // Age
-                        {"data": "height"}, // Height
-                        {"data": "weight"}, // Weight
-                        {"data": "games"}, // Gm
-                        {"data": "goals"}, // G
-                        {"data": "assists"}, // A
-                        {"data": "assists2"}, // A
-                        {"data": "points",
-                         "render": function( data, type, full, meta ) {
-                            return full.goals + full.assists + full.assists2;
-                         }
-                        }, // P
-                        {"data": "G60",
-                         "render": function( data, type, full, meta ) {
-                            if (full.toi != 0)
-                                return ((full.goals) / full.toi * 3600).toFixed(2);
-                            return "";
-                         }
-                        }, // G60
-                        {"data": "A60",
-                         "render": function( data, type, full, meta ) {
-                            if (full.toi != 0)
-                                return ((full.assists + full.assists2) / full.toi * 3600).toFixed(2);
-                            return "";
-                         }
-                        }, // A60
-                        {"data": "P60",
-                         "render": function( data, type, full, meta ) {
-                            if (full.toi != 0)
-                                return ((full.goals + full.assists + full.assists2) / full.toi *3600).toFixed(2);
-                            return "";
-                         }
-                        }, // P60
-                        {"data": "plusMinus",
-                         "render": function( data, type, full, meta ) {
-                            return full.gf - full.ga;
-                         }
-                        }, // +/-
-                        {"data": "hit"}, // Hits
-                        {"data": "sf"}, // Shots
-                        {"data": "fo_w"}, // FOW
-                        {"data": "facPercent",
-                         "render": function(data, type, full, meta) {
-                            if (full["fo_l"] != 0)
-                                return (full["fo_w"] / (full["fo_w"] + full["fo_l"]) * 100).toFixed(2);
-                            else
-                                return 0;
-                         }
-                        }, // FO%
-                        {"data": "TOIGm",
-                         "render": function(data, type, full, meta) {
-                            var time = full["toi"] / full["games"];
-                            var minutes = Math.floor(time / 60); // 7
-                            var seconds = Math.round(time % 60); // 30
-                            if (seconds < 10)
-                                seconds = "0" + seconds;
-                            if (minutes < 10)
-                                minutes = "0" + minutes
-                            return minutes + ":" + Math.round(seconds);
-                         }
-                        }, // TOI/Game
-                    ]
-                });              
-            
-            }
-        });
-        
+                        }],
+                        data: dataset,
+                        sAjaxDataProp: "",
+                        deferLoading: 58,
+                        columns: [{
+                                "data": "name",
+                                "render": function(data, type, full, meta) {
+                                    return "<a href=\"/player/?player=" + full.id + "\">" + data + "</a>";
+                                }
+                            }, // Player
+                            {
+                                "data": "position"
+                            }, // Pos
+                            {
+                                "data": "currentTeam",
+                                "render": function(data, type, full, meta) {
+                                    return '<img height="17" width="17" src="/static/images/team/' + full.currentTeamAbbr + '.png"><a href="/teams/?team=' + full.currentTeamAbbr + '">' + full.team + '</a>';
+                                }
+                            }, // Team
+                            {
+                                "data": "age"
+                            }, // Age
+                            {
+                                "data": "height"
+                            }, // Height
+                            {
+                                "data": "weight"
+                            }, // Weight
+                            {
+                                "data": "games"
+                            }, // Gm
+                            {
+                                "data": "goals"
+                            }, // G
+                            {
+                                "data": "assists"
+                            }, // A
+                            {
+                                "data": "assists2"
+                            }, // A
+                            {
+                                "data": "points"
+                            }, // P
+                            {
+                                "data": "G60"
+                            }, // G60
+                            {
+                                "data": "A60"
+                            }, // A60
+                            {
+                                "data": "P60"
+                            }, // P60
+                            {
+                                "data": "plusMinus"
+                            }, // +/-
+                            {
+                                "data": "hit"
+                            }, // Hits
+                            {
+                                "data": "sf"
+                            }, // Shots
+                            {
+                                "data": "fo_w"
+                            }, // FOW
+                            {
+                                "data": "facPercent"
+                            }, // FO%
+                            {
+                                "data": "TOIGm"
+                            }, // TOI/Game
+                        ]
+                    });
+                    createBubbleGraph(dataset, "G60", "assists", "toi", "P60", "Goals Per 60",
+                        "Assists", "TOI", "P60");
 
-    }
-</script>
-<script src="/static/DataTables/datatables.min.js"></script>
-<script src="/static/MultiSelect/js/jquery.multi-select.js"></script>
-<script src="/static/datepicker/js/bootstrap-datepicker.js"></script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-74873821-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
-    <!--{% endblock %}-->
-  </body>
+                }
+            });
+            $('#id_player').multiSelect('refresh');
+        }
+        </script>
+        <script src="/static/DataTables/datatables.min.js"></script>
+        <script src="/static/MultiSelect/js/jquery.multi-select.js"></script>
+        <script src="/static/datepicker/js/bootstrap-datepicker.js"></script>
+        <script src="/static/js/graphs/skaterBubbleGraph.js"></script>
+        <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-74873821-1', 'auto');
+        ga('send', 'pageview');
+        </script>
+        <!--{% endblock %}-->
+    </body>
 </html>
-    
