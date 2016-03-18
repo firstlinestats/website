@@ -469,7 +469,7 @@
                     $("#home-corsi").html("");
                     $("#away-corsi").html("");
                     $("#co").html("");
-                    if ('period' in details) {
+                    if (!(details.gameState in ["5", "6", "7"])) {
                         $("#period").text("Period: " + details.period + ", ");
                         $("#periodTime").text("Time Elapsed: " + details.periodTime);
                         $("#liveUpdate").text("Live games will automatically update every two minutes");
@@ -605,7 +605,7 @@
                     $("#home-players-logo").attr("src",
                         imgsrc + details.homeTeamAbbr + ".png");
                     $("#game-time").text(details.date);
-                    if ('period' in details) {
+                    if (["5", "6", "7"].indexOf(details.gameState) == -1) {
                         $("#period").text("Period: " + details.period + ", ");
                         $("#periodTime").text("Time Elapsed: " + details.periodTime);
                         $("#liveUpdate").text("Live games will update every two minutes");
