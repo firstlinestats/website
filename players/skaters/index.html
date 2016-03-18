@@ -286,22 +286,59 @@
                                                 <th>Hits</th>
                                                 <th>Shots</th>
 
-                                                <!--<th>MS</th>
-                                                <th>BS</th>-->
+                                                <th>PDO</th>
+                                                <th>MS</th>
+                                                <th>BS</th>
 
                                                 <th>FOW</th>
+                                                <th>FOL</th>
                                                 <th>FO%</th>
                                                 <th>TOI/Game</th>
 
-                                                <!--<th>CF</th>
+                                                <th>PenD</th>
+
+                                                <th>CF</th>
                                                 <th>CA</th>
                                                 <th>CF60</th>
                                                 <th>CA60</th>
                                                 <th>CP60</th>
                                                 <th>iCF</th>
-                                                <th>PenD</th>
-                                                <th>PDO</th>
+
+                                                <!--<th>FF</th>
+                                                <th>FA</th>
+                                                <th>FF60</th>
+                                                <th>FA60</th>
+                                                <th>FP60</th>
+                                                <th>iFF</th>
+
+                                                <th>SF</th>
+                                                <th>SA</th>
+                                                <th>iSF</th>
+                                                <th>SF60</th>
+                                                <th>SA60</th>
+                                                <th>SF%</th>
+                                                <th>SF%off</th>
+
+                                                <th>GF</th>
+                                                <th>GA</th>
+                                                <th>GF%</th>
+                                                <th>OSh%</th>
+                                                <th>OSv%</th>
+
+                                                <th>FO_W</th>
+                                                <th>FO_L</th>
+                                                <th>ZSO%</th>
+                                                <th>ZSO</th>
+                                                <th>ZSN</th>
+                                                <th>ZSD</th>
+
                                                 <th>iSC</th>
+                                                <th>SCF</th>
+                                                <th>SCA</th>
+                                                <th>SCF%</th>
+                                                <th>SCF60</th>
+                                                <th>SCA60</th>
+                                                <th>SCP60</th>
                                                 <th>iHSC</th>
                                                 <th>HSCF</th>
                                                 <th>HSCA</th>
@@ -310,28 +347,8 @@
                                                 <th>HSCA60</th>
                                                 <th>HSCP60</th>
                                                 <th>PSh%</th>
-                                                <th>SCF</th>
-                                                <th>SCA</th>
-                                                <th>SCF%</th>
-                                                <th>SCF60</th>
-                                                <th>SCA60</th>
-                                                <th>SCP60</th>
                                                 <th>BK</th>
-                                                <th>AB</th>
-                                                <th>FF</th>
-                                                <th>FA</th>
-                                                <th>FF60</th>
-                                                <th>FA60</th>
-                                                <th>FP60</th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>-->
+                                                <th>AB</th>-->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -435,47 +452,79 @@
                 var skateDT = $("#playerList").DataTable();
                 e.preventDefault();
                 var formurl = url + "player/playerstats/?format=json&" + $("#playersFilter").serialize();
-                console.log(formurl);
-                skateDT.ajax.url(formurl);
-                skateDT.ajax.reload();
+                $.ajax({
+                    url: formurl,
+                    success: function(data) {
+                        var dataset = get_dataset(data);
+                        console.log(dataset);
+                        skateDT.clear();
+                        skateDT.rows.add(dataset);
+                        skateDT.draw();
+                    }
+                });
             });
         });
 
+        function get_dataset(data) {
+            var dataset = $.map(data, function(obj, index) {
+                $("#id_player").append('<option value="' + obj.id + '">' + obj.name + '</option>');
+                console.log("hello?");
+                obj.points = obj.goals + obj.assists + obj.assists2;
+                obj.icf = obj.sf + obj.msf + obj.bsf;
+                obj.cf = obj.onsf + obj.onmsf + obj.onbsf;
+                obj.ca = obj.sa + obj.msa + obj.bsa;
+                obj.PenD = obj.pnDrawn - obj.pn;
+                if (obj.sa > 0) {
+                    var savePct = obj.sa / (obj.sa + obj.ga) * 100;
+                } else {
+                    var savePct = 100;
+                }
+                if (obj.sf > 0) {
+                    var shPct = obj.gf / obj.onsf * 100;
+                } else {
+                    var shPct = 0;
+                }
+                obj.pdo = (savePct + shPct).toFixed(2);
+                if (obj.toi != 0) {
+                    obj['G60'] = parseFloat(((obj.goals) / obj.toi * 3600).toFixed(2));
+                    obj['A60'] = parseFloat(((obj.assists + obj.assists2) / obj.toi * 3600).toFixed(2));
+                    obj['P60'] = parseFloat(((obj.goals + obj.assists + obj.assists2) / obj.toi * 3600).toFixed(2));
+                    obj['CF60'] = parseFloat(((obj['cf']) / obj.toi * 3600).toFixed(2));
+                    obj['CA60'] = parseFloat(((obj['ca']) / obj.toi * 3600).toFixed(2));
+                    obj['CP60'] = obj ['CF60'] + obj['CA60'];
+                } else {
+                    obj['G60'] = 0;
+                    obj['A60'] = 0;
+                    obj['P60'] = 0;
+                    obj['CF60'] = 0;
+                    obj['CA60'] = 0;
+                    obj['CP60'] = 0;
+                }
+                obj.plusMinus = obj.gf - obj.ga;
+                if (obj["fo_l"] != 0)
+                    obj.facPercent = (obj["fo_w"] / (obj["fo_w"] + obj["fo_l"]) * 100).toFixed(2);
+                else
+                    obj.facPercent = 0;
+                var time = obj["toi"] / obj["games"];
+                var minutes = Math.floor(time / 60); // 7
+                var seconds = Math.round(time % 60); // 30
+                if (seconds < 10)
+                    seconds = "0" + seconds;
+                if (minutes < 10)
+                    minutes = "0" + minutes
+                obj['TOIGm'] = minutes + ":" + Math.round(seconds);
+                return obj;
+            });
+            return dataset;
+        }
+
         function getAjax() {
-            // Get initial 10 for the appearance of speeeeeed!
             $('#tableLoading').toggle();
             $('#skatersTableContainer').toggle();
             $.ajax({
                 url: url + "player/playerstats/?format=json",
                 success: function(data) {
-                    var dataset = $.map(data, function(obj, index) {
-                        $("#id_player").append('<option value="' + obj.id + '">' + obj.name + '</option>')
-                        obj.points = obj.goals + obj.assists + obj.assists2;
-                        if (obj.toi != 0) {
-                            obj['G60'] = parseFloat(((obj.goals) / obj.toi * 3600).toFixed(2));
-                            obj['A60'] = parseFloat(((obj.assists + obj.assists2) / obj.toi * 3600).toFixed(2));
-                            obj['P60'] = parseFloat(((obj.goals + obj.assists + obj.assists2) / obj.toi * 3600).toFixed(2));
-                        } else {
-                            obj['G60'] = 0;
-                            obj['A60'] = 0;
-                            obj['P60'] = 0;
-                        }
-                        obj.plusMinus = obj.gf - obj.ga;
-                        if (obj["fo_l"] != 0)
-                            obj.facPercent = (obj["fo_w"] / (obj["fo_w"] + obj["fo_l"]) * 100).toFixed(2);
-                        else
-                            obj.facPercent = 0;
-                        var time = obj["toi"] / obj["games"];
-                        var minutes = Math.floor(time / 60); // 7
-                        var seconds = Math.round(time % 60); // 30
-                        if (seconds < 10)
-                            seconds = "0" + seconds;
-                        if (minutes < 10)
-                            minutes = "0" + minutes
-                        obj['TOIGm'] = minutes + ":" + Math.round(seconds);
-                        console.log(obj)
-                        return obj;
-                    })
+                    var dataset = get_dataset(data);
                     var skateDT = $('#playerList').DataTable({
                         iDisplayLength: 15,
                         order: [
@@ -499,7 +548,8 @@
                         data: dataset,
                         sAjaxDataProp: "",
                         deferLoading: 58,
-                        columns: [{
+                        columns: [
+                            {
                                 "data": "name",
                                 "render": function(data, type, full, meta) {
                                     return "<a href=\"/player/?player=" + full.id + "\">" + data + "</a>";
@@ -556,15 +606,54 @@
                             {
                                 "data": "sf"
                             }, // Shots
-                            {
+                            /*{
                                 "data": "fo_w"
                             }, // FOW
                             {
                                 "data": "facPercent"
-                            }, // FO%
+                            }, // FO%*/
+                            {
+                                "data": "pdo"
+                            },
+                            {
+                                "data": "msf"
+                            },
+                            {
+                                "data": "bsf"
+                            },
+                            {
+                                "data": "fo_w"
+                            },
+                            {
+                                "data": "fo_l"
+                            },
+                            {
+                                "data": "facPercent"
+                            },
                             {
                                 "data": "TOIGm"
                             }, // TOI/Game
+                            {
+                                "data": "PenD"
+                            },
+                            {
+                                "data": "cf"
+                            },
+                            {
+                                "data": "ca"
+                            },
+                            {
+                                "data": "CF60"
+                            },
+                            {
+                                "data": "CA60"
+                            },
+                            {
+                                "data": "CP60"
+                            },
+                            {
+                                "data": "icf"
+                            }
                         ]
                     });
                     createBubbleGraph(dataset, "G60", "assists", "toi", "P60", "Goals Per 60",
