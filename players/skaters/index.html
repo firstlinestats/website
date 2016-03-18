@@ -304,7 +304,7 @@
                                                 <th>CP60</th>
                                                 <th>iCF</th>
 
-                                                <!--<th>FF</th>
+                                                <th>FF</th>
                                                 <th>FA</th>
                                                 <th>FF60</th>
                                                 <th>FA60</th>
@@ -317,7 +317,7 @@
                                                 <th>SF60</th>
                                                 <th>SA60</th>
                                                 <th>SF%</th>
-                                                <th>SF%off</th>
+                                                <th>PSh%</th>
 
                                                 <th>GF</th>
                                                 <th>GA</th>
@@ -327,6 +327,7 @@
 
                                                 <th>FO_W</th>
                                                 <th>FO_L</th>
+                                                <th>FO_P</th>
                                                 <th>ZSO%</th>
                                                 <th>ZSO</th>
                                                 <th>ZSN</th>
@@ -346,9 +347,9 @@
                                                 <th>HSCF60</th>
                                                 <th>HSCA60</th>
                                                 <th>HSCP60</th>
-                                                <th>PSh%</th>
+                                                
                                                 <th>BK</th>
-                                                <th>AB</th>-->
+                                                <th>AB</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -456,7 +457,6 @@
                     url: formurl,
                     success: function(data) {
                         var dataset = get_dataset(data);
-                        console.log(dataset);
                         skateDT.clear();
                         skateDT.rows.add(dataset);
                         skateDT.draw();
@@ -468,30 +468,106 @@
         function get_dataset(data) {
             var dataset = $.map(data, function(obj, index) {
                 $("#id_player").append('<option value="' + obj.id + '">' + obj.name + '</option>');
-                console.log("hello?");
                 obj.points = obj.goals + obj.assists + obj.assists2;
                 obj.icf = obj.sf + obj.msf + obj.bsf;
-                obj.cf = obj.onsf + obj.onmsf + obj.onbsf;
-                obj.ca = obj.sa + obj.msa + obj.bsa;
+                obj.ff = obj.onsf + obj.onmsf;
+                obj.iff = obj.sf + obj.msf;
+                obj.fa = obj.sa + obj.msa;
+                obj.cf = obj.onsf + obj.onmsf + obj.bsa;
+                obj.ca = obj.sa + obj.msa + obj.onbsf;
                 obj.PenD = obj.pnDrawn - obj.pn;
+
                 if (obj.sa > 0) {
                     var savePct = obj.sa / (obj.sa + obj.ga) * 100;
                 } else {
                     var savePct = 100;
                 }
-                if (obj.sf > 0) {
+                if (obj.onsf > 0) {
                     var shPct = obj.gf / obj.onsf * 100;
                 } else {
                     var shPct = 0;
                 }
+                if (obj.sf > 0)
+                    obj['psh%'] = (obj.goals / obj.sf * 100).toFixed(2);
+                else
+                    obj['psh%'] = "";
                 obj.pdo = (savePct + shPct).toFixed(2);
+                obj["osh%"] = shPct.toFixed(2);
+                obj["osv%"] = savePct.toFixed(2);
+
+                if (obj.sa + obj.onsf > 0)
+                    obj['sf%'] = (obj.onsf / (obj.onsf + obj.sa) * 100).toFixed(2);
+                else {
+                    if (obj.onsf > 0)
+                        obj['sf%'] = 100;
+                    else if (obj.sa > 0)
+                        obj['sf%'] = 0;
+                    else
+                        obj['sf%'] = "";
+                }
+
+                if (obj.zso + obj.zsd > 0)
+                    obj["zso%"] = (obj.zso / (obj.zso + obj.zsd) * 100).toFixed(2);
+                else {
+                    if (obj.zso > 0)
+                        obj["zso%"] = 100;
+                    else if (obj.zsd > 0)
+                        obj["zso%"] = 0;
+                    else
+                        obj["zso%"] = "";
+                }
+
+                if (obj.gf + obj.ga > 0)
+                    obj["gf%"] = (obj.gf / (obj.gf + obj.ga) * 100).toFixed(2);
+                else {
+                    if (obj.gf > 0)
+                        obj["gf%"] = 100;
+                    else if (obj.ga > 0)
+                        obj["gf%"] = 0;
+                    else
+                        obj["gf%"] = "";
+                }
+
+                if (obj.sc + obj.sca > 0)
+                    obj["scf%"] = (obj.sc / (obj.sc + obj.sca) * 100).toFixed(2);
+                else {
+                    if (obj.sc > 0)
+                        obj["scf%"] = 100;
+                    else if (obj.sca > 0)
+                        obj["scf%"] = 0;
+                    else
+                        obj["scf%"] = "";
+                }
+
+                if (obj.hscf + obj.hsca > 0)
+                    obj["hscf%"] = (obj.hscf / (obj.hscf + obj.hsca) * 100).toFixed(2);
+                else {
+                    if (obj.hscf > 0)
+                        obj["hscf%"] = 100;
+                    else if (obj.hsca > 0)
+                        obj["hscf%"] = 0;
+                    else
+                        obj["hscf%"] = "";
+                }
+
                 if (obj.toi != 0) {
                     obj['G60'] = parseFloat(((obj.goals) / obj.toi * 3600).toFixed(2));
                     obj['A60'] = parseFloat(((obj.assists + obj.assists2) / obj.toi * 3600).toFixed(2));
                     obj['P60'] = parseFloat(((obj.goals + obj.assists + obj.assists2) / obj.toi * 3600).toFixed(2));
                     obj['CF60'] = parseFloat(((obj['cf']) / obj.toi * 3600).toFixed(2));
                     obj['CA60'] = parseFloat(((obj['ca']) / obj.toi * 3600).toFixed(2));
-                    obj['CP60'] = obj ['CF60'] + obj['CA60'];
+                    obj['CP60'] = (parseFloat(obj['CF60']) + parseFloat(obj['CA60'])).toFixed(2);
+                    obj['FF60'] = parseFloat(((obj.ff / obj.toi * 3600).toFixed(2)));
+                    obj['FA60'] = parseFloat(((obj.fa / obj.toi * 3600).toFixed(2)));
+                    obj['FP60'] = (parseFloat(obj['FF60']) + parseFloat(obj['FA60'])).toFixed(2);
+                    obj['SF60'] = parseFloat(((obj.sf / obj.toi * 3600).toFixed(2)));
+                    obj['SA60'] = parseFloat(((obj.sf / obj.toi * 3600).toFixed(2)));
+                    obj['scf60'] = parseFloat(((obj.sc / obj.toi * 3600).toFixed(2)));
+                    obj['sca60'] = parseFloat(((obj.sca / obj.toi * 3600).toFixed(2)));
+                    obj['hscf60'] = parseFloat(((obj.hscf / obj.toi * 3600).toFixed(2)));
+                    obj['hsca60'] = parseFloat(((obj.hsca / obj.toi * 3600).toFixed(2)));
+                    obj['scp60'] = (parseFloat(obj['scf60']) + parseFloat(obj['sca60'])).toFixed(2);
+                    obj['hscp60'] = (parseFloat(obj['hscf60']) + parseFloat(obj['hsca60'])).toFixed(2);
                 } else {
                     obj['G60'] = 0;
                     obj['A60'] = 0;
@@ -499,6 +575,17 @@
                     obj['CF60'] = 0;
                     obj['CA60'] = 0;
                     obj['CP60'] = 0;
+                    obj['FF60'] = 0;
+                    obj['FA60'] = 0;
+                    obj['FP60'] = 0;
+                    obj['SF60'] = 0;
+                    obj['SA60'] = 0;
+                    obj['scf60'] = 0;
+                    obj['sca60'] = 0;
+                    obj['hscf60'] = 0;
+                    obj['hsca60'] = 0;
+                    obj['scp60'] = 0;
+                    obj['hscp60'] = 0;
                 }
                 obj.plusMinus = obj.gf - obj.ga;
                 if (obj["fo_l"] != 0)
@@ -555,105 +642,82 @@
                                     return "<a href=\"/player/?player=" + full.id + "\">" + data + "</a>";
                                 }
                             }, // Player
-                            {
-                                "data": "position"
-                            }, // Pos
+                            {"data": "position"}, // Pos
                             {
                                 "data": "currentTeam",
                                 "render": function(data, type, full, meta) {
                                     return '<img height="17" width="17" src="/static/images/team/' + full.currentTeamAbbr + '.png"><a href="/teams/?team=' + full.currentTeamAbbr + '">' + full.team + '</a>';
                                 }
                             }, // Team
-                            {
-                                "data": "age"
-                            }, // Age
-                            {
-                                "data": "height"
-                            }, // Height
-                            {
-                                "data": "weight"
-                            }, // Weight
-                            {
-                                "data": "games"
-                            }, // Gm
-                            {
-                                "data": "goals"
-                            }, // G
-                            {
-                                "data": "assists"
-                            }, // A
-                            {
-                                "data": "assists2"
-                            }, // A
-                            {
-                                "data": "points"
-                            }, // P
-                            {
-                                "data": "G60"
-                            }, // G60
-                            {
-                                "data": "A60"
-                            }, // A60
-                            {
-                                "data": "P60"
-                            }, // P60
-                            {
-                                "data": "plusMinus"
-                            }, // +/-
-                            {
-                                "data": "hit"
-                            }, // Hits
-                            {
-                                "data": "sf"
-                            }, // Shots
-                            /*{
-                                "data": "fo_w"
-                            }, // FOW
-                            {
-                                "data": "facPercent"
-                            }, // FO%*/
-                            {
-                                "data": "pdo"
-                            },
-                            {
-                                "data": "msf"
-                            },
-                            {
-                                "data": "bsf"
-                            },
-                            {
-                                "data": "fo_w"
-                            },
-                            {
-                                "data": "fo_l"
-                            },
-                            {
-                                "data": "facPercent"
-                            },
-                            {
-                                "data": "TOIGm"
-                            }, // TOI/Game
-                            {
-                                "data": "PenD"
-                            },
-                            {
-                                "data": "cf"
-                            },
-                            {
-                                "data": "ca"
-                            },
-                            {
-                                "data": "CF60"
-                            },
-                            {
-                                "data": "CA60"
-                            },
-                            {
-                                "data": "CP60"
-                            },
-                            {
-                                "data": "icf"
-                            }
+                            {"data": "age"}, // Age
+                            {"data": "height"}, // Height
+                            {"data": "weight"}, // Weight
+                            {"data": "games"}, // Gm
+                            {"data": "goals"}, // G
+                            {"data": "assists"}, // A
+                            {"data": "assists2"}, // A
+                            {"data": "points"}, // P
+                            {"data": "G60"}, // G60
+                            {"data": "A60"}, // A60
+                            {"data": "P60"}, // P60
+                            {"data": "plusMinus"}, // +/-
+                            {"data": "hit"}, // Hits
+                            {"data": "sf"}, // Shots
+                            {"data": "pdo"},
+                            {"data": "msf"},
+                            {"data": "bsf"},
+                            {"data": "fo_w"},
+                            {"data": "fo_l"},
+                            {"data": "facPercent"},
+                            {"data": "TOIGm"}, // TOI/Game
+                            {"data": "PenD"},
+                            {"data": "cf"},
+                            {"data": "ca"},
+                            {"data": "CF60"},
+                            {"data": "CA60"},
+                            {"data": "CP60"},
+                            {"data": "icf"},
+                            {"data": "ff"},
+                            {"data": "fa"},
+                            {"data": "FF60"},
+                            {"data": "FA60"},
+                            {"data": "FP60"},
+                            {"data": "iff"},
+                            {"data": "onsf"},
+                            {"data": "sa"},
+                            {"data": "sf"},
+                            {"data": "SF60"},
+                            {"data": "SA60"},
+                            {"data": "sf%"},
+                            {"data": "psh%"},
+                            {"data": "gf"},
+                            {"data": "ga"},
+                            {"data": "gf%"},
+                            {"data": "osh%"},
+                            {"data": "osv%"},
+                            {"data": "fo_w"},
+                            {"data": "fo_l"},
+                            {"data": "facPercent"},
+                            {"data": "zso%"},
+                            {"data": "zso"},
+                            {"data": "zsn"},
+                            {"data": "zsd"},
+                            {"data": "isc"},
+                            {"data": "sc"},
+                            {"data": "sca"},
+                            {"data": "scf%"},
+                            {"data": "scf60"},
+                            {"data": "sca60"},
+                            {"data": "scp60"},
+                            {"data": "ihsc"},
+                            {"data": "hscf"},
+                            {"data": "hsca"},
+                            {"data": "hscf%"},
+                            {"data": "hscf60"},
+                            {"data": "hsca60"},
+                            {"data": "hscp60"},
+                            {"data": "bsf"},
+                            {"data": "ab"}
                         ]
                     });
                     createBubbleGraph(dataset, "G60", "assists", "toi", "P60", "Goals Per 60",
