@@ -401,6 +401,11 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-3 col-md-offset-4">
+                                             <button type="button" class="btn btn-primary center-block beside-fields" onclick="addGraph()">Generate Chart</button>
+                                        </div>
+                                    </div>
                                 </form>
                                 
                             </div>
@@ -478,9 +483,9 @@
                 });
             });
         });
-
+        var dataset = null;
         function get_dataset(data) {
-            var dataset = $.map(data, function(obj, index) {
+            dataset = $.map(data, function(obj, index) {
                 $("#id_player").append('<option value="' + obj.id + '">' + obj.name + '</option>');
                 obj.points = obj.goals + obj.assists + obj.assists2;
                 obj.icf = obj.sf + obj.msf + obj.bsf;
@@ -617,6 +622,22 @@
                 obj['TOIGm'] = minutes + ":" + Math.round(seconds);
                 return obj;
             });
+            // Update the options in the chart
+            if (dataset.length > 1) {
+                var options = Object.keys(dataset[0]);
+                var selects = ["#xAxis", "#yAxis", "#colorVar", "#sizeVar"];
+                for (var s=0; s<selects.length; s++) {
+                    var select = selects[s];
+                    $(select).empty();
+                    $.each(options, function(value) {
+                        var option = document.createElement('option'),
+                            v = options[value];
+                        option.value = v;
+                        option.innerHTML = v;
+                        $(select).append(option);
+                    });
+                }
+            }
             return dataset;
         }
 
@@ -735,13 +756,32 @@
                             {"data": "ab"}
                         ]
                     });
-                    createBubbleGraph(dataset, "zso%", "G60", "PenD", "TOIGmSeconds",
-                        "Fraction of Off vs Def Zone Starts", "Goals per 60", "Penalty Differential", "TOI/Gm");
+                    $("#xAxis").val("zso%");
+                    $("#yAxis").val("G60");
+                    $("#sizeVar").val("PenD");
+                    $("#colorVar").val("TOIGmSeconds");
+                    addGraph(dataset);
 
                 }
             });
             $('#id_player').multiSelect('refresh');
         }
+
+        function addGraph() {
+            var x = $("#xAxis").val(),
+                y = $("#yAxis").val(),
+                color = $("#colorVar").val(),
+                size = $("#sizeVar").val(),
+                xtext = $("#xAxis option[value='" + x + "']").text(),
+                ytext = $("#yAxis option[value='" + y + "']").text(),
+                colortext = $("#colorVar option[value='" + color + "']").text(),
+                sizetext = $("#sizeVar option[value='" + size + "']").text();
+            xtext = xtext.replace(/ *\([^)]*\) */g, "");
+            ytext = ytext.replace(/ *\([^)]*\) */g, "");
+            colortext = colortext.replace(/ *\([^)]*\) */g, "");
+            sizetext = sizetext.replace(/ *\([^)]*\) */g, "");
+            createBubbleGraph(dataset, x, y, color, size, xtext, ytext, colortext, sizetext);
+        };
         </script>
         <script src="/static/DataTables/datatables.min.js"></script>
         <script src="/static/MultiSelect/js/jquery.multi-select.js"></script>

@@ -163,7 +163,7 @@ function createBubbleGraph(dataset, xvalue, yvalue, color, size, xtext, ytext, c
     legend.append('text')
       .attr('x', legendRectSize + margin.left + margin.right + 60)
       .attr('y', legendRectSize + margin.top + legendRectSize / 1.5)
-      .style("text-anchor", "end")
+      .style("text-anchor", "start")
       .text(function(d) { return d; });
     var texts = colortext.split(",");
     for (var i=0; i<texts.length; i++) {
