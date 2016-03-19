@@ -7,9 +7,7 @@ function savePNG(button_id, svg_id) {
         var multiple = 1540 / width;
         var newwidth = width * multiple;
         var newheight = height * multiple;
-        console.log("width=\"" + width + "\" height=\"" + height + "\"");
-        svgText = svgText.replace("width=\"" + width + "\" height=\"" + height + "\"", "width=\"" + newwidth + "\" height=\"" + newheight + "\"")
-        console.log(svgText);
+        svgText = svgText.replace("width=\"" + width + "\" height=\"" + height + "\"", "width=\"" + newwidth + "\" height=\"" + newheight + "\"");
     }
     canvg('canvas', svgText, { renderCallback: function () {
       var img = canvas.toDataURL("image/png");
