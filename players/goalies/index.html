@@ -13,6 +13,7 @@
     <link href="/static/DataTables/datatables.min.css" rel="stylesheet">
     <link href="/static/MultiSelect/css/multi-select.css" rel="stylesheet">
     <link href="/static/datepicker/css/datepicker.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <!--{% endblock %}-->
     <link href="/static/css/bootstrap.css" rel="stylesheet">
     <link href="/static/css/fls.css" rel="stylesheet">
@@ -239,54 +240,201 @@
         </div>
     </div>
     <div class="row">
-        <div id='tableLoading' class="col-md-6 col-md-offset-3">
-            <div class="progress">
-                <div class="progress-bar progress-bar-striped active" role="progressbar"
-                    aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                    Fetching Data
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tableView" data-toggle="tab" aria-expanded="true">Table View</a></li>
+                <li class=""><a href="#graphView" data-toggle="tab" aria-expanded="false">Graph View</a></li>
+            </ul>
+            <div id="skatersTabContent" class="tab-content">
+                <div class="tab-pane fade active in" id="tableView">
+                    <div id='tableLoading' class="col-md-6 col-md-offset-3">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                Fetching Data
+                            </div>
+                        </div>
+                    </div>        
+                    <div id="skatersTableContainer" class="col-md-12" style="display: none;">
+                        <table id="playerList" class="table table-striped table-condensed table-hover rt cf table-full" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Team</th>
+                                    <th title="Games">Gm</th>
+                                    <th>Season</th>
+                                    <th>Age</th>
+                                    <th>Height</th>
+                                    <th>Weight</th>
+                                    <th title="Save %">Sv%</th>
+                                    <th title="Adjusted Save %">AdSv%</th>
+                                    <th title="Shots Faced, per 60 minutes">SA60</th>
+                                    <th title="Low-Danger Save %">Sv%L</th>
+                                    <th title="Medium-Danger Save %">Sv%M</th>
+                                    <th title="High-Danger Save %">Sv%H</th>
+                                    <th title="All Goals">G</th>
+                                    <th title="All Saves">S</th>
+                                    <th title="All Shots">Sh</th>
+                                    <th>TOI/Game</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="graphView">
+                    <div class="row">
+                        
+                        <form id="comparisonGraphFilter" class="col-md-12" action="/api/pbp/playerstats/" method="GET">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="xAxis">X Axis Variable:</label>
+                                    <select id="xAxis" class="form-control input-sm">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="yAxis">Y Axis Variable:</label>
+                                    <select id="yAxis" class="form-control input-sm">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="colorVar">Color Variable:</label>
+                                    <select id="colorVar" class="form-control input-sm">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="sizeVar">Size Variable:</label>
+                                    <select id="sizeVar" class="form-control input-sm">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 col-md-offset-4">
+                                     <button type="button" class="btn btn-primary center-block beside-fields" onclick="addGraph()">Generate Chart</button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="text-center">Goalie Comparison Chart&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-xs btn-primary" id="skaterChartButton"><i class="fa fa-floppy-o"></i> Save</button></h4>
+                            <div id="comparison-graph"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>        
-        <div id="skatersTableContainer" class="col-md-12" style="display: none;">
-            <table id="playerList" class="table table-striped table-condensed table-hover rt cf table-full" style="width:100%;">
-                <thead>
-                    <tr>
-                        <th>Player</th>
-                        <th>Team</th>
-                        <th title="Games">Gm</th>
-                        <th>Season</th>
-                        <th>Age</th>
-                        <th>Height</th>
-                        <th>Weight</th>
-                        <th title="Save %">Sv%</th>
-                        <th title="Adjusted Save %">AdSv%</th>
-                        <th title="Shots Faced, per 60 minutes">SA60</th>
-                        <th title="Low-Danger Save %">Sv%L</th>
-                        <th title="Medium-Danger Save %">Sv%M</th>
-                        <th title="High-Danger Save %">Sv%H</th>
-                        <th title="All Goals">G</th>
-                        <th title="All Saves">S</th>
-                        <th title="All Shots">Sh</th>
-                        <th>TOI/Game</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
         </div>
     </div>
+</div>
+<div id="pngdataurl" style="display:none"></div>
+<div id="canvasArea">
+    <canvas style="display:none;" id="canvas" width="1000px" height="700px"></canvas>
 </div>
 
     <!--{% endblock %}-->
     <script src="/static/js/jquery-2.2.0.min.js"></script>
     <script src="/static/js/bootstrap.js"></script>
     <!--{% block page_js %}-->
-
+    <script src="/static/js/graphs/svgPNG.js"></script>
+    <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
+    <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/StackBlur.js"></script>
+    <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script>
+    <script src="/static/d3/d3.min.js"></script>
 <script src="/static/js/getUrl.js"></script>
 <script>
+    var dataset = null;
+    function get_dataset(data) {
+        dataset = $.map(data, function(obj, index) {
+            var a = (((obj["savesLow"] + obj["savesMedium"] + obj["savesHigh"]) / (obj["shotsLow"] + obj["shotsMedium"] + obj["shotsHigh"])) * 100).toFixed(2)
+            if (isNaN(a)) a = '';
+            obj['sv_per'] = a;
+
+            var saveLow = obj["savesLow"] / obj["shotsLow"];
+            var saveMed = obj["savesMedium"] / obj["shotsMedium"];
+            var saveHigh = obj["savesHigh"] / obj["shotsHigh"];
+            if (isNaN(saveMed))
+                saveMed = 1;
+            if (isNaN(saveLow))
+                saveLow = 1;
+            if (isNaN(saveHigh))
+                saveHigh = 1;
+            
+            var saves = saveLow * obj["leagueShotsLow"] + saveMed * obj["leagueShotsMedium"] + saveHigh * obj["leagueShotsHigh"];
+            var total = obj["leagueShotsLow"] + obj["leagueShotsMedium"] + obj["leagueShotsHigh"];
+            obj['adj_sv_per'] = (saves / total * 100).toFixed(2);
+
+            a = ((obj["shotsLow"] + obj["shotsMedium"] + obj["shotsHigh"]) / obj.toi * 3600).toFixed(2)
+            if (isNaN(a)) a = '';
+            obj['sa60'] = a;
+
+            a = ((obj["savesLow"] / obj["shotsLow"]) * 100).toFixed(2);
+            if (isNaN(a)) a = '';
+            obj['lDSv%'] = a;
+
+            a = ((obj["savesMedium"] / obj["shotsMedium"]) * 100).toFixed(2);
+            if (isNaN(a)) a = '';
+            obj['mDSv%'] = a;
+
+            a = ((obj["savesHigh"] / obj["shotsHigh"]) * 100).toFixed(2);
+            if (isNaN(a)) a = '';
+            obj['hDSv%'] = a;
+
+            obj['g'] = (obj["shotsLow"] + obj["shotsMedium"] + obj["shotsHigh"]) - (obj["savesLow"] + obj["savesMedium"] + obj["savesHigh"]);
+            obj['s'] = obj["savesLow"] + obj["savesMedium"] + obj["savesHigh"];
+            obj['sh'] = obj["shotsLow"] + obj["shotsMedium"] + obj["shotsHigh"];
+            var time = obj["toi"] / obj["games"];
+            var minutes = Math.floor(time / 60); // 7
+            var seconds = time % 60; // 30
+            if (seconds < 10)
+                seconds = "0" + Math.round(seconds);
+            else
+                seconds = Math.round(seconds);
+            obj['TOIGm'] =  minutes + ":" + Math.round(seconds);
+            obj['TOIGmSeconds'] = time.toFixed(2);
+            return obj;
+        });
+        // Update the options in the chart
+        if (dataset.length > 1) {
+            var options = Object.keys(dataset[0]);
+            var selects = ["#xAxis", "#yAxis", "#colorVar", "#sizeVar"];
+            for (var s=0; s<selects.length; s++) {
+                var select = selects[s];
+                $(select).empty();
+                $.each(options, function(value) {
+                    var option = document.createElement('option'),
+                        v = options[value];
+                    option.value = v;
+                    option.innerHTML = v;
+                    $(select).append(option);
+                });
+            }
+        }
+        return dataset;
+    }
+
+
     var skateDT = $("#skatersTableContainer");
     var url = getUrl();
     $(document).ready(function() {
+        savePNG("#skaterChartButton", "#comparison-graph");
         $("#id_teams").multiSelect();
         $('#id_seasons').multiSelect();
         $("#id_venues").multiSelect();
@@ -316,145 +464,113 @@
             //$('#tableLoading').toggle();
             //getAjax();
             var formurl = url + "player/goaliestats/?format=json&" + $("#playersFilter").serialize();
-            console.log(formurl);
-            skateDT.ajax.url(formurl);
-            skateDT.ajax.reload();
 
+            var skateDT = $("#playerList").DataTable();
             e.preventDefault();
+            $.ajax({
+                url: formurl,
+                success: function(data) {
+                    var dataset = get_dataset(data);
+                    skateDT.clear();
+                    skateDT.rows.add(dataset);
+                    skateDT.draw();
+                    $("#comparison-graph").html("");
+                    createBubbleGraph(dataset, "sh", "adj_sv_per", "TOIGmSeconds", "weight",
+                        "sh", "adj_sv_per", "TOIGmSeconds", "weight");
+                }
+            });
         });
     });
     
     function getAjax() {
-        $('#tableLoading').toggle();
-        $('#skatersTableContainer').toggle();
-        skateDT = $('#playerList').DataTable({
-            iDisplayLength: 15,
-            order: [[ 9, "desc" ]],
-            aLengthMenu: [[10, 15, 25, 50, -1], [10, 15, 25, 50, "All"]],
-            pagingType: "simple",
-            dom: 'lfrtiBp',
-            buttons: [
-                {
-                    extend: 'copy',
-                    className: 'btn-sm btn-primary',
-                },
-                {
-                    extend: 'csv',
-                    className: 'btn-sm btn-primary',
-                },
-                {
-                    extend: 'excel',
-                    className: 'btn-sm btn-primary',
-                },
-                {
-                    extend: 'pdf',
-                    className: 'btn-sm btn-primary',
-                }
-            ],
-            ajax: url + "player/goaliestats/?format=json",
-            sAjaxDataProp: "",
-            columns: [
-                {"data": "name",
-                 "render": function(data, type, full, meta) {
-                     return "<a href=\"/goalie/?player=" + full.player_id + "\">" + data + "</a>";
-                 }
-                }, // Player
-                {"data": "currentTeam",
-                 "render": function ( data, type, full, meta ) {
-                    return '<img height="17" width="17" src="/static/images/team/' + full.currentTeam + '.png"><a href="/teams">' + full.currentTeam + '</a>';}
-                }, // Team
-                {"data": "games"}, // Gm
-                {"data": "season"},
-                {"data": "age"}, // Age
-                {"data": "height"}, // Height
-                {"data": "weight"}, // Weight
-                {"data": "sv_per",
-                 "render" : function(data,type,full,meta) {
-                    var a = (((full["savesLow"] + full["savesMedium"] + full["savesHigh"]) / (full["shotsLow"] + full["shotsMedium"] + full["shotsHigh"])) * 100).toFixed(2)
-                    if (isNaN(a)) return '';
-                    return a;
-                 }
-                },
-                {"data": "adj_sv_per",
-                 "render" : function(data, type, full, meta) {
-                    var saveLow = full["savesLow"] / full["shotsLow"];
-                    var saveMed = full["savesMedium"] / full["shotsMedium"];
-                    var saveHigh = full["savesHigh"] / full["shotsHigh"];
-                    if (isNaN(saveMed))
-                        saveMed = 1;
-                    if (isNaN(saveLow))
-                        saveLow = 1;
-                    if (isNaN(saveHigh))
-                        saveHigh = 1;
-                    
-                    var saves = saveLow * full["leagueShotsLow"] + saveMed * full["leagueShotsMedium"] + saveHigh * full["leagueShotsHigh"];
-                    var total = full["leagueShotsLow"] + full["leagueShotsMedium"] + full["leagueShotsHigh"];
-                    return (saves / total * 100).toFixed(2);
-                 }
-                },
-                {"data": "sa60",
-                 "render" : function(data, type, full, meta) {
-                    var a = ((full["shotsLow"] + full["shotsMedium"] + full["shotsHigh"]) / full.toi * 3600).toFixed(2)
-                    if (isNaN(a)) return '';
-                    return a; 
-                 }
-                },
-                {"data": "shotsLow",
-                 "render" : function(data,type,full,meta) {
-                    var a = ((full["savesLow"] / full["shotsLow"]) * 100).toFixed(2);
-                    if (isNaN(a)) return '';
-                    return a;
-                 }
-                },
-                {"data": "shotsMedium",
-                 "render" : function(data,type,full,meta) {
-                    var a = ((full["savesMedium"] / full["shotsMedium"]) * 100).toFixed(2);
-                    if (isNaN(a)) return '';
-                    return a;
-                 }
-                },
-                {"data": "shotsHigh",
-                 "render" : function(data,type,full,meta) {
-                    var a = ((full["savesHigh"] / full["shotsHigh"]) * 100).toFixed(2);
-                    if (isNaN(a)) return '';
-                    return a;
-                 }
-                },
-                {"data": "g",
-                 "render" : function(data,type,full,meta) {
-                    return (full["shotsLow"] + full["shotsMedium"] + full["shotsHigh"]) - (full["savesLow"] + full["savesMedium"] + full["savesHigh"]);
 
-                 }   
-                },
-                {"data": "s",
-                 "render" : function(data, type, full, meta) {
-                    return full["savesLow"] + full["savesMedium"] + full["savesHigh"];
-                 }
-                },
-                {"data": "sh",
-                 "render" : function(data, type, full, meta) {
-                    return full["shotsLow"] + full["shotsMedium"] + full["shotsHigh"];
-                 }
-                },
-                {"data": "TOIGm",
-                 "render": function(data, type, full, meta) {
-                    var time = full["toi"] / full["games"];
-                    var minutes = Math.floor(time / 60); // 7
-                    var seconds = time % 60; // 30
-                    if (seconds < 10)
-                        seconds = "0" + Math.round(seconds);
-                    else
-                        seconds = Math.round(seconds);
-                    return minutes + ":" + Math.round(seconds);
-                 }
-                }, // TOI/Game
-            ]
+        $.ajax({
+            url: url + "player/goaliestats/?format=json",
+            success: function(data) {
+                $('#tableLoading').toggle();
+                $('#skatersTableContainer').toggle();
+                var dataset = get_dataset(data);
+                var skateDT = $('#playerList').DataTable({
+                    iDisplayLength: 15,
+                    order: [[ 9, "desc" ]],
+                    aLengthMenu: [[10, 15, 25, 50, -1], [10, 15, 25, 50, "All"]],
+                    pagingType: "simple",
+                    dom: 'lfrtiBp',
+                    buttons: [
+                        {
+                            extend: 'copy',
+                            className: 'btn-sm btn-primary',
+                        },
+                        {
+                            extend: 'csv',
+                            className: 'btn-sm btn-primary',
+                        },
+                        {
+                            extend: 'excel',
+                            className: 'btn-sm btn-primary',
+                        },
+                        {
+                            extend: 'pdf',
+                            className: 'btn-sm btn-primary',
+                        }
+                    ],
+                    data: dataset,
+                    columns: [
+                        {"data": "name",
+                         "render": function(data, type, full, meta) {
+                             return "<a href=\"/goalie/?player=" + full.player_id + "\">" + data + "</a>";
+                         }
+                        }, // Player
+                        {"data": "currentTeam",
+                         "render": function ( data, type, full, meta ) {
+                            return '<img height="17" width="17" src="/static/images/team/' + full.currentTeam + '.png"><a href="/teams">' + full.currentTeam + '</a>';}
+                        }, // Team
+                        {"data": "games"}, // Gm
+                        {"data": "season"},
+                        {"data": "age"}, // Age
+                        {"data": "height"}, // Height
+                        {"data": "weight"}, // Weight
+                        {"data": "sv_per"},
+                        {"data": "adj_sv_per"},
+                        {"data": "sa60"},
+                        {"data": "lDSv%"},
+                        {"data": "mDSv%"},
+                        {"data": "hDSv%"},
+                        {"data": "g"},
+                        {"data": "s"},
+                        {"data": "sh"},
+                        {"data": "TOIGm"}, // TOI/Game
+                    ]
+                });
+                $("#xAxis").val("sh");
+                $("#yAxis").val("adj_sv_per");
+                $("#sizeVar").val("weight");
+                $("#colorVar").val("TOIGmSeconds");
+                addGraph(dataset);
+            }
         });
     }
+
+    function addGraph() {
+        var x = $("#xAxis").val(),
+            y = $("#yAxis").val(),
+            color = $("#colorVar").val(),
+            size = $("#sizeVar").val(),
+            xtext = $("#xAxis option[value='" + x + "']").text(),
+            ytext = $("#yAxis option[value='" + y + "']").text(),
+            colortext = $("#colorVar option[value='" + color + "']").text(),
+            sizetext = $("#sizeVar option[value='" + size + "']").text();
+        xtext = xtext.replace(/ *\([^)]*\) */g, "");
+        ytext = ytext.replace(/ *\([^)]*\) */g, "");
+        colortext = colortext.replace(/ *\([^)]*\) */g, "");
+        sizetext = sizetext.replace(/ *\([^)]*\) */g, "");
+        createBubbleGraph(dataset, x, y, color, size, xtext, ytext, colortext, sizetext);
+    };
 </script>
 <script src="/static/DataTables/datatables.min.js"></script>
 <script src="/static/MultiSelect/js/jquery.multi-select.js"></script>
 <script src="/static/datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/static/js/graphs/skaterBubbleGraph.js"></script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
